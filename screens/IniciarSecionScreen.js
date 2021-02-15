@@ -21,7 +21,7 @@ import { AuthContext } from '../components/context';
 
 import Users from '../model/users';
 
-const SignInScreen = ({navigation}) => {
+const IniciarSecionScreen = ({navigation}) => {
 
     const [data, setData] = React.useState({
         username: '',
@@ -229,7 +229,7 @@ const SignInScreen = ({navigation}) => {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('SignUpScreen')}
+                    onPress={() => navigation.navigate('RegistrarseScreen')}
                     style={[styles.signIn, {
                         borderColor: '#2096BA',
                         borderWidth: 1,
@@ -242,16 +242,16 @@ const SignInScreen = ({navigation}) => {
                 </TouchableOpacity>
             </View>
         </Animatable.View>
-      </View>
+    </View>
     );
 };
 
-export default SignInScreen;
+export default IniciarSecionScreen;
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1, 
-      backgroundColor: '#0064A2'
+        flex: 1, 
+        backgroundColor: '#0064A2'
     },
     header: {
         flex: 1,

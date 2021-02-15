@@ -1,5 +1,3 @@
-
-
 import React, { useEffect } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { 
@@ -42,7 +40,7 @@ const App = () => {
     userToken: null,
   };
 
-  const CustomDefaultTheme = { //solo es un tema por defecto
+  const CustomDefaultTheme = { // tema por defecto
     ...NavigationDefaultTheme,
     ...PaperDefaultTheme,
     colors: {

@@ -19,11 +19,11 @@ const SplashScreen = ({navigation}) => {
 
     return (
       <View style={styles.container}>
-          <StatusBar backgroundColor='#0064A2' barStyle="light-content"/>
+          <StatusBar backgroundColor='#104573' barStyle="light-content"/>
         <View style={styles.header}>
             <Animatable.Image 
                 animation="bounceIn"
-                duraton="1500"
+                duraton="3000"
             source={require('../assets/logo.png')}
             style={styles.logo}
             resizeMode="stretch"
@@ -40,7 +40,7 @@ const SplashScreen = ({navigation}) => {
             }]}>El itsa te invita a que te suscribas</Text>
             <Text style={styles.text}>Crea una cuenta e inicia secion para inscribirte</Text>
             <View style={styles.button}>
-            <TouchableOpacity onPress={()=>navigation.navigate('SignInScreen')}>
+            <TouchableOpacity onPress={()=>navigation.navigate('IniciarSecionScreen')}>
                 <LinearGradient
                     colors={['#0064A2', '#2096BA']}
                     style={styles.signIn}
@@ -62,12 +62,12 @@ const SplashScreen = ({navigation}) => {
 export default SplashScreen;
 
 const {height} = Dimensions.get("screen");
-const height_logo = height * 0.28;
+const height_logo = height * 0.7;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1, 
-    backgroundColor: '#0064A2'
+    backgroundColor: '#104573'
   },
   header: {
       flex: 2,
@@ -83,8 +83,8 @@ const styles = StyleSheet.create({
       paddingHorizontal: 30
   },
   logo: {
-      width: height_logo,
-      height: height_logo
+      width: height_logo/0.72,
+      height: height_logo/1.30
   },
   title: {
       color: '#05375a',

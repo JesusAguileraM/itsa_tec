@@ -17,7 +17,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 
-const SignInScreen = ({navigation}) => {
+const IniciarSecionScreen = ({navigation}) => {
 
     const [data, setData] = React.useState({
         username: '',
@@ -91,7 +91,7 @@ const SignInScreen = ({navigation}) => {
                     size={20}
                 />
                 <TextInput 
-                    placeholder="Tu usuario"
+                    placeholder="Tu Usuario"
                     style={styles.textInput}
                     autoCapitalize="none"
                     onChangeText={(val) => textInputChange(val)}
@@ -197,7 +197,7 @@ const SignInScreen = ({navigation}) => {
                 >
                     <Text style={[styles.textSign, {
                         color:'#fff'
-                    }]}>Inscribirse</Text>
+                    }]}>Registrarse</Text>
                 </LinearGradient>
                 </TouchableOpacity>
 
@@ -211,7 +211,7 @@ const SignInScreen = ({navigation}) => {
                 >
                     <Text style={[styles.textSign, {
                         color: '#0064A2'
-                    }]}>Registrarse</Text>
+                    }]}>Iniciar sesión</Text>
                 </TouchableOpacity>
             </View>
             </ScrollView>
@@ -220,7 +220,7 @@ const SignInScreen = ({navigation}) => {
     );
 };
 
-export default SignInScreen;
+export default IniciarSecionScreen;
 
 const styles = StyleSheet.create({
     container: {
