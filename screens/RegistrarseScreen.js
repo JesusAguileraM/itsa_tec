@@ -189,7 +189,7 @@ const IniciarSecionScreen = ({navigation}) => {
             <View style={styles.button}>
                 <TouchableOpacity
                     style={styles.signIn}
-                    onPress={() => {}}
+                    onPress={() => {navigation.navigate('Parte1Screen')}}
                 >
                 <LinearGradient
                     colors={['#0064A2', '#2096BA']}
@@ -216,7 +216,7 @@ const IniciarSecionScreen = ({navigation}) => {
             </View>
             </ScrollView>
         </Animatable.View>
-      </View>
+    </View>
     );
 };
 
@@ -224,8 +224,8 @@ export default IniciarSecionScreen;
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1, 
-      backgroundColor: '#0064A2'
+        flex: 1, 
+        backgroundColor: '#0064A2'
     },
     header: {
         flex: 1,
@@ -285,5 +285,5 @@ const styles = StyleSheet.create({
     },
     color_textPrivate: {
         color: 'grey'
-    }
-  });
+    } 
+});
