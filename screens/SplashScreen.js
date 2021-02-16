@@ -83,8 +83,8 @@ const styles = StyleSheet.create({
       paddingHorizontal: 30
   },
   logo: {
-      width: height_logo/0.72,
-      height: height_logo/1.30
+      width: 400,
+      height: 200
   },
   title: {
       color: '#05375a',

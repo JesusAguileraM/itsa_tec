@@ -1,28 +1,51 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useRef } from 'react'
 import { View, Text, StyleSheet, Dimensions, FlatList, Animated } from 'react-native'
 import CarouselItem from './CarouselItem'
 
 
-const { width, heigth } = Dimensions.get('window')
-let flatList
+const { width, heigth } = Dimensions.get('window');
 
+function infiniteScroll(dataList, mySlide) {
+    const numberOfData = dataList.length
+    let scrollValue = 0, scrolled = 0
 
+    setInterval(function () {
+        scrolled++
+        if (scrolled < numberOfData)
+            scrollValue = scrollValue + width
+
+        else {
+            scrollValue = 0
+            scrolled = 0
+        }
+        if (mySlide.current) {
+            mySlide.current.scrollToOffset({
+                animated: true,
+                offset: scrollValue,
+            });
+        }
+
+    }, 5000)
+}
 
 const Carousel = ({ data }) => {
-    const scrollX = new Animated.Value(0)
-    let position = Animated.divide(scrollX, width)
-    const [dataList, setDataList] = useState(data)
+    const mySlide = useRef();
 
-    useEffect(()=> {
-        setDataList(data)
-        
-    },[])
+    const scrollX = new Animated.Value(0);
+    let position = Animated.divide(scrollX, width);
+    const [dataList, setDataList] = useState(data);
+
+    useEffect(() => {
+        setDataList(data);
+        infiniteScroll(dataList, mySlide);
+    })
 
 
     if (data && data.length) {
         return (
             <View>
                 <FlatList data={data}
+                    ref={mySlide}
                     keyExtractor={(item, index) => 'key' + index}
                     horizontal
                     pagingEnabled
@@ -35,10 +58,10 @@ const Carousel = ({ data }) => {
                         return <CarouselItem item={item} />
                     }}
                     onScroll={Animated.event(
-                        [{ nativeEvent: { contentOffset: { x: scrollX } } }], 
+                        [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                        { useNativeDriver: false }
                     )}
                 />
-
                 <View style={styles.dotView}>
                     {data.map((_, i) => {
                         let opacity = position.interpolate({
@@ -49,7 +72,7 @@ const Carousel = ({ data }) => {
                         return (
                             <Animated.View
                                 key={i}
-                                style={{ opacity, height: 10, width: 10, backgroundColor: '#595959', margin: 4, borderRadius: 5 }}
+                                style={{ opacity, height: 10, width: 10, backgroundColor: '#595959', margin: 8, borderRadius: 5 }}
                             />
                         )
                     })}
@@ -59,7 +82,8 @@ const Carousel = ({ data }) => {
         )
     }
 
-    return null
+    console.log('Please provide Images');
+    return null;
 }
 
 const styles = StyleSheet.create({

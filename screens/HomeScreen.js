@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, StatusBar } from 'react-native';
 import { useTheme } from '@react-navigation/native';
-
+import { dummyData } from '../database/Data';
+import Carousel from '../components/Carousel';
 const HomeScreen = ({navigation}) => {
 
   const { colors } = useTheme();
@@ -9,14 +10,17 @@ const HomeScreen = ({navigation}) => {
   const theme = useTheme();
   
     return (
-      <View style={styles.container}>
-        <StatusBar barStyle= { theme.dark ? "light-content" : "dark-content" }/>
-        <Text style={{color: colors.text}}>Home Screen</Text>
-      <Button
-        title="Go to details screen"
-        onPress={() => navigation.navigate("Details")}
-      />
-      </View>
+      <>  
+          <Carousel data = {dummyData}/>
+          <View style={styles.container}>
+            <StatusBar barStyle= { theme.dark ? "light-content" : "dark-content" }/>
+            
+          <Button
+            title="Go to details screen"
+            onPress={() => navigation.navigate("Notifications")}
+          />
+          </View>
+      </>
     );
 };
 
@@ -26,6 +30,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1, 
     alignItems: 'center', 
-    justifyContent: 'center'
-  },
+    justifyContent: 'flex-start'
+  }
 });

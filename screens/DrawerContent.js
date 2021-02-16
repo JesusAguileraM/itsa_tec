@@ -16,8 +16,8 @@ import {
     DrawerItem
 } from '@react-navigation/drawer';
 
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
+//import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/Ionicons';
 import{ AuthContext } from '../components/context';
 
 export function DrawerContent(props) {
@@ -43,7 +43,8 @@ export function DrawerContent(props) {
                                 <Caption style={styles.caption}>Tal15020357@itsa.edu.mx</Caption>
                             </View>
                         </View>
-
+                        <Paragraph style={[styles.paragraph, styles.caption]}></Paragraph>            
+                        <Paragraph style={[styles.paragraph, styles.caption]}>Materias</Paragraph>            
                         <View style={styles.row}>
                             <View style={styles.section}>
                                 <Paragraph style={[styles.paragraph, styles.caption]}>0</Paragraph>
@@ -60,7 +61,7 @@ export function DrawerContent(props) {
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
-                                name="home-outline" 
+                                name="home" 
                                 color={color}
                                 size={size}
                                 />
@@ -71,7 +72,7 @@ export function DrawerContent(props) {
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
-                                name="account-outline" 
+                                name="ios-person" 
                                 color={color}
                                 size={size}
                                 />
@@ -82,15 +83,15 @@ export function DrawerContent(props) {
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
-                                name="bookmark-outline" 
+                                name="create-outline" 
                                 color={color}
                                 size={size}
                                 />
                             )}
-                            label="Bookmarks"
-                            onPress={() => {props.navigation.navigate('BookmarkScreen')}}
+                            label="Inscribirse"
+                            onPress={() => {props.navigation.navigate('Inscribirse')}}
                         />
-                        <DrawerItem 
+                        {/* <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
                                 name="settings-outline" 
@@ -98,18 +99,18 @@ export function DrawerContent(props) {
                                 size={size}
                                 />
                             )}
-                            label="Settings"
+                            label="Perfil"
                             onPress={() => {props.navigation.navigate('SettingsScreen')}}
-                        />
+                        /> */}
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
-                                name="account-check-outline" 
+                                name="create" 
                                 color={color}
                                 size={size}
                                 />
                             )}
-                            label="Support"
+                            label="Re-inscribirse"
                             onPress={() => {props.navigation.navigate('SupportScreen')}}
                         />
                     </Drawer.Section>
@@ -129,7 +130,7 @@ export function DrawerContent(props) {
                 <DrawerItem 
                     icon={({color, size}) => (
                         <Icon 
-                        name="exit-to-app" 
+                        name="log-out" 
                         color={color}
                         size={size}
                         />

@@ -32,13 +32,13 @@ const MainTabScreen = () => (
         }}
       />
       <Tab.Screen
-        name="Notifications"
+        name="Inscribirse"
         component={DetailsStackScreen}
         options={{
-          tabBarLabel: 'Notificaciones',
+          tabBarLabel: 'Inscribirse',
           tabBarColor: '#2096B4',
           tabBarIcon: ({ color }) => (
-            <Icon name="ios-notifications" color={color} size={26} />
+            <Icon name="create" color={color} size={26} />
           ),
         }}
       />
@@ -54,13 +54,13 @@ const MainTabScreen = () => (
         }}
       />
       <Tab.Screen
-        name="Explore"
+        name="Info"
         component={ExploreScreen}
         options={{
-          tabBarLabel: 'Explore',
+          tabBarLabel: 'Info.',
           tabBarColor: '#006460',
           tabBarIcon: ({ color }) => (
-            <Icon name="ios-aperture" color={color} size={26} />
+            <Icon name="ios-information-circle" color={color} size={26} />
           ),
         }}
       />
