@@ -114,11 +114,11 @@ const IniciarSecionScreen = ({navigation}) => {
     }
 
     return (
-      <View style={styles.container}>
-          <StatusBar backgroundColor='#0064A2' barStyle="light-content"/>
+    <View style={styles.container}>
+        <StatusBar backgroundColor='#0064A2' barStyle="light-content"/>
         <View style={styles.header}>
-            <Text style={styles.text_header}>Bienvenido</Text>
-            <Text style={styles.text_headerBottom}>Inicia secion para poder Inscribirte</Text>
+            <Animatable.Text animation="bounceIn" style={styles.text_header}>Bienvenido</Animatable.Text>
+            <Animatable.Text animation="bounceIn" style={styles.text_headerBottom}>Inicia secion para poder Inscribirte</Animatable.Text>
             
         </View>
         <Animatable.View 
@@ -229,7 +229,7 @@ const IniciarSecionScreen = ({navigation}) => {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    onPress={() => navigation.navigate('RegistrarseScreen')}
+                    onPress={() => navigation.navigate('Parte1Screen')}
                     style={[styles.signIn, {
                         borderColor: '#2096BA',
                         borderWidth: 1,
