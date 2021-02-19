@@ -98,7 +98,7 @@ const DetailsStackScreen = ({navigation}) => (
         fontWeight: 'bold'
         }
     }}>
-        <DetailsStack.Screen name="Detalles de notificación" component={DetailsScreen} options={{
+        <DetailsStack.Screen name="Inscribirse" component={DetailsScreen} options={{
         headerLeft: () => (
             <Icon.Button name="ios-menu" size={25} backgroundColor="#2096BA" onPress={() => navigation.openDrawer()}></Icon.Button>
         )
