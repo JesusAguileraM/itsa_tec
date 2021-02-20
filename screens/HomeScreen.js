@@ -1,22 +1,38 @@
-import React from 'react';
-import { View, Text, StyleSheet, StatusBar,ScrollView, Linking,Dimensions, } from 'react-native';
+import React,{useState,useEffect} from 'react';
+import { View, Text, StyleSheet, StatusBar,ScrollView, Linking,Dimensions,TouchableOpacity } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 import { dummyData } from '../database/Data';
 import Carousel from '../components/Carousel';
 import {Button,  Avatar, Card, Title, Paragraph, Dialog, Portal,Caption,ProgressBar,Colors} from 'react-native-paper';
-import RNPickerSelect from 'react-native-picker-select';
+
+import * as global from "../database/variablesGlobales";
+
+
 const HomeScreen = ({navigation}) => {
+
+  const [isLogueado,setIsLogueado]= useState(false);
+
 
   const { colors } = useTheme();
 
   const theme = useTheme();
   
+  useEffect(() => {
+    setIsLogueado(global.usuarioLogueado);
+    console.log('paso por aqui2')
+  }, []);
+
     return (
       <>  
           <Carousel data = {dummyData}/>
           <View style={styles.container}>
             <StatusBar barStyle= { theme.dark ? "light-content" : "dark-content" }/>
-            
+    {global.usuarioLogueado === true ? <Text>Esta logueado</Text> : <Text>No esta logueado</Text>}
+    {isLogueado === true ? <Text>Esta logueado2</Text> : <Text>No esta logueado2</Text>}
+  
+
+
+
 <View style={styles.contenidoCard}>
   <ScrollView>
     <Card  onPress={ ()=>{ Linking.openURL('https://www.itsa.edu.mx/wp-content/uploads/2014/11/Reti%CC%81cula-ISIC-2010-224-May161.pdf')}}>

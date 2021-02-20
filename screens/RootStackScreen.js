@@ -11,16 +11,17 @@ import Parte3Screen from '../screens/registroScreen/RegistroScreen3';
 
 
 const RootStack = createStackNavigator();
-
+const bandera=true;
 const RootStackScreen = ({navigation}) => (
-    <RootStack.Navigator headerMode='none'>
-        <RootStack.Screen name="SplashScreen" component={SplashScreen}/>
-        <RootStack.Screen name="IniciarSecionScreen" component={IniciarSecionScreen}/>
-        <RootStack.Screen name="RegistrarseScreen" component={RegistrarseScreen}/>
-        <RootStack.Screen name="Parte1Screen" component={Parte1Screen}/>
-        <RootStack.Screen name="Parte2Screen" component={Parte2Screen}/>
-        <RootStack.Screen name="Parte3Screen" component={Parte3Screen}/>
-    </RootStack.Navigator>
+    
+        <RootStack.Navigator headerMode='none'>
+            <RootStack.Screen name="IniciarSecionScreen" component={IniciarSecionScreen}/>
+            <RootStack.Screen name="RegistrarseScreen" component={RegistrarseScreen}/>
+            <RootStack.Screen name="Parte1Screen" component={Parte1Screen}/>
+            <RootStack.Screen name="Parte2Screen" component={Parte2Screen}/>
+            <RootStack.Screen name="Parte3Screen" component={Parte3Screen}/>
+            <RootStack.Screen name="SplashScreen" component={SplashScreen}/>
+        </RootStack.Navigator>
 );
 
 export default RootStackScreen;

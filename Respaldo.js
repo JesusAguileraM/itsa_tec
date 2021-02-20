@@ -25,9 +25,8 @@ import { AuthContext } from './components/context';
 import RootStackScreen from './screens/RootStackScreen';
 
 import AsyncStorage from '@react-native-community/async-storage';
+
 import * as global from "./database/variablesGlobales";
-
-
 
 const Drawer = createDrawerNavigator();
 
@@ -37,10 +36,11 @@ const App = () => {
 
   const [isDarkTheme, setIsDarkTheme] = React.useState(false); //va funcionar para guardar el tema es true or false
 
-  const initialLoginState = { //este indica con que va iniciar la aplicacion por defecto sera cargando
-    isLoading: true,
+  const initialLoginState = { // SE ACTUALIZARA LA APLICACION CUANDO SE MODIFIQUE CUALQUIERA DE ESTOS DATOS
+    isLoading: false,
     userName: null,
     userToken: null,
+    logueado:null
   };
 
   const CustomDefaultTheme = { // tema por defecto
@@ -67,8 +67,8 @@ const App = () => {
 
   const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme; //cual es que esta seleccionado
 
-  const loginReducer = (prevState, action) => {
-    switch( action.type ) {
+  const loginReducer = (prevState, action) => { // aqui recivo dos parametros el primero es el estado de mi aplicacion y el segundo es un objeto de configuracion que contiene la informacion en "accion" y que puede acceder a ella usando "accion.yo_envie" ejemp. yo envie el token y usaurio entonces es accion.token y accion.user
+    switch( action.type ) { // action.type es el 'LOGIN' O 'LOGUT' ES EL QUE YO ENVIO COMO PARAMETRO EN ACCION
       case 'RETRIEVE_TOKEN': 
         return {
           ...prevState,
@@ -77,10 +77,10 @@ const App = () => {
         };
       case 'LOGIN': 
         return {
-          ...prevState,
+          ...prevState,   
           userName: action.id,
           userToken: action.token,
-          isLoading: false,
+          isLoading: false,//no va cargar ningun componente hasta que is loading este en true, para todos los metodos de aqui
         };
       case 'LOGOUT': 
         return {
@@ -96,97 +96,73 @@ const App = () => {
           userToken: action.token,
           isLoading: false,
         };
-        case 'HOME': 
-        return {
-          ...prevState,
-          userToken: action.token,
-          isLoading: false,
-        };
     }
   };
 
   const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
-
+  const logueado = 'true';
+//dispach = setLoginState
   const authContext = React.useMemo(() => ({
-    signIn: async(foundUser) => {
+    signIn: async(foundUser) => { //yo recivo un vector con información llamado foundUser que me lo envia el iniciarsecionScreen
       // setUserToken('fgkj');
-      // setIsLoading(false);
-      const userToken = String(foundUser[0].userToken);
-      const userName = foundUser[0].username;
-      
+       //setIsLoading(false); // este es para cuando se inicie secion se guarde y no se tenga que aparecer el splash otra vez
+      const userToken = String(foundUser[0].userToken);//este viene de la data de user.js
+      const userName = foundUser[0].username; //este viene tambien de la data user.js
+    
       try {
-        await AsyncStorage.setItem('userToken', userToken);
-        global.usuarioLogueado=true;
-
+        await AsyncStorage.setItem('userToken', userToken); //lo guardo en la base de datos local 
+        await AsyncStorage.setItem('logueado', logueado); //Es para saber si estoy logueado
+        global.lang='English';
       } catch(e) {
         console.log(e);
       }
       // console.log('user token: ', userToken);
-      dispatch({ type: 'LOGIN', id: userName, token: userToken });
+      dispatch({ type: 'LOGIN', id: userName, token: userToken }); //este seva a la lista del switch para ejecutar el LOGIN
     },
     signOut: async() => {
       // setUserToken(null);
       // setIsLoading(false);
       try {
         await AsyncStorage.removeItem('userToken');
-        global.usuarioLogueado=false;
+        await AsyncStorage.removeItem('logueado'); //Es para saber si estoy logueado
+        global.lang="idioma Desconosido"
       } catch(e) {
         console.log(e);
       }
       dispatch({ type: 'LOGOUT' });
     },
-    signUp: async() => {
+    signUp: () => {
       // setUserToken('fgkj');
       // setIsLoading(false);
-      
-    },
-    regresarHome: async() => {
-      // setUserToken('fgkj');
-      // setIsLoading(false);
-      let tokenHome='testtoken';
-      const userToken = 'testtoken';
-      try {
-        await AsyncStorage.setItem('userToken', userToken);
-        console.log('aqui paso goku');
-
-      } catch(e) {
-        console.log(e);
-      }
-      dispatch({ type: 'HOME', token: userToken });
     },
     toggleTheme: () => {
       setIsDarkTheme( isDarkTheme => !isDarkTheme );
     }
   }), []);
 
+
+
+
+
   useEffect(() => {
     setTimeout(async() => {
       // setIsLoading(false);
-      let entrar= 'true';
-      await AsyncStorage.setItem('llave', entrar);
-      let saveLLave= await AsyncStorage.getItem('llave');
-
-      
-      let userToken;
-      userToken = 'testtoken';
+      let userTokenLLave;
+      userTokenLLave = null;
+      // if(userToken !== 'testtoken')
+      // AsyncStorage.setItem('logueado', userToken); //lo guardo en la base de datos local
       try {
-        if(saveLLave==='true'){
-          console.log('Fisten paso aqui')
-        }
-        if(global.primeraVez===true){
-          userToken = await AsyncStorage.getItem('userToken');
-          global.primeraVez=false;
-        }else{
-          global.primeraVez=false;
-        }
-        
+        userTokenLLave = await AsyncStorage.getItem('userToken'); //aqui es donde nos saltamos el inicio de secion y splash porque obtiene el dato del userToken SI ya esta guardado
       } catch(e) {
         console.log(e);
       }
       // console.log('user token: ', userToken);
-      dispatch({ type: 'RETRIEVE_TOKEN', token: userToken });
-    }, 1000);
+      dispatch({ type: 'RETRIEVE_TOKEN', token: userTokenLLave });
+    }, 200);
   }, []);
+
+
+
 
   if( loginState.isLoading ) {
     return(
@@ -195,6 +171,11 @@ const App = () => {
       </View>
     );
   }
+
+
+
+
+
   return (
     <PaperProvider theme={theme}>
     <AuthContext.Provider value={authContext}>
