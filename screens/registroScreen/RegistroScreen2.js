@@ -12,7 +12,6 @@ import {
     StatusBar
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-//import LinearGradient from 'react-native-linear-gradient';
 import {LinearGradient} from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
@@ -73,8 +72,8 @@ const RegistroScreen2 = ({navigation}) => {
     }
 
     return (
-      <View style={styles.container}>
-          <StatusBar backgroundColor='#0064A2' barStyle="light-content"/>
+    <View style={styles.container}>
+        <StatusBar backgroundColor='#0064A2' barStyle="light-content"/>
         <View style={styles.header}>
             <Text style={styles.text_header}>Parte 1</Text> 
 
@@ -162,7 +161,7 @@ const RegistroScreen2 = ({navigation}) => {
                 </Animatable.View>
                 : null}
             </View>
-          
+        
             <View style={styles.textPrivate}>
                 <Text style={styles.color_textPrivate}>
                     Crear la cuenta es el primer paso para incribirte dudas o aclaraciones entrar a la pagina oficial del instituto

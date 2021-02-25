@@ -1,56 +1,15 @@
-// import React from 'react';
-// import { View, Text, Button, StyleSheet } from 'react-native';
-
-// const RegistroScreen1 = ({navigation}) => {
-//     return (
-//       <View style={styles.container}>
-//         <Text>RegistroScreen1</Text>
-//         {/* <Button
-//             title="Go to details screen...again"
-//             onPress={() => navigation.push("Details")}
-//         /> */}
-//           <Button
-//             title="Go back"
-//             onPress={() => navigation.goBack()}
-//         />
-//         <Button
-//             title="Parte1"
-//             onPress={() => navigation.navigate("Parte2Screen")}
-//         />
-      
-//       </View>
-//     );
-// };
-
-// export default RegistroScreen1;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1, 
-//     alignItems: 'center', 
-//     justifyContent: 'center'
-//   },
-// });
-
 import React from 'react';
 import { 
     View, 
     Text,  
     TouchableOpacity, 
-    Dimensions,
-    TextInput,
     Platform,
     StyleSheet,
     ScrollView,
     StatusBar
 } from 'react-native';
-import { Button, Paragraph, Dialog, Portal,Caption,ProgressBar,Colors,Title} from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
-//import LinearGradient from 'react-native-linear-gradient';
 import {LinearGradient} from 'expo-linear-gradient';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Feather from 'react-native-vector-icons/Feather';
-
 const RegistroScreen1 = ({navigation}) => {
 
     return (

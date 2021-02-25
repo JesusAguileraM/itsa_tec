@@ -1,15 +1,23 @@
 import React from 'react';
 import {View, SafeAreaView, StyleSheet,ScrollView} from 'react-native';
-import {
-  Avatar,
-  Title,
-  Caption,
-  Text,
-  TouchableRipple,
-} from 'react-native-paper';
-
+import {Avatar,Title,Caption,Text,} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 const ProfileScreen = () => {
+
+  const Nombre='Jesus Alejandro';
+  const Apellidos=' Aguilera Magaña';
+  const Numero='453-169-86-88';
+  const Ciudad='Apatzingan-Mich Mexico';
+  const CorreoInst='Tal15020357';
+  const Carrera='Estudiante ISC';
+  
+  const Materias_en_curso = 0;
+  const Materias_faltantes = 47;
+  const Materias_aprobadas = 0;
+  const Materias_Reprobadas = 0;
+  const Materias_Especial1 = 0;
+  const Materias_Especial2 = 0;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -24,10 +32,10 @@ const ProfileScreen = () => {
           />
           <View style={{marginLeft: 20}}>
             <Title style={[styles.title, {marginTop:8,marginBottom: 0,
-            }]}>Jesus Alejandro</Title>
+            }]}>{Nombre}</Title>
             <Title style={[styles.title, {marginTop:0,marginBottom: 5,
-            }]}>Aguilera Magaña</Title>
-            <Caption style={styles.caption}>Estudiante ISC</Caption>
+            }]}>{Apellidos}</Title>
+            <Caption style={styles.caption}>{Carrera}</Caption>
           </View>
         </View>
       </View>
@@ -35,15 +43,15 @@ const ProfileScreen = () => {
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
           <Icon name="map-marker-radius" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>Apatzingan-Mich Mexico</Text>
+          <Text style={{color:"#777777", marginLeft: 20}}>{Ciudad}</Text>
         </View>
         <View style={styles.row}>
           <Icon name="phone" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>4531698688</Text>
+          <Text style={{color:"#777777", marginLeft: 20}}>{Numero}</Text>
         </View>
         <View style={styles.row}>
           <Icon name="email" color="#777777" size={20}/>
-          <Text style={{color:"#777777", marginLeft: 20}}>Tal15020357@itsa.edu.mx</Text>
+          <Text style={{color:"#777777", marginLeft: 20}}>{CorreoInst}</Text>
         </View>
       </View>
       
@@ -53,11 +61,11 @@ const ProfileScreen = () => {
               borderRightColor: '#dddddd',
               borderRightWidth: 1
             }]}>
-              <Title>0</Title>
+              <Title>{Materias_en_curso}</Title>
               <Caption>En curso</Caption>
             </View>
             <View style={styles.infoBox}>
-              <Title>47</Title>
+              <Title>{Materias_faltantes}</Title>
               <Caption>Faltantes</Caption>
             </View>
             
@@ -67,11 +75,11 @@ const ProfileScreen = () => {
               borderRightColor: '#dddddd',
               borderRightWidth: 1
             }]}>
-              <Title>0</Title>
+              <Title>{Materias_aprobadas}</Title>
               <Caption>Aprobadas</Caption>
             </View>
             <View style={styles.infoBox}>
-              <Title>0</Title>
+              <Title>{Materias_Reprobadas}</Title>
               <Caption>Reprobadas</Caption>
             </View>
             
@@ -81,11 +89,11 @@ const ProfileScreen = () => {
               borderRightColor: '#dddddd',
               borderRightWidth: 1
             }]}>
-              <Title>0</Title>
+              <Title>{Materias_Especial1}</Title>
               <Caption>Especial 1</Caption>
             </View>
             <View style={styles.infoBox}>
-              <Title>0</Title>
+              <Title>{Materias_Especial2}</Title>
               <Caption>Especial 2</Caption>
             </View>
             

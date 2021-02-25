@@ -10,17 +10,17 @@ import {
     Alert
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-//import LinearGradient from 'react-native-linear-gradient';
 import {LinearGradient} from 'expo-linear-gradient';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-
 import { useTheme } from 'react-native-paper';
-
 import { AuthContext } from '../components/context';
-
 import Users from '../model/users';
-import Odoo from 'react-native-odoo-promise-based';
+
+
+
+
+
 const IniciarSecionScreen = ({navigation}) => {
 
     const [data, setData] = React.useState({
@@ -35,28 +35,6 @@ const IniciarSecionScreen = ({navigation}) => {
     const { colors } = useTheme();
 
     const { signIn,regresarHome } = React.useContext(AuthContext);
-    const odoo = new Odoo({
-        host: '52.34.251.254',
-        port: 8069, /* Defaults to 80 if not specified */
-        database: 'itsa900',
-        username: 'xmlrpc_alumnos', /* Optional if using a stored session_id */
-        password: 'rpc123', /* Optional if using a stored session_id */
-       sid: 'YOUR_SESSION_ID', /* Optional if using username/password */
-        protocol: 'http' /* Defaults to http if not specified */
-      })
-      
-    const functionDoble=()=>{
-       
-          
-          odoo.connect()
-        .then(response =>console.log(response))
-        .then(responseJson => {
-            console.log(responseJson);
-        })
-        .catch(error => {
-            console.log(error);
-        });
-    }
 
     const textInputChange = (val) => {
         if( val.trim().length >= 4 ) {
@@ -252,7 +230,7 @@ const IniciarSecionScreen = ({navigation}) => {
                 </TouchableOpacity>
             
                 <TouchableOpacity
-                    onPress={() => {functionDoble()}}
+                    onPress={()=>navigation.navigate('Parte1Screen')}
                     style={[styles.signIn, {
                         borderColor: '#2096BA',
                         borderWidth: 1,
@@ -374,4 +352,4 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold'
     }
-  });
+});
