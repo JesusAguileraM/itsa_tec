@@ -28,6 +28,18 @@ import AsyncStorage from '@react-native-community/async-storage';
 import * as global from "./database/variablesGlobales";
 
 
+import Odoo from 'react-native-odoo'
+
+const odoo = new Odoo({
+  host: '52.34.251.254',
+  port: 443,
+  database: 'itsa900',
+  username: 'xmlrpc_alumnos',
+  password: 'rpc123'
+});
+
+
+
 
 const Drawer = createDrawerNavigator();
 
@@ -116,6 +128,9 @@ const App = () => {
       
       try {
         await AsyncStorage.setItem('userToken', userToken);
+        
+
+
         global.usuarioLogueado=true;
 
       } catch(e) {
@@ -165,14 +180,28 @@ const App = () => {
       let entrar= 'true';
       await AsyncStorage.setItem('llave', entrar);
       let saveLLave= await AsyncStorage.getItem('llave');
+    
 
-      
+      odoo.connect(function (err) {
+        if (err) { return console.log(err); }
+      });
+    
+// Connect to Odoo
+// odoo_.connect(function (err) {
+//   if (err) { return console.log(err); }
+
+//   }, function (err, userodoo) {
+//       if (err) { return console.log(err); }
+//       // if(userodoo.length!=0) navigate('Details',{odoo:odoo_,user:userodoo[0]})
+//       // else console.log('Revise los datos ingresados!');
+//   });
+
+
+
+//guardar temporalmente la global.primeravez para que cuando se resetee la aplicacion siga la informacion
       let userToken;
       userToken = 'testtoken';
       try {
-        if(saveLLave==='true'){
-          console.log('Fisten paso aqui')
-        }
         if(global.primeraVez===true){
           userToken = await AsyncStorage.getItem('userToken');
           global.primeraVez=false;

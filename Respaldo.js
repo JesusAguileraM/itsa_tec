@@ -198,3 +198,37 @@ const App = () => {
 }
 
 export default App;
+
+// /* Create new Odoo connection instance */
+// const odoo = new Odoo({
+//     host: '52.34.251.254',
+//     port: 80, /* Defaults to 80 if not specified */
+//     database: 'itsa900',
+//     username: 'xmlrpc_alumnos', /* Optional if using a stored session_id */
+//     password: 'rpc123', /* Optional if using a stored session_id */ 
+//     protocol: 'http' /* Defaults to http if not specified */
+
+// })
+// const username1= 'xmlrpc_alumnos';
+// const password1 = 'rpc123';
+// const database1= 'itsa900';
+// const host1= 'http://52.34.251.254'
+
+// const odoo = new Odoo({
+//   host: '52.34.251.254',
+//   port: 443,
+//   database: 'itsa900',
+//   username: 'xmlrpc_alumnos',
+//   password: 'rpc123'
+// });
+
+
+
+// const odoo_ = new odoo({
+//   host: host1,
+//   database: database1,
+//   username: username1,
+//   password: password1,
+// });
+
+
