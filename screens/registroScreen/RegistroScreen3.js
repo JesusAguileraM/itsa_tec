@@ -4,6 +4,7 @@ import {
     Text, 
     TouchableOpacity, 
     Dimensions,
+    TextInput,
     Platform,
     StyleSheet,
     ScrollView,
@@ -15,6 +16,7 @@ import Reticulas from '../../components/Reticulas';
 import * as Animatable from 'react-native-animatable';
 import RNPickerSelect from 'react-native-picker-select';
 import {LinearGradient} from 'expo-linear-gradient';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const RegistroScreen3 = ({navigation}) => {
 
@@ -83,7 +85,7 @@ const RegistroScreen3 = ({navigation}) => {
         </View>
         <Animatable.View animation="bounceIn"style={styles.footer}>
             <ScrollView>
-                <View>
+                {/* <View>
                     <Text>
                         {carreras ?
                         `-- Carrera ${carreras}` :
@@ -105,7 +107,7 @@ const RegistroScreen3 = ({navigation}) => {
                         ]}
                         placeholder={{ label: "--Seleccione una carrera--", value: null }}
                     />
-                </View>
+                </View> 
 
                 <View>
                     <Text> {turno ? `-- Turno ${turno}` : "¿Que turno le interesa inscribirse?"}</Text>
@@ -119,6 +121,45 @@ const RegistroScreen3 = ({navigation}) => {
                                 placeholder={{ label: "--Seleccione un turno--", value: null }}
                             />
                 </View>
+*/}
+
+
+
+
+        <Text style={styles.text_footer}>Correo Electronico</Text>
+            <View style={styles.action}>
+                <FontAwesome 
+                    name="user-o"
+                    color="#05375a"
+                    size={20}
+                />
+                <TextInput 
+                    placeholder="ejemplo_@gmail.com"
+                    style={styles.textInput}
+                    autoCapitalize="none"
+                    onChangeText={(val) => textInputChange(val)}
+                />
+                {data.check_textInputChange ? 
+                <Animatable.View
+                    animation="bounceIn"
+                >
+                    <Feather 
+                        name="check-circle"
+                        color="green"
+                        size={20}
+                    />
+                </Animatable.View>
+                : null}
+            </View>
+
+
+
+
+
+
+
+
+
 
                 <Reticulas/>
 

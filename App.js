@@ -88,6 +88,7 @@ const App = () => {
           userToken: null,
           isLoading: false,
         };
+        
       case "REGISTER":
         return {
           ...prevState,
