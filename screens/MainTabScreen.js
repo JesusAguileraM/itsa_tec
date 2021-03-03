@@ -9,9 +9,12 @@ import HomeScreen from "./HomeScreen";
 import DetailsScreen from "./DetailsScreen";
 import ExploreScreen from "./ExploreScreen";
 import ProfileScreen from "./ProfileScreen";
+import NotificationScreen from  "./NotificationScreen";
 
 const HomeStack = createStackNavigator();
 const DetailsStack = createStackNavigator();
+const NotificationStack = createStackNavigator();
+
 const Tab = createMaterialBottomTabNavigator();
 
 
@@ -25,6 +28,17 @@ const MainTabScreen = () => (
         tabBarColor: "#0064A2",
         tabBarIcon: ({ color }) => (
           <Icon name="ios-home" color={color} size={26} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Notifications"
+      component={NotificationStackScreen}
+      options={{
+        tabBarLabel: 'Notificaciones',
+        tabBarColor: '#006460',
+        tabBarIcon: ({color}) => (
+          <Icon name="ios-notifications" color={color} size={26} />
         ),
       }}
     />
@@ -94,6 +108,34 @@ const HomeStackScreen = ({ navigation }) => (
       }}
     />
   </HomeStack.Navigator>
+);
+
+const NotificationStackScreen = ({navigation}) => (
+  <NotificationStack.Navigator
+    screenOptions={{
+      headerStyle: {
+        backgroundColor: '#006460',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+      },
+    }}>
+    <NotificationStack.Screen
+      name="Notifications"
+      component={NotificationScreen}
+      options={{
+        headerLeft: () => (
+          <Icon.Button
+            name="ios-menu"
+            size={25}
+            backgroundColor="#006460"
+            onPress={() => navigation.openDrawer()}
+          />
+        ),
+      }}
+    />
+  </NotificationStack.Navigator>
 );
 
 const DetailsStackScreen = ({ navigation }) => (

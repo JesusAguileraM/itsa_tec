@@ -201,7 +201,7 @@ const { signOut, toggleTheme } = React.useContext(AuthContext);
 
 const styles = StyleSheet.create({
     drawerContent: {
-        flex: 1,
+        flex: 1
     },
     containerSafeArea: {
         width: Dimensions.get("window").width / 2,

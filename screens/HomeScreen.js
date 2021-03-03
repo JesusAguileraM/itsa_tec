@@ -18,7 +18,7 @@ const HomeScreen = ({ navigation }) => {
   const [isLogueado, setIsLogueado] = useState(false);
   const { colors } = useTheme();
   const theme = useTheme();
-
+  
   useEffect(() => {
     setIsLogueado(global.usuarioLogueado);
 

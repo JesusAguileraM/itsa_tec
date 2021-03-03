@@ -16,22 +16,52 @@ import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";//usar
 import Feather from "react-native-vector-icons/Feather";
 import { ProgressBar,} from "react-native-paper";
+import AsyncStorage from "@react-native-community/async-storage";
+
+
+let pruebaData; //contiene la informacion de registro del usuario
+
 
 const RegistroScreen2 = ({ navigation }) => {
 
 
     const [data, setData] = React.useState({
-        Name: "",
+        Nombre: "",
         ApellidoP: "",
         ApellidoM: "",
         Curp: "",
         Telefono: "",
-        nameAprobado: false,
+        NombreAprobado: false,
         ApellidoP_Aprobado: false,
         ApellidoM_Aprobado: false,
         Curp_Aprobado: false,
         Telefono_Aprobado: false,
     });
+
+    let dataUser=[
+        {   name: data.Nombre, 
+            last_nameP: data.ApellidoP,
+            last_nameM: data.ApellidoM,
+            student_Curp: data.Curp,
+            cell_phone: data.Telefono,
+        }
+    ];
+
+    const saveDataUser=async(data)=>{
+        try {
+            await AsyncStorage.setItem("DataUser", JSON.stringify(data));
+        } catch (e) {
+            console.log(e);
+        }
+        pruebaData = await AsyncStorage.getItem("DataUser");
+        console.log(pruebaData);
+    }
+
+    const enviar_navegar=()=>{//Ejecuta la funcion de guardar datos en el storage y navega al sig. screen
+        saveDataUser(dataUser);
+        navigation.navigate("Parte3Screen");
+    }
+
 
     const textInputNameChange = (nameUser) => {
         let val = nameUser.toUpperCase();
@@ -72,14 +102,14 @@ const RegistroScreen2 = ({ navigation }) => {
             ) {
             setData({
                 ...data,
-                name: val,
-                nameAprobado: true,
+                Nombre: val,
+                NombreAprobado: true,
             });
             } else {
             setData({
                 ...data,
-                name: val,
-                nameAprobado: false,
+                Nombre: val,
+                NombreAprobado: false,
             });
             index = val.length;
             }
@@ -87,8 +117,8 @@ const RegistroScreen2 = ({ navigation }) => {
         } else {
         setData({
             ...data,
-            name: val,
-            nameAprobado: false,
+            Nombre: val,
+            NombreAprobado: false,
         });
         }
     };
@@ -354,7 +384,7 @@ const RegistroScreen2 = ({ navigation }) => {
                 autoCapitalize="none"
                 onChangeText={(val) => textInputNameChange(val)}
                 />
-                {data.nameAprobado ? (
+                {data.NombreAprobado ? (
                 <Animatable.View animation="bounceIn">
                     <Feather name="check-circle" color="green" size={20} />
                 </Animatable.View>
@@ -443,7 +473,7 @@ const RegistroScreen2 = ({ navigation }) => {
                 <TouchableOpacity
                 style={styles.signIn}
                 onPress={() => {
-                    navigation.navigate("Parte3Screen");
+                    enviar_navegar();
                 }}
                 >
                 <LinearGradient

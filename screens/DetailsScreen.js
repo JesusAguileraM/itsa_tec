@@ -1,120 +1,237 @@
-import React from 'react';
-import { View, Text, Button, StyleSheet,Dimensions } from 'react-native';
+import {
+    View,
+    Text,
+    Button,
+    StyleSheet,
+    Dimensions,
+    TouchableOpacity,
+    SafeAreaView,
+    ScrollView,
+    Image
+} from "react-native";
+import React, { useState, useEffect,useRef } from 'react';
+import { Camera } from 'expo-camera';
+import Feather from "react-native-vector-icons/Feather";
+import { ProgressBar,Divider,Surface} from "react-native-paper";
 
-const DetailsScreen = ({navigation}) => {
+
+
+
+const DetailsScreen = ({ navigation }) => {
+    
+    const camRef= useRef(null);
+    const [hasPermission, setHasPermission] = useState(null);
+    const [saveFoto, setSaveFoto] = useState(null);
+    const [type, setType] = useState(Camera.Constants.Type.back);
+    const [activarCamara, setActivarCamara] = useState(true);
+
+    useEffect(() => {
+        (async () => {
+        const { status } = await Camera.requestPermissionsAsync();
+        setHasPermission(status === 'granted');
+    })();
+    }, []);
+
+    if (hasPermission === null) {
+        return <View />;
+    }
+    if (hasPermission === false) {
+        return <Text>No access to camera</Text>;
+    }
+
+    const guardarFoto = async () => {
+        console.log('Entro al metodo');
+        if (this.camera) {
+        console.log('Entro al if');
+        let fotoTemp = await this.camera.takePictureAsync();
+        setFoto(fotoTemp);
+    }
+
+    };
+    const tomarFoto = async(DocumentoFoto) => {
+        if(camRef){
+            const data = await camRef.current.takePictureAsync();
+            setSaveFoto(data.uri);
+            console.log(data);
+        }
+
+    };
+
+    
     return (
-    <View style={styles.container}>
-        <Text style={styles.text_header}>Proceso de Inscripcion</Text>
-        <View><Text ></Text></View>
-        <View><Text ></Text></View>
-        <View><Text ></Text></View>
+        <SafeAreaView style={styles.container}>
+            {activarCamara === true ? (
+            <View  style={{flex:1,alignItems: 'center'}}>
 
-        <View><Text >Nota: Recuerde que para poder Incribirse debe iniciar secion y tener a la mano los documentos escaneados en jpg o pdf individualmente</Text></View>
-        <View><Text ></Text></View>
-                    <View><Text >+ Acta de nacimiento</Text></View>
-                    <View><Text >+ Curp</Text></View>
-                    <View><Text >+ Constancia de terminacion de Bachillerato</Text></View>
-                    <View><Text >+ Estudio de sangre "Se necesita para poder crearle el seguro institucional"</Text></View>
-                    <View><Text ></Text></View>
-                    <View><Text >La cuenta bancaria donde hara su pago se le asignara ya que se haya logueado"</Text></View>
-                    
-                    <View><Text >Para mas informacion ...</Text></View>
+                <Text style={{fontSize:20, color:'#05375a',marginBottom:10}}>Proceso de Inscripcion</Text>
 
+                <ProgressBar progress={0.33} color={"#05375a"} />
 
-            <View style={styles.textPrivate}>
-                <Text style={styles.color_textPrivate}>
-                    Entrar a la pagina oficial del instituto
-                </Text>
-                <Text style={[styles.color_textPrivate, {fontWeight: 'bold'}]}>{" "}www.itsa.edu.mx</Text>
-                <Text style={styles.color_textPrivate}>{" "}o llamar al teléfono</Text>
-                <Text style={[styles.color_textPrivate, {fontWeight: 'bold'}]}>{" "} 453-534-8300 </Text>
+                <ScrollView>
+
+                 
+                    <View style={styles.containerFoto}>
+                        <Surface>
+                            <TouchableOpacity
+                                style={styles.imagenFoto}
+                                onPress={() => {
+                                    //setActivarCamara(false)
+                                }}
+                            >
+                                <View>
+                                    <Text style={styles.textC}>Foto</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </Surface>
+
+                        <View style={{}}>
+                        <SafeAreaView style={{width: Dimensions.get("window").width/2}}>
+                            <Text>
+                                Tomar foto a la acta de nacimiento original, solo se necesesita de un solo lado.
+                            </Text>
+                        </SafeAreaView>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => setActivarCamara(false)}
+                            >
+                            <View style={{justifyContent: 'center',}}>
+                                <Text  style={styles.textC} >Tomar foto</Text>
+                            </View>
+                        </TouchableOpacity>
+
+                        </View>
+
+                    </View>
+                    <Divider />
+                
+                 
+                <View style={{backgroundColor: '#EFEFEF'}}>
+                    <View style={styles.containerFotoMini}>
+                        <Image 
+                            style={styles.foto}
+                            source={{uri:saveFoto}}
+                        />
+                        <Image style={styles.foto}/>
+                            
+                    </View>                
+                    <View style={styles.containerFotoMini}>
+                        <Image style={styles.foto}/>
+                        <Image style={styles.foto}/>
+                            
+                    </View>                
+                </View>
+
+                </ScrollView>
+                <View>
+                    <Text>hasdfasdf</Text>
+                </View>
             </View>
-            <View><Text ></Text></View>
-            <View><Text ></Text></View>
-        <Button
-            title="Continuar"
-            onPress={() => navigation.push("Details")}
-        />
-        <View><Text ></Text></View>
-        <Button
-            title="Regresar"
-            onPress={() => navigation.goBack()}
-        />
-      </View>
-    );
+            ) : (
+            <Camera ref={camRef} style={styles.container} type={type}>
+                <View style={styles.buttonContainerC}>
+                <TouchableOpacity
+                    style={styles.buttonC}
+                    onPress={() => {
+                    setActivarCamara(true);
+                    }}
+                >
+                    <Feather name="arrow-left" color="#fff" size={35} />
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={styles.buttonC}
+                    onPress={() => {
+                    tomarFoto(1);
+                    }}
+                >
+                    <Feather name="circle" color="white" size={50} />
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={styles.buttonC}
+                    onPress={() => {
+                    setType(
+                        type === Camera.Constants.Type.back
+                        ? Camera.Constants.Type.front
+                        : Camera.Constants.Type.back
+                    );
+                    }}
+                >
+                    <Feather name="refresh-cw" color="white" size={35} />
+                </TouchableOpacity>
+                </View>
+            </Camera>
+            )}
+        </SafeAreaView>
+        );
 };
 
 export default DetailsScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1, 
-    alignItems: 'flex-start', 
-    justifyContent: 'flex-start'
-  },
-  header: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    paddingHorizontal: 20,
-    paddingBottom: 50,
-    marginTop: 10,
-},
-contenidoCard:{
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height /3 + 20,
-},
-footer: {
-    flex: Platform.OS === 'ios' ? 10 : 15,//revisar esta parte del tamaño en ios
-    backgroundColor: '#fff',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    paddingHorizontal: 20,
-    paddingVertical: 30,
-    marginBottom: -20,
-},
-text_header: {
-    color: '#000',
-    fontWeight: 'bold',
-    fontSize: 30
-},
-text_footer: {
-    color: '#05375a',
-    fontSize: 18
-},
-action: {
-    flexDirection: 'row',
-    marginTop: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f2f2f2',
-    paddingBottom: 5
-},
-textInput: {
-    flex: 1,
-    marginTop: Platform.OS === 'ios' ? 0 : -12,
-    paddingLeft: 10,
-    color: '#05375a',
-},
-button: {
-    alignItems: 'center',
-    marginTop: 50
-},
-signIn: {
-    width: '80%',
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10
-},
-textSign: {
-    fontSize: 18,
-    fontWeight: 'bold'
-},
-textPrivate: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 20
-},
-color_textPrivate: {
-    color: 'grey'
-} 
+    imagenFoto: {
+        marginTop:20,
+        marginBottom: 20,
+        width: Dimensions.get("window").width/4,
+        height: Dimensions.get("window").height /4,
+        alignContent: "center",
+        justifyContent: "center",
+        backgroundColor: "#05375a",
+        borderRadius: 10,
+        elevation: 8,
+    },
+    container: {
+        flex: 1,
+    },
+    containerFoto:{
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        backgroundColor: '#fff',
+        alignItems:'center',
+        width: Dimensions.get("window").width,
+        
+    
+    },
+    containerFotoMini:{
+        flexDirection: 'row',
+        backgroundColor: '#EFEFEF',
+        justifyContent:'space-around',
+    },
+    foto:{
+        width: Dimensions.get("window").width/5,
+        height: Dimensions.get("window").height /5,
+        
+        borderRadius: 10,
+        marginRight: Dimensions.get("window").width/3,
+        marginBottom: 20,
+        marginLeft: 20
+        
+    },
+    button: {
+        width: Dimensions.get("window").width /4,
+        height: 40,
+        backgroundColor: '#05375a',
+        alignItems: 'center',
+        justifyContent:'center',
+        margin: 20,
+
+        
+    },
+    buttonContainerC: {
+        flex: 1,
+        backgroundColor: 'transparent',
+        flexDirection: 'row',
+        margin: 20,
+        marginBottom:40,
+        justifyContent: "space-between"
+    },
+    buttonC: {
+        flex: 0.4,
+        alignSelf: 'flex-end',
+        alignItems: 'center',
+    },
+    textC: {
+        fontSize: 14,
+        color: '#fff',
+    },
 });
