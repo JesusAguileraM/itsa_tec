@@ -35,6 +35,7 @@ const IniciarSecionScreen = ({navigation}) => {
     const { colors } = useTheme();
 
     const { signIn,regresarHome } = React.useContext(AuthContext);
+    const { handleGLogin } = React.useContext (AuthContext);
 
     const textInputChange = (val) => {
         if( val.trim().length >= 4 ) {
@@ -217,7 +218,8 @@ const IniciarSecionScreen = ({navigation}) => {
             <View style={styles.button}>
                 <TouchableOpacity
                     style={styles.signIn}
-                    onPress={() => {loginHandle( data.username, data.password )}}
+                    // onPress={() => {loginHandle( data.username, data.password )}}
+                    onPress={() => handleGLogin()}
                 >
                 <LinearGradient
                     colors={['#0064A2', '#2096BA']}

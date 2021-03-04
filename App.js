@@ -25,6 +25,12 @@ import AsyncStorage from "@react-native-community/async-storage";
 import * as global from "./database/variablesGlobales";
 import { AuthContext } from "./components/context";
 
+//Firebase auth
+import Constants from 'expo-constants'; //So we can read app.json extra
+import * as Google from 'expo-google-app-auth'; //google auth libraries
+import firebase from 'firebase'; //basic firebase
+import Firebase from './firebase/Firebase'; //This is the initialized Firebase, you can find it in my GitHub
+
 const Drawer = createDrawerNavigator();
 
 const App = () => {
@@ -58,7 +64,11 @@ const App = () => {
     },
   };
   const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme; //cual es que esta seleccionado
-
+  
+  //guarda si el usuarios
+  const [userLogged, setUserLogged] = useState(false);
+  const [userProfile, setUserProfile] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   
   const initialLoginState = {
     isLoading: true,
@@ -110,8 +120,45 @@ const App = () => {
     initialLoginState
   );
 
+  const Glogin = async () => {
+    try {
+      //await GoogleSignIn.askForPlayServicesAsync();
+      const result = await Google.logInAsync({ //return an object with result token and user
+        iosClientId: Constants.manifest.extra.IOS_KEY, //From app.json
+        androidClientId: Constants.manifest.extra.ANDROID_KEY, //From app.json
+      });
+      if (result.type === 'success') {
+        console.log(result);
+        setIsLoading(true);
+        const credential = firebase.auth.GoogleAuthProvider.credential( //Set the tokens to Firebase
+          result.idToken,
+          result.accessToken
+        );
+        Firebase.auth()
+          .signInWithCredential(credential) //Login to Firebase
+          .then(sesion => {
+            console.log(sesion)  //esta es la data de la sesión y su estructura la imprimimos para verla alex
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } else {
+        //CANCEL
+      }
+    } catch ({ message }) {
+      alert('login: Error:' + message);
+    }
+  };
+
   const authContext = React.useMemo(
     () => ({
+      //para cerrar la sesion en firestore
+      signOutUser: () => Firebase.auth().signOut(),
+      //para activar la sesión en firestore
+      //cabe decir que la sesión activa está en Firestore.auth
+      handleGLogin: () => { //The new login with google handler available to context
+        Glogin();
+      },
       signIn: async (foundUser) => {
         // setUserToken('fgkj');
         // setIsLoading(false);

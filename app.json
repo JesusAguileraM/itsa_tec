@@ -20,13 +20,23 @@
       "supportsTablet": true
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+      "package": "com.reactnativefirebase",
+      "googleServicesFile": "./firebase/google-services.json",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "IOS_KEY": "",
+      "ANDROID_KEY": "400252007135-97v4hk3lug26r0sbkruksk97msp4b70p.apps.googleusercontent.com",
+      "API_KEY": "",
+      "AUTH_DOMAIN": "",
+      "DATABASE_URL": "",
+      "PROJECT_ID": "",
+      "STORAGE_BUCKET": "",
+      "MESSAGE_SENDER_ID": "",
+      "APP_ID": ""
     }
   }
 }
