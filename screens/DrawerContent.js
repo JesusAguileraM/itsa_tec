@@ -31,6 +31,8 @@ export function DrawerContent(props) {
 const CorreoInst= 'Tal15020357@itsa.edu.mx';
 const paperTheme = useTheme();
 const { signOut, toggleTheme } = React.useContext(AuthContext);
+//Para cerrar 
+const { signOutUser } = React.useContext(AuthContext);
 
     return (
         <View style={{ flex: 1 }}>
@@ -92,7 +94,10 @@ const { signOut, toggleTheme } = React.useContext(AuthContext);
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                    onPress={() => navigation.navigate("Parte1Screen")}
+                    // onPress={() => navigation.navigate("Parte1Screen")}
+                    onPress={() => {
+                        signOutUser();
+                    }}
                     style={[
                         styles.signIn,
                         {
@@ -104,16 +109,16 @@ const { signOut, toggleTheme } = React.useContext(AuthContext);
                         },
                     ]}
                     >
-                    <Text
-                        style={[
-                            styles.textSign,
-                            {
-                                color: "#0064A2",
-                            },
-                        ]}
-                    >
-                        Registarse
-                    </Text>
+                        <Text
+                            style={[
+                                styles.textSign,
+                                {
+                                    color: "#0064A2",
+                                },
+                            ]}
+                        >
+                            Salir
+                        </Text>
                     </TouchableOpacity>
                 </View>
                 ) : (
