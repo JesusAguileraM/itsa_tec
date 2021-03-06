@@ -33,6 +33,8 @@ import Firebase from './firebase/Firebase'; //This is the initialized Firebase, 
 import * as Permissions from 'expo-permissions';
 import * as Notifications from 'expo-notifications';
 
+import bd from './controller/bd'
+
 const Drawer = createDrawerNavigator();
 
 const App = () => {
@@ -74,7 +76,7 @@ const App = () => {
   //pues ya sabes es pera bloquear la interfaz con un circulito jjajajaja
   const [isLoading, setIsLoading] = useState(true);
   //para guardar el token de las notificaciones
-  const [expoPushToken, setExpoPushToken] = useState({ expoPushToken: false })
+  const [expoPushToken, setExpoPushToken] = useState({ expoPushToken: null })
   
   const initialLoginState = {
     isLoading: true,
@@ -134,11 +136,13 @@ const App = () => {
 
   //Este es el método que pide las notificaciones a expo
   const registerForPushNotificationsAsync = async () => {
+    console.log('Intenta')
     if (Constants.isDevice) {
     const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
     let finalStatus = existingStatus;
     if (existingStatus !== 'granted') {
         const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        alert('Te pediremos permiso para las notificaciones!');
         finalStatus = status;
     }
     if (finalStatus !== 'granted') {
@@ -150,7 +154,7 @@ const App = () => {
     const token = await Notifications.getExpoPushTokenAsync();
     console.log("Token de entrada")
     console.log(token);
-    console.log('Este es el token que vamos a mandar al servidor jajja')
+    console.log('Este es ell token que vamos a mandar al servidor ')
     //guardamos el token para usarlo después (tu mételo a la base de datos)
     setExpoPushToken({ expoPushToken: token })
     } else {
@@ -186,6 +190,11 @@ const App = () => {
       console.log('user profile')
       console.log(user)
       console.log('fin user profile')
+      if(user === null){
+        //borrar cerrar de la base de datos
+      }{
+        ///agregar user a la base de datos
+      }
     });
     return authListener; //cuando se cierre la app se desmontará el oyente
   }, []);
@@ -195,13 +204,16 @@ const App = () => {
     try {
       //Antes de loguearnos debemos comprobar si permitió las notificaciones, si es así continuamos, si no return
       console.log("Token es:")
-      console.log(expoPushToken.expoPushToken)
-      if(expoPushToken.expoPushToken === false )
-      {
-        //pedimos de nuevo el permiso
-        registerForPushNotificationsAsync();
-        return;
-      }
+      console.log(expoPushToken)
+      // if(expoPushToken.expoPushToken === null )
+      // {
+      //   //pedimos de nuevo el permiso
+      //   console.log('falla token pedimos de nuuevo') 
+      //   await registerForPushNotificationsAsync();
+      //   console.log("Token2 es:")
+      //   console.log(expoPushToken)
+      //   return;
+      // }
 
       //await GoogleSignIn.askForPlayServicesAsync();
       const result = await Google.logInAsync({ //return an object with result token and user
@@ -210,7 +222,7 @@ const App = () => {
       });
       if (result.type === 'success') {
         //antes de empezar con el inicio de sesión solicitamos al usuario que habilite las notifiaciones
-
+        console.log(result);
         // console.log(result); //este es el objeto de sesion correcto para empezar el logueo con firestore
         setIsLoading(true);
         //Creamos las credenciales para prepar todo para autentificarnos con google
@@ -252,6 +264,7 @@ const App = () => {
         setIsLoading(false)
 
         Firebase.auth().signOut()
+
       },
       //para activar la sesión en firestore
       //cabe decir que la sesión activa está en Firestore.auth
@@ -305,7 +318,7 @@ const App = () => {
         setIsDarkTheme((isDarkTheme) => !isDarkTheme);
       },
       getExpoTokenNotifications: () => {
-        return expoPushToken ? expoPushToken : 'false';
+        return expoPushToken ? expoPushToken : null;
       }
     }),
     []
