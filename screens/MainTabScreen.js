@@ -10,6 +10,7 @@ import DetailsScreen from "./DetailsScreen";
 import ExploreScreen from "./ExploreScreen";
 import ProfileScreen from "./ProfileScreen";
 import NotificationScreen from  "./NotificationScreen";
+import ClickNotification from '../notifications/hooks';
 
 const HomeStack = createStackNavigator();
 const DetailsStack = createStackNavigator();
@@ -33,7 +34,7 @@ const MainTabScreen = () => (
     />
     <Tab.Screen
       name="Notifications"
-      component={NotificationStackScreen}
+      component={ClickNotification}
       options={{
         tabBarLabel: 'Notificaciones',
         tabBarColor: '#006460',

@@ -13,6 +13,7 @@ import {SwipeListView} from 'react-native-swipe-list-view';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Notifications from '../model/Notifications';
+import ClickNotification from '../notifications/hooks';
 
 const NotificationScreen = ({navigation}) => {
     const [listData, setListData] = useState(
@@ -90,6 +91,7 @@ const NotificationScreen = ({navigation}) => {
                 <Text style={styles.details} numberOfLines={1}>
                     {data.item.details}
                 </Text>
+                <ClickNotification></ClickNotification>
             </View>
             </TouchableHighlight>
         </Animated.View>

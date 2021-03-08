@@ -20,7 +20,6 @@ import Users from '../model/users';
 
 
 
-
 const IniciarSecionScreen = ({navigation}) => {
 
     const [data, setData] = React.useState({
