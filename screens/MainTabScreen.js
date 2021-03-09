@@ -33,7 +33,7 @@ const MainTabScreen = () => (
     />
     <Tab.Screen
       name="Notifications"
-      component={NotificationStackScreen}
+      component={NotificationScreen}
       options={{
         tabBarLabel: 'Notificaciones',
         tabBarColor: '#006460',
