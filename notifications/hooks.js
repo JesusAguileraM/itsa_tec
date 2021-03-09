@@ -74,39 +74,42 @@ const getToken = async () => {
 } 
 
 
-import { Linking, View, Text } from 'react-native';
-import { Title } from "react-native-paper";
+// import { Linking, View, Text } from 'react-native';
+// import { Title } from "react-native-paper";
 
-function ClickNotification() {
-  const [body, setBody] = useState('');
-  const [data, setData] = useState('');
-  const [title, setTitle] = useState('');
-  React.useEffect(() => {
-    const subscription = Notifications.addNotificationResponseReceivedListener(response => {
-        setBody(response.notification.request.content.body);
-        setData(response.notification.request.content.data);
-        setTitle(response.notification.request.content.title);
+// function ClickNotification() {
+// //   const [body, setBody] = useState('');
+// //   const [data, setData] = useState('');
+// //   const [title, setTitle] = useState('');
+// //   React.useEffect(() => {
+// //     const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+// //         setBody(response.notification.request.content.body);
+// //         setData(response.notification.request.content.data);
+// //         setTitle(response.notification.request.content.title);
 
-    //   Linking.openURL(url);
-    });
-    return () => subscription.remove();
-  }, []);
+// //     //   Linking.openURL(url);
+// //     });
+// //     return () => subscription.remove();
+// //   }, []);
 
-  return (
-    <View >
-        <View >
-            <Text>{title}</Text>
-        </View>
-        <View >
-            <Text>{body}</Text>
-        </View>
-        <View >
-            <Text>{data.inscripciones}</Text>
-        </View>
-    </View>
-  );
-}
+//   return (
+//     <View >
+//         <View >
+//             <Text>{title}</Text>
+//         </View>
+//         <View >
+//             <Text>{body}</Text>
+//         </View>
+//         <View >
+//             <Text>{data.inscripciones}</Text>
+//         </View>
+//     </View>
+//   );
+// }
+
+
+
 
 export { useRegisterForPushNotificationsAsync, getToken}
 
-export default ClickNotification;
+// export default ClickNotification;
