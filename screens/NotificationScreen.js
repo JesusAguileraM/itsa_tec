@@ -12,30 +12,30 @@ import {
 import {SwipeListView} from 'react-native-swipe-list-view';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-// import Notifications from '../model/Notifications';
-import * as Notifications from 'expo-notifications';
+import Notifications from '../model/Notifications';
+// import * as Notifications from 'expo-notifications';
 
 const NotificationScreen = ({navigation}) => {
 
-        const [listData, setListData] = useState(
-            //la variable Notifi es el objeto con la data no lo olvides 
-            Notifi.map((NotificationItem, index) => ({
-                key: `${index}`,
-                title: NotificationItem.title,
-                details: NotificationItem.details,
-            })),
-        );
+        // const [listData, setListData] = useState(
+        //     //la variable Notifi es el objeto con la data no lo olvides 
+        //     Notifications.map((NotificationItem, index) => ({
+        //         key: `${index}`,
+        //         title: NotificationItem.title,
+        //         details: NotificationItem.details,
+        //     })),
+        // );
         
         //Suscripción a las notificaciones recibidas en segundo plano
-        useEffect(() => {
-            const subscription = Notifications.addNotificationResponseReceivedListener(response => {
-                const body = response.notification.request.content.body;
-                const data = response.notification.request.content.data;
-                const title = response.notification.request.content.title;
+        // useEffect(() => {
+        //     const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+        //         const body = response.notification.request.content.body;
+        //         const data = response.notification.request.content.data;
+        //         const title = response.notification.request.content.title;
 
-            });
-            return () => subscription.remove();
-        }, []);
+        //     });
+        //     return () => subscription.remove();
+        // }, []);
 
         const closeRow = (rowMap, rowKey) => {
             if (rowMap[rowKey]) {
