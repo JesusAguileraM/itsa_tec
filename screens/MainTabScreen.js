@@ -9,7 +9,7 @@ import HomeScreen from "./HomeScreen";
 import DetailsScreen from "./DetailsScreen";
 import ExploreScreen from "./ExploreScreen";
 import ProfileScreen from "./ProfileScreen";
-import NotificationScreen from  "./NotificationScreen";
+// import NotificationScreen from  "./NotificationScreen";
 import ClickNotification from '../notifications/hooks';
 
 const HomeStack = createStackNavigator();
