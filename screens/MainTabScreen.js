@@ -34,7 +34,7 @@ const MainTabScreen = () => (
     />
     <Tab.Screen
       name="Notifications"
-      component={SingleStorage}
+      component={NotificationScreen}
       options={{
         tabBarLabel: 'Notificaciones',
         tabBarColor: '#006460',

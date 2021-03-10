@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     View,
     Text,
@@ -12,30 +12,52 @@ import {
 import {SwipeListView} from 'react-native-swipe-list-view';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import Notifications from '../model/Notifications';
-// import * as Notifications from 'expo-notifications';
+// import Notifications from '../model/Notifications';
+import * as Notifications from 'expo-notifications';
+
+const datos = [
+    {
+        key: '1',
+        title: 'Reinscripciones',
+        body: 'ITSA',
+        data: { descripcion: '1 de agosto fecha límite' },
+    },
+];
 
 const NotificationScreen = ({navigation}) => {
+        
+        // const [data, setData] = useState(datos)
+        // const newData = data.map((NotificationItem, index) => ({
+        //     key: index+'',
+        //     title: NotificationItem.title,
+        //     body: NotificationItem.body,
+        //     data: NotificationItem.data,
+        // }))
 
-        // const [listData, setListData] = useState(
-        //     //la variable Notifi es el objeto con la data no lo olvides 
-        //     Notifications.map((NotificationItem, index) => ({
-        //         key: `${index}`,
-        //         title: NotificationItem.title,
-        //         details: NotificationItem.details,
-        //     })),
-        // );
+        const [listData, setListData] = useState(
+            //la variable Notifi es el objeto con la data no lo olvides 
+            datos
+        );
+        console.log('list data')
+        console.log(listData)
+
+
+
         
         //Suscripción a las notificaciones recibidas en segundo plano
-        // useEffect(() => {
-        //     const subscription = Notifications.addNotificationResponseReceivedListener(response => {
-        //         const body = response.notification.request.content.body;
-        //         const data = response.notification.request.content.data;
-        //         const title = response.notification.request.content.title;
-
-        //     });
-        //     return () => subscription.remove();
-        // }, []);
+        useEffect( () => {
+            const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+                console.log(response)
+                const body = response.notification.request.content.body;
+                const data = response.notification.request.content.data;
+                const title = response.notification.request.content.title;
+                // const key = (listData.length + 1 ) + "";
+                // setData([{key: 'putamadre', title: title, body: body, data: { datos }}])
+                
+                setListData([...listData, {key: (Math.random(1,1000)*10000)+'', title: title, body: body, data: { data }}] );
+            });
+            return () => subscription.remove();
+        }, []);
 
         const closeRow = (rowMap, rowKey) => {
             if (rowMap[rowKey]) {
@@ -102,9 +124,8 @@ const NotificationScreen = ({navigation}) => {
                         {data.item.title}
                     </Text>
                     <Text style={styles.details} numberOfLines={1}>
-                        {data.item.details}
+                        {data.item.body}
                     </Text>
-                    <ClickNotification></ClickNotification>
                 </View>
                 </TouchableHighlight>
             </Animated.View>
