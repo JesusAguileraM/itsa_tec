@@ -9,8 +9,8 @@ import HomeScreen from "./HomeScreen";
 import DetailsScreen from "./DetailsScreen";
 import ExploreScreen from "./ExploreScreen";
 import ProfileScreen from "./ProfileScreen";
-import NotificationScreen from  "./NotificationScreen";
-
+//import NotificationScreen from  "./NotificationScreen";
+import SingleStorage from '../database/singleStorage';
 const HomeStack = createStackNavigator();
 const DetailsStack = createStackNavigator();
 const NotificationStack = createStackNavigator();
@@ -33,7 +33,7 @@ const MainTabScreen = () => (
     />
     <Tab.Screen
       name="Notifications"
-      component={NotificationStackScreen}
+      component={SingleStorage}
       options={{
         tabBarLabel: 'Notificaciones',
         tabBarColor: '#006460',

@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { View, ActivityIndicator } from "react-native";
-import {
-  NavigationContainer,
-  DefaultTheme as NavigationDefaultTheme,
-  DarkTheme as NavigationDarkTheme,
-} from "@react-navigation/native";
+import {CustomDefaultTheme,CustomDarkTheme} from './TemaStyles';
+import { Provider as PaperProvider} from "react-native-paper";
 
-import {
-  Provider as PaperProvider,
-  DefaultTheme as PaperDefaultTheme,
-  DarkTheme as PaperDarkTheme,
-} from "react-native-paper";
+import {NavigationContainer} from "@react-navigation/native";
 
-import MainTabScreen from "./screens/MainTabScreen";
-import SupportScreen from "./screens/SupportScreen";
-import SettingsScreen from "./screens/SettingsScreen";
-import BookmarkScreen from "./screens/BookmarkScreen";
+import MainTabScreen from "./screens/MainTabScreen";//logueado (cualquier cuenta)
+import MainTabScreen2 from "./screens/MainTabScreen2"; //visitante (ninguna cuenta)
+import MainTabScreen3 from "./screens/MainTabScreen3";//inscripto (con cuenta institucional)
 
-import { DrawerContent } from "./screens/DrawerContent";
+import { DrawerContent } from "./screens/DrawerContent"; //logueado
+import { DrawerContent2 } from "./screens/DrawerContent2";  // visitante
+import { DrawerContent3 } from "./screens/DrawerContent3";   //inscripto
+
+
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import RootStackScreen from "./screens/RootStackScreen";
 
@@ -30,38 +26,19 @@ import { useRegisterForPushNotificationsAsync } from './notifications/hooks';
 
 
 
-const Drawer = createDrawerNavigator();
+const DrawerUserLogged = createDrawerNavigator();
 
 const App = () => {
-
   //Tema de colores de la app
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
-
-  const CustomDefaultTheme = {
-    // tema por defecto
-    ...NavigationDefaultTheme,
-    ...PaperDefaultTheme,
-    colors: {
-      ...NavigationDefaultTheme.colors,
-      ...PaperDefaultTheme.colors,
-      background: "#ffffff",
-      text: "#333333",
-    },
-  };
-
-  const CustomDarkTheme = {
-    //tema personalisado
-    ...NavigationDarkTheme,
-    ...PaperDarkTheme,
-    colors: {
-      ...NavigationDarkTheme.colors,
-      ...PaperDarkTheme.colors,
-      background: "#333333",
-      text: "#ffffff",
-    },
-  };
   const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme; //cual es que esta seleccionado
   
+
+  //Manejandro Las vistas que apareceran en la app
+  const [visitante,setVisitante]= useState(false);// no tiene cuenta
+  
+  const [inscripto,setInscripto]= useState(false);// tiene cuenta institucional
+
   //Manejo de la sesión
   const {isLoading, userLogged, userProfile, setIsLoading, setUserLogged, setUserProfile} = useOnAuthStateChanged();
   //Manejo de las notificaciones
@@ -204,9 +181,9 @@ const App = () => {
       try {
         if (global.primeraVez === true) {
           userToken = await AsyncStorage.getItem("userToken");
-          global.primeraVez = false;
+          global.primeraVez = false; //esta linea ya no sirve
         } else {
-          global.primeraVez = false;
+          global.primeraVez = false; //esta linea ya no sirve global
         }
       } catch (e) {
         console.log(e);
@@ -224,22 +201,52 @@ const App = () => {
     );
   }
 
+  const renderIF=(VIS,UL,INS)=> {//se encarga de desirme si visitante, usuario logueado o usuario inscripto son falsos para poder entrar a inicio de sesion
+    if(VIS===false && UL===false && INS ===false){
+      return true
+    }else{
+      console.log("hay que ordenar los componentes")
+      return false
+    }
+  }
+  
   return (
     <PaperProvider theme={theme}>
       <AuthContext.Provider value={authContext}>
-        <NavigationContainer theme={theme}>
-          {userLogged === true  ? (
+        <NavigationContainer >
+          {/* {userLogged === true  ? (
             <Drawer.Navigator
               drawerContent={(props) => <DrawerContent {...props} />}
             >
               <Drawer.Screen name="HomeDrawer" component={MainTabScreen} />
-              <Drawer.Screen name="SupportScreen" component={SupportScreen} />
-              <Drawer.Screen name="SettingsScreen" component={SettingsScreen} />
-              <Drawer.Screen name="BookmarkScreen" component={BookmarkScreen} />
+            
             </Drawer.Navigator>
           ) : (
             <RootStackScreen />
-          )}
+          )} */}
+           {/* esta pila de navegacion solo aparecera cuando el usuario se logueo con cualquier cuenta */}
+            
+              
+              {userLogged === true ? (
+                <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent {...props} />} >
+                  <DrawerUserLogged.Screen name="UsuarioLogueado" component={MainTabScreen} />
+                </DrawerUserLogged.Navigator>
+              ): null}
+              {inscripto === true ? (
+                <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent2 {...props} />} >
+                  <DrawerUserLogged.Screen name="UsuarioInscripto" component={MainTabScreen2} />
+                </DrawerUserLogged.Navigator>
+              ): null}
+              {visitante === true ? (
+                <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent3 {...props} />} >
+                  <DrawerUserLogged.Screen name="Visitante" component={MainTabScreen3} />
+                </DrawerUserLogged.Navigator>
+              ): null}
+
+              {renderIF(visitante,inscripto,userLogged) === true ? (
+                <RootStackScreen />
+              ) : null}
+              
         </NavigationContainer>
       </AuthContext.Provider>
     </PaperProvider>

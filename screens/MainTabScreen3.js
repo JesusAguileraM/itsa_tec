@@ -10,6 +10,7 @@ import DetailsScreen from "./DetailsScreen";
 import ExploreScreen from "./ExploreScreen";
 import ProfileScreen from "./ProfileScreen";
 import NotificationScreen from  "./NotificationScreen";
+import SingleStorage from '../database/singleStorage';
 
 const HomeStack = createStackNavigator();
 const DetailsStack = createStackNavigator();
@@ -25,45 +26,14 @@ const MainTabScreen = () => (
       component={HomeStackScreen}
       options={{
         tabBarLabel: "Home",
-        tabBarColor: "#965",
+        tabBarColor: "#0064A2",
         tabBarIcon: ({ color }) => (
           <Icon name="ios-home" color={color} size={26} />
         ),
       }}
     />
-    <Tab.Screen
-      name="Notifications"
-      component={NotificationStackScreen}
-      options={{
-        tabBarLabel: 'Notificaciones',
-        tabBarColor: '#006460',
-        tabBarIcon: ({color}) => (
-          <Icon name="ios-notifications" color={color} size={26} />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="Inscribirse"
-      component={DetailsStackScreen}
-      options={{
-        tabBarLabel: "Inscribirse",
-        tabBarColor: "#2096B4",
-        tabBarIcon: ({ color }) => (
-          <Icon name="create" color={color} size={26} />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="Profile"
-      component={ProfileScreen}
-      options={{
-        tabBarLabel: "Perfil",
-        tabBarColor: "#808684",
-        tabBarIcon: ({ color }) => (
-          <Icon name="ios-person" color={color} size={26} />
-        ),
-      }}
-    />
+    
+    
     <Tab.Screen
       name="Info"
       component={ExploreScreen}
@@ -110,59 +80,6 @@ const HomeStackScreen = ({ navigation }) => (
   </HomeStack.Navigator>
 );
 
-const NotificationStackScreen = ({navigation}) => (
-  <NotificationStack.Navigator
-    screenOptions={{
-      headerStyle: {
-        backgroundColor: '#006460',
-      },
-      headerTintColor: '#fff',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
-    }}>
-    <NotificationStack.Screen
-      name="Notifications"
-      component={NotificationScreen}
-      options={{
-        headerLeft: () => (
-          <Icon.Button
-            name="ios-menu"
-            size={25}
-            backgroundColor="#006460"
-            onPress={() => navigation.openDrawer()}
-          />
-        ),
-      }}
-    />
-  </NotificationStack.Navigator>
-);
 
-const DetailsStackScreen = ({ navigation }) => (
-  <DetailsStack.Navigator
-    screenOptions={{
-      headerStyle: {
-        backgroundColor: "#2096BA",
-      },
-      headerTintColor: "#fff",
-      headerTitleStyle: {
-        fontWeight: "bold",
-      },
-    }}
-  >
-    <DetailsStack.Screen
-      name="Inscribirse"
-      component={DetailsScreen}
-      options={{
-        headerLeft: () => (
-          <Icon.Button
-            name="ios-menu"
-            size={25}
-            backgroundColor="#2096BA"
-            onPress={() => navigation.openDrawer()}
-          ></Icon.Button>
-        ),
-      }}
-    />
-  </DetailsStack.Navigator>
-);
+
+

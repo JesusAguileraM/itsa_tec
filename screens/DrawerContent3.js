@@ -164,20 +164,7 @@ const { signOutUser } = React.useContext(AuthContext);
                     }}
                 />
             </Drawer.Section>
-            <Drawer.Section title="Preferencias">
-                <TouchableRipple
-                onPress={() => {
-                    toggleTheme();
-                }}
-                >
-                <View style={styles.preference}>
-                    <Text>Modo Oscuro</Text>
-                    <View pointerEvents="none">
-                    <Switch value={paperTheme.dark} />
-                    </View>
-                </View>
-                </TouchableRipple>
-            </Drawer.Section>
+        
             </View>
         </DrawerContentScrollView>
         <Drawer.Section style={styles.bottomDrawerSection}>
