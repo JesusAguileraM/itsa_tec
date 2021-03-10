@@ -20,13 +20,13 @@ import SupportScreen from './screens/SupportScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import BookmarkScreen from './screens/BookmarkScreen';
 
-import { AuthContext } from './components/context';
+import { AuthContext } from '../components/context';
 
-import RootStackScreen from './screens/RootStackScreen';
+import RootStackScreen from '../screens/RootStackScreen';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
-import * as global from "./database/variablesGlobales";
+import * as global from "../database/variablesGlobales";
 
 const Drawer = createDrawerNavigator();
 

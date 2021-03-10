@@ -12,52 +12,105 @@ import {
 import {SwipeListView} from 'react-native-swipe-list-view';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-// import Notifications from '../model/Notifications';
 import * as Notifications from 'expo-notifications';
-
-const datos = [
-    {
-        key: '1',
-        title: 'Reinscripciones',
-        body: 'ITSA',
-        data: { descripcion: '1 de agosto fecha límite' },
-    },
-];
+// import { useEliminarNotificacion, useNotificacionesExistencia, useEliminarTodasNotificaciones} from '../database/singleStorage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const NotificationScreen = ({navigation}) => {
-        
-        // const [data, setData] = useState(datos)
-        // const newData = data.map((NotificationItem, index) => ({
-        //     key: index+'',
-        //     title: NotificationItem.title,
-        //     body: NotificationItem.body,
-        //     data: NotificationItem.data,
-        // }))
-
+    
         const [listData, setListData] = useState(
-            //la variable Notifi es el objeto con la data no lo olvides 
-            datos
+            []
         );
-        console.log('list data')
-        console.log(listData)
+        // console.log('list data')
+        // console.log(listData)
 
-
-
+        // setTimeout(() => {AsyncStorage.clear();}, 100)
         
         //Suscripción a las notificaciones recibidas en segundo plano
         useEffect( () => {
-            const subscription = Notifications.addNotificationResponseReceivedListener(response => {
-                console.log(response)
-                const body = response.notification.request.content.body;
-                const data = response.notification.request.content.data;
+            const subscription = Notifications.addNotificationResponseReceivedListener(async response => {
+                // console.log(response)
                 const title = response.notification.request.content.title;
-                // const key = (listData.length + 1 ) + "";
-                // setData([{key: 'putamadre', title: title, body: body, data: { datos }}])
-                
-                setListData([...listData, {key: (Math.random(1,1000)*10000)+'', title: title, body: body, data: { data }}] );
+                const datitos = response.notification.request.content.data;
+                const body = response.notification.request.content.body;
+                await useGuardarNotificaciones(title, datitos, body);
+                await useTraerDB_Notification();
             });
             return () => subscription.remove();
         }, []);
+
+        const useGuardarNotificaciones=async(titleN,contentN,bodyN)=>{
+
+            const storedData = await AsyncStorage.getItem('DB_Notifications');//me va dar vacio porque es la primera entrada
+            const storedDataParsed = JSON.parse(storedData);
+            let cantidad = 0;
+            if(storedData){
+                cantidad = Object.entries(storedDataParsed).length;
+            }
+            
+            let infoNotification = {
+                id: (cantidad+''),
+                title: titleN,
+                data: contentN,
+                body: bodyN,
+                key: (cantidad+''),
+            };
+    
+            const arrData = [infoNotification]; // [{ id, title, details}]
+    
+            if (storedData === null) {
+              // save
+                await AsyncStorage.setItem('DB_Notifications', JSON.stringify(arrData));
+                
+            } else {
+                let newData = [];
+                newData = [...storedDataParsed, infoNotification];
+                await AsyncStorage.setItem('DB_Notifications', JSON.stringify(newData));
+                
+            }
+            
+        }
+
+        const useTraerDB_Notification = async () => {
+            try {
+                const valueString = await AsyncStorage.getItem('DB_Notifications');
+                const value = JSON.parse(valueString);
+                
+                setListData(value);
+                console.log(value);
+                return value;
+            } catch (error) {
+                alert('Error en traerDB_Notification')
+                return 
+            }
+        };
+
+
+        const useEliminarNotificacion = async (id) => {
+            if (listData !== null) {
+                console.log(listData)
+                // const newData = listData.filter((_, index) => index !== id);
+                const newData = listData.splice(id, 1);
+                setListData(newData);
+                await AsyncStorage.setItem('DB_Notifications', JSON.stringify(newData));
+            }
+        };
+    
+        const useNotificacionesExistencia=()=>{
+            if (storedData === null) {
+                setToggle(false);
+                console.log('No existen Notifiaciones almacenadas')
+                return false;
+            }else{
+                setToggle(true);
+                console.log('Existen notificaciones')
+                return true;
+            }
+        }
+    
+        const useEliminarTodasNotificaciones=()=>{
+            AsyncStorage.clear();
+        }
 
         const closeRow = (rowMap, rowKey) => {
             if (rowMap[rowKey]) {
@@ -69,6 +122,9 @@ const NotificationScreen = ({navigation}) => {
             closeRow(rowMap, rowKey);
             const newData = [...listData];
             const prevIndex = listData.findIndex(item => item.key === rowKey);
+            // console.log('Eliminado: ')
+            // console.log(prevIndex)
+            useEliminarNotificacion(prevIndex)
             newData.splice(prevIndex, 1);
             setListData(newData);
         };
@@ -241,25 +297,25 @@ const NotificationScreen = ({navigation}) => {
 
         return (
             <View style={styles.container}>
-            <StatusBar barStyle="dark-content"/>
-            {/* <StatusBar backgroundColor="#FF6347" barStyle="light-content"/> */}
-            <SwipeListView
-                data={listData}
-                renderItem={renderItem}
-                renderHiddenItem={renderHiddenItem}
-                leftOpenValue={75}
-                rightOpenValue={-150}
-                disableRightSwipe
-                onRowDidOpen={onRowDidOpen}
-                leftActivationValue={100}
-                rightActivationValue={-200}
-                leftActionValue={0}
-                rightActionValue={-500}
-                onLeftAction={onLeftAction}
-                onRightAction={onRightAction}
-                onLeftActionStatusChange={onLeftActionStatusChange}
-                onRightActionStatusChange={onRightActionStatusChange}
-            />
+                <StatusBar barStyle="dark-content"/>
+                {/* <StatusBar backgroundColor="#FF6347" barStyle="light-content"/> */}
+                <SwipeListView
+                    data={listData}
+                    renderItem={renderItem}
+                    renderHiddenItem={renderHiddenItem}
+                    leftOpenValue={75}
+                    rightOpenValue={-150}
+                    disableRightSwipe
+                    onRowDidOpen={onRowDidOpen}
+                    leftActivationValue={100}
+                    rightActivationValue={-200}
+                    leftActionValue={0}
+                    rightActionValue={-500}
+                    onLeftAction={onLeftAction}
+                    onRightAction={onRightAction}
+                    onLeftActionStatusChange={onLeftActionStatusChange}
+                    onRightActionStatusChange={onRightActionStatusChange}
+                />
             </View>
         );
     };

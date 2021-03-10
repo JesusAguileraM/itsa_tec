@@ -5,12 +5,12 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import { createStackNavigator } from "@react-navigation/stack";
 
 
-import HomeScreen from "./HomeScreen";
-import DetailsScreen from "./DetailsScreen";
-import ExploreScreen from "./ExploreScreen";
-import ProfileScreen from "./ProfileScreen";
+import HomeScreen from "../HomeScreen";
+import DetailsScreen from "../DetailsScreen";
+import ExploreScreen from "../ExploreScreen";
+import ProfileScreen from "../ProfileScreen";
 //import NotificationScreen from  "./NotificationScreen";
-import SingleStorage from '../database/singleStorage';
+import SingleStorage from '../../database/singleStorage';
 const HomeStack = createStackNavigator();
 const DetailsStack = createStackNavigator();
 const NotificationStack = createStackNavigator();

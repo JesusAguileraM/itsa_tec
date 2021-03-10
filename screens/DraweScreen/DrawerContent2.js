@@ -22,8 +22,8 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 
-import { AuthContext } from "../components/context";
-import * as global from "../database/variablesGlobales";
+import { AuthContext } from "../../components/context";
+import * as global from "../../database/variablesGlobales";
 
 
 export function DrawerContent2(props) {

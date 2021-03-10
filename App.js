@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { View, ActivityIndicator } from "react-native";
-import {CustomDefaultTheme,CustomDarkTheme} from './TemaStyles';
+import {CustomDefaultTheme,CustomDarkTheme} from './tema/TemaStyles';
 import { Provider as PaperProvider} from "react-native-paper";
 
 import {NavigationContainer} from "@react-navigation/native";
 
-import MainTabScreen from "./screens/MainTabScreen";//logueado (cualquier cuenta)
-import MainTabScreen2 from "./screens/MainTabScreen2"; //visitante (ninguna cuenta)
-import MainTabScreen3 from "./screens/MainTabScreen3";//inscripto (con cuenta institucional)
+import MainTabScreen from "./screens/TapScreen/MainTabScreen";//logueado (cualquier cuenta)
+import MainTabScreen2 from "./screens/TapScreen/MainTabScreen2"; //visitante (ninguna cuenta)
+import MainTabScreen3 from "./screens/TapScreen/MainTabScreen3";//inscripto (con cuenta institucional)
 
 import { DrawerContent } from "./screens/DrawerContent"; //logueado
 import { DrawerContent2 } from "./screens/DrawerContent2";  // visitante
