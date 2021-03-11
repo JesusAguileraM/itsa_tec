@@ -82,7 +82,7 @@ const NotificationScreen = ({navigation}) => {
                 const value = JSON.parse(valueString);
                 
                 setListData(value);
-                console.log(value);
+                // console.log(value);
             } catch (error) {
                 alert('Error en traerDB_Notification')
             }

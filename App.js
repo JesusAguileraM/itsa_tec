@@ -32,15 +32,16 @@ const App = () => {
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
   const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme; //cual es que esta seleccionado
   
-  useEffect(() => {hacer()}, [])
+  //Solo para probar que Async Storage si guarda los datos
+  // useEffect(() => {hacer()}, [])
 
-  const hacer = async () => {
-    const valueString = await AsyncStorage.getItem('DB_Notifications');
-    // const value = Object.entries();
-    const value = JSON.parse(valueString);
-    console.log('DB');
-    console.log(value)
-  }
+  // const hacer = async () => {
+  //   const valueString = await AsyncStorage.getItem('DB_Notifications');
+  //   // const value = Object.entries();
+  //   const value = JSON.parse(valueString);
+  //   console.log('DB');
+  //   console.log(value)
+  // }
 
   //Manejandro Las vistas que apareceran en la app
   const [visitante,setVisitante]= useState(false);// no tiene cuenta

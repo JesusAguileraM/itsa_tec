@@ -19,13 +19,11 @@ import { ProgressBar,Divider,Surface} from "react-native-paper";
 import AsyncStorage from "@react-native-community/async-storage";
 import * as Animatable from "react-native-animatable";
 import { LinearGradient } from "expo-linear-gradient";
+import Odoo from 'react-native-odoo-promise-based';
+import { getToken } from '../notifications/hooks';
 
-
-
-
-const DetailsScreen = ({ navigation }) => {
-    
-
+const DetailsScreen = ({ navigation }) => 
+{
     const [data, setData] = React.useState({
         Nombre: "",
         ApellidoP: "",
@@ -39,6 +37,7 @@ const DetailsScreen = ({ navigation }) => {
         Telefono_Aprobado: false,
     });
 
+    //datos
     let dataUser=[
         {   name: data.Nombre, 
             last_nameP: data.ApellidoP,
@@ -47,6 +46,7 @@ const DetailsScreen = ({ navigation }) => {
             cell_phone: data.Telefono,
         }
     ];
+
     const camRef= useRef(null);
     const [hasPermission, setHasPermission] = useState(null);
     const [saveFoto, setSaveFoto] = useState(null);
@@ -68,20 +68,121 @@ const DetailsScreen = ({ navigation }) => {
                 estudio_H_Foto: {estudio_H_Foto},
             }
         ];
+        
     const saveDataUser=async(data)=>{
         try {
             await AsyncStorage.setItem("DataUser", JSON.stringify(data));
         } catch (e) {
-            console.log(e);
+            console.log('Error grave: ' + e);
         }
-        pruebaData = await AsyncStorage.getItem("DataUser");
-        console.log(pruebaData);
+        const pruebaData = await AsyncStorage.getItem("DataUser");
+        // console.log('Prueba data')
+        // console.log(pruebaData);
     }
 
-    const enviar_navegar=()=>{//Ejecuta la funcion de guardar datos en el storage y navega al sig. screen
+    //cuando presiono enviar
+    const enviar_navegar= async ()=>{//Ejecuta la funcion de guardar datos en el storage y navega al sig. screen
         saveDataUser(dataUser);
+        console.log('holaaaaa')
+        const formData = new FormData();
+        const matricula = '16020419';
+        const token = await getToken();
+
+        if (acta_N_Foto != null) 
+        {
+            console.log('#################')
+            formData.append('nombre', data.Nombre);
+            formData.append('apellidoP', data.ApellidoP);
+            formData.append('apellidoM', data.ApellidoM);
+            formData.append('curp', data.Curp);
+            formData.append('telefono', data.Telefono);
+            formData.append('matricula', matricula);
+            formData.append('tokenNotifications', token.data);
+            formData.append('acta_N', acta_N_Foto);
+
+            console.log(data.Nombre);
+            // let nomb = formData.get('nombre');
+            // console.log(nomb)
+            // console.log(formData.get('matricula'))
+            // console.log(formData.get('tokenNotifications'))
+            // console.log(formData.get('acta_N'))
+
+            //Usando fetch
+
+            // let options = {
+            //     method: 'POST',
+            //     body: formData,
+            //     headers: {
+            //         'Content-Type': 'multipart/form-data; ',
+            //     },
+            // };
+
+            // let res = await fetch('url para enviar profe', {options} );
+
+            // let responseJson = await res.json();
+            // if (responseJson.status == 1) {
+            //     alert('Upload Successful');
+            // }
+
+            //Usando Odoo
+            // instanciaOdoo(matricula, token.data, formData);
+        }
     }
 
+    const instanciaOdoo = (matricula, token, formData) => {
+        var odoo = new Odoo({
+            // url: 'https://siit.itsa.edu.mx',  //creo que es el host
+            host: 'https://siit.itsa.edu.mx',
+            // port: '80',//default 80 si no se especifica
+            db: 'itsa900',
+            username: 'xmlrpc_user',
+            password: 'Alum2021#',
+            // protocol: 'http'  //si no se especifica el default será http
+          });
+    
+          odoo.connect()
+          .then(response => { 
+              console.log('Conexión exitosa');
+              console.log(response);
+           })
+          .catch(e => { 
+              console.log('Error al conectarse al servidor');
+           });
+    
+           odoo.connect()
+           .then(response => {
+                console.log('Connected to Odoo server. user esta conectado:');
+                console.log(response);
+                var inParams = [];
+                inParams.push(formData);
+                var param = [];
+                param.push(inParams);
+    
+                var params = {
+                    model: 'itsa.escolares.alumnos',
+                    method: 'siit3_get_prealumno',
+                    args: param,
+                    kwargs: {},
+                  };//params
+    
+                odoo.rpc_call('/', params)
+                .then(response => { 
+                    console.log(response);
+                 })
+                .catch(e => { 
+                    console.log(e);
+                 })
+    
+                // odoo.execute_kw('itsa.escolares.alumnos', 'siit3_get_prealumno', params, function (err2, value2) {
+                //     if (err2) { return console.log(err2); }
+                //     console.log('Result: ', value2);
+                // });
+           })
+           .catch(e => {
+              console.log('No se pudo conectar');
+              console.log(e);
+           });
+    }
 
     const textInputNameChange = (nameUser) => {
         let val = nameUser.toUpperCase();
@@ -293,7 +394,7 @@ const DetailsScreen = ({ navigation }) => {
     //Lleva la CURP a mayúsculas para validarlo
     const validarInputCurp = (val) => {
         let curp = val.toUpperCase();
-        console.log("curp: " + curp);
+        // console.log("curp: " + curp);
         if (curpValida(curp)) {
         //  Acá se comprueba
         setData({
@@ -601,7 +702,8 @@ const DetailsScreen = ({ navigation }) => {
                             style={styles2.textInput}
                             autoCapitalize="none"
                             onChangeText={(val) => {
-                                console.log(val);
+                               
+                                // console.log(val);
                                 return validarInputCurp(val);
                             }}
                             />
@@ -627,27 +729,27 @@ const DetailsScreen = ({ navigation }) => {
                             ) : null}
                         </View>
                         <View style={styles2.button}>
-                            <TouchableOpacity
-                        style={styles2.signIn}
-                        onPress={() => {
-                            enviar_navegar();
-                        }}
-                        >
-                        <LinearGradient
-                            colors={["#0064A2", "#2096BA"]}
+                        <TouchableOpacity
                             style={styles2.signIn}
+                            onPress={() => {
+                                enviar_navegar();
+                            }}
                         >
-                            <Text
-                            style={[
-                                styles2.textSign,
-                                {
-                                color: "#fff",
-                                },
-                            ]}
-                            >
-                            Enviar registro de inscripción
-                            </Text>
-                        </LinearGradient>
+                                <LinearGradient
+                                    colors={["#0064A2", "#2096BA"]}
+                                    style={styles2.signIn}
+                                >
+                                    <Text
+                                    style={[
+                                        styles2.textSign,
+                                        {
+                                        color: "#fff",
+                                        },
+                                    ]}
+                                    >
+                                        Enviar registro de inscripción
+                                    </Text>
+                                </LinearGradient>
                         </TouchableOpacity>
                         </View>
                         <View style={styles2.textPrivate}>
