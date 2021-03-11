@@ -2,7 +2,7 @@ import React from "react";
 
 import { createStackNavigator } from "@react-navigation/stack";
 
-import SplashScreen from "./SplashScreen";
+// import SplashScreen from "./SplashScreen";
 import IniciarSecionScreen from "./IniciarSecionScreen";
 import RegistrarseScreen from "./RegistrarseScreen";
 import Parte1Screen from "../screens/registroScreen/RegistroScreen1";
@@ -18,7 +18,7 @@ const RootStackScreen = ({ navigation }) => (
         <RootStack.Screen name="Parte1Screen" component={Parte1Screen} />
         <RootStack.Screen name="Parte2Screen" component={Parte2Screen} />
         <RootStack.Screen name="Parte3Screen" component={Parte3Screen} />
-        <RootStack.Screen name="SplashScreen" component={SplashScreen} />
+        {/* <RootStack.Screen name="SplashScreen" component={SplashScreen} /> */}
     </RootStack.Navigator>
 );
 

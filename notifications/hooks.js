@@ -21,8 +21,8 @@ const useRegisterForPushNotificationsAsync = async () => {
                 if (finalStatus === 'granted') {
                     //Este es el token que debemos guardar 
                     const token = await Notifications.getExpoPushTokenAsync();
-                    console.log('Token:')
-                    console.log(token);
+                    // console.log('Token:')
+                    // console.log(token);
                     setExpoPushToken({ expoPushToken: token })
                 } else {
                     alert('No se han permitido las notificaciones aun');

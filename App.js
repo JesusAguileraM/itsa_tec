@@ -9,9 +9,9 @@ import MainTabScreen from "./screens/TapScreen/MainTabScreen";//logueado (cualqu
 import MainTabScreen2 from "./screens/TapScreen/MainTabScreen2"; //visitante (ninguna cuenta)
 import MainTabScreen3 from "./screens/TapScreen/MainTabScreen3";//inscripto (con cuenta institucional)
 
-import { DrawerContent } from "./screens/DrawerContent"; //logueado
-import { DrawerContent2 } from "./screens/DrawerContent2";  // visitante
-import { DrawerContent3 } from "./screens/DrawerContent3";   //inscripto
+import { DrawerContent } from "./screens/DraweScreen/DrawerContent"; //logueado
+import { DrawerContent2 } from "./screens/DraweScreen/DrawerContent2";  // visitante
+import { DrawerContent3 } from "./screens/DraweScreen/DrawerContent3";   //inscripto
 
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -25,7 +25,6 @@ import { useGoogleLogin, useOnAuthStateChanged, useGoogleSignOut } from './fireb
 import { useRegisterForPushNotificationsAsync } from './notifications/hooks';
 
 
-
 const DrawerUserLogged = createDrawerNavigator();
 
 const App = () => {
@@ -33,6 +32,15 @@ const App = () => {
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
   const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme; //cual es que esta seleccionado
   
+  useEffect(() => {hacer()}, [])
+
+  const hacer = async () => {
+    const valueString = await AsyncStorage.getItem('DB_Notifications');
+    // const value = Object.entries();
+    const value = JSON.parse(valueString);
+    console.log('DB');
+    console.log(value)
+  }
 
   //Manejandro Las vistas que apareceran en la app
   const [visitante,setVisitante]= useState(false);// no tiene cuenta
@@ -96,6 +104,9 @@ const App = () => {
 
   const authContext = React.useMemo(
     () => ({
+      eliminarToken: () => {
+          ///hook();
+      },
       signOutUser: () => {
         console.log('sesión cerrada')
         useGoogleSignOut();
@@ -205,7 +216,7 @@ const App = () => {
     if(VIS===false && UL===false && INS ===false){
       return true
     }else{
-      console.log("hay que ordenar los componentes")
+      // console.log("hay que ordenar los componentes")
       return false
     }
   }
