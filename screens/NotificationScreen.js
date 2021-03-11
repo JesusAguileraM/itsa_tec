@@ -21,6 +21,11 @@ const NotificationScreen = ({navigation}) => {
         const [listData, setListData] = useState(
             []
         );
+
+        useEffect( () => {
+            (async () => {await useTraerDB_Notification()})()
+        }, []);
+
         // console.log('list data')
         // console.log(listData)
 
@@ -78,10 +83,8 @@ const NotificationScreen = ({navigation}) => {
                 
                 setListData(value);
                 console.log(value);
-                return value;
             } catch (error) {
                 alert('Error en traerDB_Notification')
-                return 
             }
         };
 
