@@ -94,7 +94,7 @@ import { set } from 'react-native-reanimated';
     }
 
     const useEliminarTodasNotificaciones=()=>{c
-        AsyncStorage.clear();
+        //AsyncStorage.clear();
     }
 
 

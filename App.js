@@ -13,13 +13,14 @@ import { DrawerContent } from "./screens/DraweScreen/DrawerContent"; //logueado
 import { DrawerContent2 } from "./screens/DraweScreen/DrawerContent2";  // visitante
 import { DrawerContent3 } from "./screens/DraweScreen/DrawerContent3";   //inscripto
 
-
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import RootStackScreen from "./screens/RootStackScreen";
 
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as global from "./database/variablesGlobales";
 import { AuthContext } from "./components/context";
+
+import * as crudToken from "./database/crudToken";  //Aqui esta lo del crud de token y user
 
 import { useGoogleLogin, useOnAuthStateChanged, useGoogleSignOut } from './firebase/hooks'
 import { useRegisterForPushNotificationsAsync } from './notifications/hooks';
@@ -28,20 +29,9 @@ import { useRegisterForPushNotificationsAsync } from './notifications/hooks';
 const DrawerUserLogged = createDrawerNavigator();
 
 const App = () => {
-  //Tema de colores de la app
+  
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
   const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme; //cual es que esta seleccionado
-  
-  //Solo para probar que Async Storage si guarda los datos
-  // useEffect(() => {hacer()}, [])
-
-  // const hacer = async () => {
-  //   const valueString = await AsyncStorage.getItem('DB_Notifications');
-  //   // const value = Object.entries();
-  //   const value = JSON.parse(valueString);
-  //   console.log('DB');
-  //   console.log(value)
-  // }
 
   //Manejandro Las vistas que apareceran en la app
   const [visitante,setVisitante]= useState(false);// no tiene cuenta
@@ -176,13 +166,35 @@ const App = () => {
       getExpoPushToken: () => {
         return expoPushToken ? expoPushToken : null;
       },
+      saveToken: async(Token) => {
+        await crudToken.useGuardarToken(Token);
+      },
+      deleteToken: async() => {
+        await crudToken.useEliminarToken();
+      },
+      getToken: async() => {
+        return await crudToken.useObtenerToken();
+      },
+      guardarSesion: async(ObjetSesion) => {
+        await crudToken.useGuardarSesion(ObjetSesion);
+      },
+
+      eliminarSesion: async() => {
+        await crudToken.useEliminarSesion();
+      },
+
+      obtenerDatosSesion: async() => {
+        return await crudToken.useObtenerSesion();
+      },
+
+
     }),
     []
   );
 
   useEffect(() => {
     setTimeout(async () => {
-      // setIsLoading(false);
+      
       let entrar = "true";
       await AsyncStorage.setItem("llave", entrar);
       let saveLLave = await AsyncStorage.getItem("llave");
@@ -190,6 +202,23 @@ const App = () => {
       //guardar temporalmente la global.primeravez para que cuando se resetee la aplicacion siga la informacion
       let userToken;
       userToken = "testtoken";
+
+      // let infoF={
+      //   curp: 'aumj960505hmnggs03'
+      // }
+      // crudToken.useGuardarToken(infoF);
+
+      // let us= null;
+      // us=await crudToken.useObtenerToken();
+      // console.log("probando token")
+      // console.log(us);
+      
+      // crudToken.useEliminarToken()
+
+      // us=await crudToken.useObtenerToken();
+      // console.log("probando token")
+      // console.log(us);
+
       try {
         if (global.primeraVez === true) {
           userToken = await AsyncStorage.getItem("userToken");
@@ -225,20 +254,7 @@ const App = () => {
   return (
     <PaperProvider theme={theme}>
       <AuthContext.Provider value={authContext}>
-        <NavigationContainer >
-          {/* {userLogged === true  ? (
-            <Drawer.Navigator
-              drawerContent={(props) => <DrawerContent {...props} />}
-            >
-              <Drawer.Screen name="HomeDrawer" component={MainTabScreen} />
-            
-            </Drawer.Navigator>
-          ) : (
-            <RootStackScreen />
-          )} */}
-           {/* esta pila de navegacion solo aparecera cuando el usuario se logueo con cualquier cuenta */}
-            
-              
+        <NavigationContainer >        
               {userLogged === true ? (
                 <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent {...props} />} >
                   <DrawerUserLogged.Screen name="UsuarioLogueado" component={MainTabScreen} />
@@ -258,7 +274,6 @@ const App = () => {
               {renderIF(visitante,inscripto,userLogged) === true ? (
                 <RootStackScreen />
               ) : null}
-              
         </NavigationContainer>
       </AuthContext.Provider>
     </PaperProvider>
