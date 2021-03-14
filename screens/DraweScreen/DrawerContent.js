@@ -1,38 +1,21 @@
 import React from "react";
-import {
-    View,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    Dimensions,
-    SafeAreaView,
-} from "react-native";
-import {
-    useTheme,
-    Avatar,
-    Title,
-    Caption,
-    Paragraph,
-    Drawer,
-    TouchableRipple,
-    Switch,
-} from "react-native-paper";
-//import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {View,StyleSheet,Text,TouchableOpacity,Dimensions,SafeAreaView,} from "react-native";
+import {useTheme,Avatar,Title,Caption,Paragraph,Drawer,TouchableRipple,Switch,} from "react-native-paper";
 import Icon from "react-native-vector-icons/Ionicons";
 
+import { AuthContext } from "../../components/context";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 
-import { AuthContext } from "../../components/context";
-import * as global from "../../database/variablesGlobales";
 
 
 export function DrawerContent(props) {
     
-const CorreoInst= 'Tal15020357@itsa.edu.mx';
-const paperTheme = useTheme();
-const { signOut, toggleTheme } = React.useContext(AuthContext);
+const CorreoInst= 'panchodelta1000@gmail.com';
+const foto= 'foto';
+const nombreCompleto= 'jesus alejandro'
+
 //Para cerrar 
-const { signOutUser } = React.useContext(AuthContext);
+const { signOutUser,ir_a_sesion } = React.useContext(AuthContext);
 
     return (
         <View style={{ flex: 1 }}>
@@ -48,26 +31,21 @@ const { signOutUser } = React.useContext(AuthContext);
                         }}
                         size={50}
                     />
-                    <View style={{ marginLeft: 15, flexDirection: "column" }}>
-                    <Text style={styles.title}>
-                        Instituto Tecnologico Superior de Apatzingan
-                    </Text>
-                    {global.usuarioLogueado === true ? (
+                    <View style={{ marginLeft: 10, flexDirection: "column" }}>
+                        <Text style={styles.title}>
+                            Instituto Tecnologico Superior de Apatzingan
+                        </Text>
                         <Caption style={styles.caption}>
                             {CorreoInst}
                         </Caption>
-                    ) : (
-                        <></>
-                    )}
                     </View>
                 </View>
-                </SafeAreaView>
-
-                {global.usuarioLogueado === false ? (
-                <View style={{ flexDirection: "row", marginTop: 12 }}>
+                
+                
+                <View style={{  marginTop: 12,marginBottom:50 }}>
                     <TouchableOpacity
                     onPress={() => {
-                        signOut();
+                        ir_a_sesion();
                     }}
                     style={[
                         styles.signIn,
@@ -75,55 +53,19 @@ const { signOutUser } = React.useContext(AuthContext);
                         borderColor: "#2096BA",
                         borderWidth: 1,
                         marginTop: 12,
-
                         flexDirection: "column",
                         backgroundColor: "#0064A2",
+                        
                         },
                     ]}
                     >
-                    <Text
-                        style={[
-                        styles.textSign,
-                        {
-                            color: "#fff",
-                        },
-                        ]}
-                    >
-                        Iniciar sesión
+                    <Text style={[styles.textSign,{color: "#fff",},]}>
+                        Iniciar Sesión ITSA
                     </Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity
-                    // onPress={() => navigation.navigate("Parte1Screen")}
-                    onPress={() => {
-                        signOutUser();
-                    }}
-                    style={[
-                        styles.signIn,
-                        {
-                        borderColor: "#2096BA",
-                        borderWidth: 1,
-                        marginTop: 12,
-                        marginLeft: 10,
-                        flexDirection: "column",
-                        },
-                    ]}
-                    >
-                        <Text
-                            style={[
-                                styles.textSign,
-                                {
-                                    color: "#0064A2",
-                                },
-                            ]}
-                        >
-                            Salir
-                        </Text>
-                    </TouchableOpacity>
                 </View>
-                ) : (
-                <></>
-                )}
+                </SafeAreaView>
             </View>
 
             <Drawer.Section style={styles.drawerSection}>
@@ -164,41 +106,19 @@ const { signOutUser } = React.useContext(AuthContext);
                     }}
                 />
             </Drawer.Section>
-            <Drawer.Section title="Preferencias">
-                <TouchableRipple
-                onPress={() => {
-                    toggleTheme();
-                }}
-                >
-                <View style={styles.preference}>
-                    <Text>Modo Oscuro</Text>
-                    <View pointerEvents="none">
-                    <Switch value={paperTheme.dark} />
-                    </View>
-                </View>
-                </TouchableRipple>
-            </Drawer.Section>
             </View>
         </DrawerContentScrollView>
         <Drawer.Section style={styles.bottomDrawerSection}>
-            {global.usuarioLogueado === true ? (
+            
             <DrawerItem
                 icon={({ color, size }) => (
                 <Icon name="log-out" color={color} size={size} />
                 )}
                 label="Cerrar sesión"
                 onPress={() => {
-                signOut();
+                    signOutUser();
                 }}
             />
-            ) : (
-            <DrawerItem
-                icon={({ color, size }) => (
-                <Icon name="log-out" color={color} size={size} />
-                )}
-                label=""
-            />
-            )}
         </Drawer.Section>
         </View>
     );
@@ -206,15 +126,17 @@ const { signOutUser } = React.useContext(AuthContext);
 
 const styles = StyleSheet.create({
     drawerContent: {
-        flex: 1
+        flex: 1,
+        
     },
     containerSafeArea: {
         width: Dimensions.get("window").width / 2,
-        height: 30,
-        marginBottom: 40,
+        height: 50,
+        marginBottom: 100,
+        
     },
     userInfoSection: {
-        paddingLeft: 20,
+        paddingLeft: 15,
     },
     title: {
         fontSize: 16,
@@ -228,9 +150,11 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
     },
     caption: {
-        fontSize: 14,
+        fontSize: 11,
         lineHeight: 14,
         marginTop: 10,
+        marginBottom: 10,
+        fontWeight: "bold",
     },
     row: {
         marginTop: 20,
@@ -245,6 +169,7 @@ const styles = StyleSheet.create({
     paragraph: {
         fontWeight: "bold",
         marginRight: 3,
+        
     },
     drawerSection: {
         marginTop: 15,
@@ -261,11 +186,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
     },
     signIn: {
-        width: Dimensions.get("window").width / 4,
-        height: 30,
+        width: 250,
+        height: 40,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 5,
+        
     },
     textSign: {
         fontSize: 14,

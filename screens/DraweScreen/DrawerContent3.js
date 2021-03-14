@@ -32,8 +32,7 @@ const CorreoInst= 'Tal15020357@itsa.edu.mx';
 const paperTheme = useTheme();
 const { signOut, toggleTheme } = React.useContext(AuthContext);
 //Para cerrar 
-const { signOutUser } = React.useContext(AuthContext);
-
+const { signOutUser,handleGLogin,ir_a_sesion } = React.useContext(AuthContext);
     return (
         <View style={{ flex: 1 }}>
         <DrawerContentScrollView {...props}>
@@ -48,26 +47,19 @@ const { signOutUser } = React.useContext(AuthContext);
                         }}
                         size={50}
                     />
-                    <View style={{ marginLeft: 15, flexDirection: "column" }}>
-                    <Text style={styles.title}>
-                        Instituto Tecnologico Superior de Apatzingan
-                    </Text>
-                    {global.usuarioLogueado === true ? (
-                        <Caption style={styles.caption}>
-                            {CorreoInst}
-                        </Caption>
-                    ) : (
-                        <></>
-                    )}
+                    <View style={{ marginLeft: 10, flexDirection: "column" }}>
+                        <Text style={styles.title}>
+                            Instituto Tecnologico Superior de Apatzingan
+                        </Text>
+                    
                     </View>
                 </View>
-                </SafeAreaView>
-
-                {global.usuarioLogueado === false ? (
-                <View style={{ flexDirection: "row", marginTop: 12 }}>
+                
+                
+                <View style={{ marginBottom:5,marginTop:20 }}>
                     <TouchableOpacity
                     onPress={() => {
-                        signOut();
+                        ir_a_sesion();
                     }}
                     style={[
                         styles.signIn,
@@ -75,136 +67,77 @@ const { signOutUser } = React.useContext(AuthContext);
                         borderColor: "#2096BA",
                         borderWidth: 1,
                         marginTop: 12,
-
                         flexDirection: "column",
                         backgroundColor: "#0064A2",
+                        
                         },
                     ]}
                     >
-                    <Text
-                        style={[
-                        styles.textSign,
-                        {
-                            color: "#fff",
-                        },
-                        ]}
-                    >
-                        Iniciar sesión
+                    <Text style={[styles.textSign,{color: "#fff",},]}>
+                        Iniciar Sesión ITSA
                     </Text>
                     </TouchableOpacity>
 
+                </View>
+                <View style={{marginBottom:5 }}>
                     <TouchableOpacity
-                    // onPress={() => navigation.navigate("Parte1Screen")}
-                    onPress={() => {
-                        signOutUser();
-                    }}
+                    onPress={() => {handleGLogin()}}
                     style={[
                         styles.signIn,
                         {
                         borderColor: "#2096BA",
                         borderWidth: 1,
                         marginTop: 12,
-                        marginLeft: 10,
                         flexDirection: "column",
+                        backgroundColor: "#fff",
+                        
                         },
                     ]}
                     >
-                        <Text
-                            style={[
-                                styles.textSign,
-                                {
-                                    color: "#0064A2",
-                                },
-                            ]}
-                        >
-                            Salir
-                        </Text>
+                    <Text style={[styles.textSign,{color: "#0064A2",},]}>
+                        Iniciar Sesión con Google
+                    </Text>
                     </TouchableOpacity>
+
                 </View>
-                ) : (
-                <></>
-                )}
+                    <View style={{marginBottom:5,marginTop:40 }}>
+                    
+                        <Text style={[styles.textSign,{color: "#0064A2",},]}>
+                            Bienvenido futuro ingeniero...
+                        </Text>
+                        <Caption style={styles.caption}>
+                        Para poder inscribirte al tecnologico tendras que Iniciar
+                            sesión con una cuenta proporcionada por la institución
+                        </Caption>
+
+                    </View>
+                </SafeAreaView>
             </View>
 
-            <Drawer.Section style={styles.drawerSection}>
-                <DrawerItem
-                    icon={({ color, size }) => (
-                        <Icon name="home" color={color} size={size} />
-                    )}
-                    label="Home"
-                    onPress={() => {
-                    props.navigation.navigate("Home");
-                }}
-                />
-                <DrawerItem
-                    icon={({ color, size }) => (
-                        <Icon name="ios-person" color={color} size={size} />
-                    )}
-                    label="Perfil"
-                    onPress={() => {
-                    props.navigation.navigate("Profile");
-                }}
-                />
-                <DrawerItem
-                    icon={({ color, size }) => (
-                        <Icon name="create-outline" color={color} size={size} />
-                    )}
-                    label="Inscribirse"
-                    onPress={() => {
-                    props.navigation.navigate("Inscribirse");
-                }}
-                />
-                <DrawerItem
-                    icon={({ color, size }) => (
-                        <Icon name="create" color={color} size={size} />
-                    )}
-                    label="Re-inscribirse"
-                    onPress={() => {
-                    props.navigation.navigate("SupportScreen");
-                    }}
-                />
-            </Drawer.Section>
         
             </View>
         </DrawerContentScrollView>
-        <Drawer.Section style={styles.bottomDrawerSection}>
-            {global.usuarioLogueado === true ? (
-            <DrawerItem
-                icon={({ color, size }) => (
-                <Icon name="log-out" color={color} size={size} />
-                )}
-                label="Cerrar sesión"
-                onPress={() => {
-                signOut();
-                }}
-            />
-            ) : (
-            <DrawerItem
-                icon={({ color, size }) => (
-                <Icon name="log-out" color={color} size={size} />
-                )}
-                label=""
-            />
-            )}
-        </Drawer.Section>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     drawerContent: {
-        flex: 1
+        flex: 1,
+        
     },
     containerSafeArea: {
-        width: Dimensions.get("window").width / 2,
-        height: 30,
-        marginBottom: 40,
+        width: Dimensions.get("window").width / 1.6,
+        height: Dimensions.get("window").height,
+        marginBottom: 100,
+        
+        
     },
     userInfoSection: {
-        paddingLeft: 20,
+        paddingLeft: 15,
     },
     title: {
-        fontSize: 16,
+        fontSize: 18,
         marginTop: 3,
         fontWeight: "bold",
     },
@@ -215,9 +148,11 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
     },
     caption: {
-        fontSize: 14,
+        fontSize: 12,
         lineHeight: 14,
         marginTop: 10,
+        marginBottom: 10,
+        fontWeight: "bold",
     },
     row: {
         marginTop: 20,
@@ -232,6 +167,7 @@ const styles = StyleSheet.create({
     paragraph: {
         fontWeight: "bold",
         marginRight: 3,
+        
     },
     drawerSection: {
         marginTop: 15,
@@ -248,14 +184,16 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
     },
     signIn: {
-        width: Dimensions.get("window").width / 4,
-        height: 30,
+        width: 250,
+        height: 40,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 5,
+        
     },
     textSign: {
         fontSize: 14,
         fontWeight: "bold",
     },
 });
+

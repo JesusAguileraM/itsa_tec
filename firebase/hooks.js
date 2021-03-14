@@ -6,6 +6,8 @@ import * as Google from 'expo-google-app-auth'; //google auth libraries
 import { getToken } from '../notifications/hooks';
 import Odoo from 'react-native-odoo-promise-based';
 
+
+ 
   //este efecto se ejecuta al montar el componente no lo olvides, todos los useEffect hacen eso
   //¿sabes que es lo interesante?
   //hemos creado un oyente authListener y este amiguito siempre existirá porque escuchará cuando 
@@ -15,26 +17,53 @@ import Odoo from 'react-native-odoo-promise-based';
   //    se llamará este mismo método para actualizar los datos de setUserLogged para si está logueado o no, de
   //    setIsLoading para si vamos a cargar o no, setUserProfile para guardar el usuario con sesión o null si no tiene sesión
 const useOnAuthStateChanged = () => {
+
+    
+   
     //guarda si el usuario esta logueado (observe el método Glogin)
     const [userLogged, setUserLogged] = useState(false);
+
+    const [visitante,setVisitante]= useState(false);// no tiene cuenta
+  
+    const [inscripto,setInscripto]= useState(false);// tiene cuenta institucional
+  
+    
+    
     //guarda la sesión de firestore
     const [userProfile, setUserProfile] = useState(null);
     //pues ya sabes es pera bloquear la interfaz con un circulito jjajajaja
     const [isLoading, setIsLoading] = useState(true);
+
+    
+    
     useEffect(() => {
         const authListener = Firebase.auth().onAuthStateChanged((user) => {
-          setUserLogged(user ? true : false);
-          setIsLoading(false);
-          setUserProfile(user);
+            
+            if(user ? true : false){
+                //setUserLogged(user ? true : false);
+                setUserLogged(true);
+                setVisitante(false);
+                setInscripto(false);
+            }else{
+                setUserLogged(false);
+                setVisitante(true);
+                setInscripto(false);
+            }
+            
+        
+            setIsLoading(false);
+            setUserProfile(user);
         });
         return authListener; //cuando se cierre la app se desmontará el oyente
       }, []);   
-    return {userLogged, userProfile, isLoading, setUserLogged, setUserProfile, setIsLoading};
+    return {userLogged, userProfile, isLoading ,visitante,inscripto, setUserLogged, setUserProfile, setIsLoading, setVisitante, setInscripto};
 }
 
 ///Este es el metodo chido para iniciar sesión en google
 
-const useGoogleLogin = async (setIsLoading, expoPushToken, setExpoPushToken ) => {
+const useGoogleLogin = async (setIsLoading,setVisitante,setInscripto,setUserLogged, expoPushToken, setExpoPushToken ) => {
+     
+    
 // const useGoogleLogin = async (setIsLoading) => {
     try {
         // Antes de loguearnos debemos comprobar si permitió las notificaciones, si es así continuamos, si no return
@@ -62,6 +91,9 @@ const useGoogleLogin = async (setIsLoading, expoPushToken, setExpoPushToken ) =>
         if (result.type === 'success') {
             // console.log(result); //este es el objeto de sesion correcto para empezar el logueo con firestore
             setIsLoading(true);
+            setUserLogged(false);
+            setVisitante(false);
+            setInscripto(false);
             //Creamos las credenciales para prepar todo para autentificarnos con google
             const credential = firebase.auth.GoogleAuthProvider.credential( //Set the tokens to Firebase
             result.idToken,
@@ -72,6 +104,8 @@ const useGoogleLogin = async (setIsLoading, expoPushToken, setExpoPushToken ) =>
             Firebase.auth()
             .signInWithCredential(credential) //Login to Firebase
             .then(sesion => {
+                //guardarSesion(sesion);
+                
                 // alert('Mandamos el token y correo')
                 // console.log('Mandamos el token y correo al servidor porque ya se validó que el usuario existe')
                 // console.log(sesion);
@@ -203,8 +237,20 @@ const instanciaOdoo = (matricula, token) => {
 }
 
 //cerrar la sesión de google
-const useGoogleSignOut = () => {
+const useGoogleSignOut = (setVisitante,setInscripto,setUserLogged) => {
     Firebase.auth().signOut();
+    setVisitante(true);
+    setInscripto(false);
+    setUserLogged(false);
 }
 
-export { useOnAuthStateChanged, useGoogleLogin, useGoogleSignOut } 
+const cerrarSesion_ir_a_login = (setVisitante,setInscripto,setUserLogged) => {
+    Firebase.auth().signOut();
+    setVisitante(false);
+    setInscripto(false);
+    setUserLogged(false);
+}
+
+
+
+export { useOnAuthStateChanged, useGoogleLogin, useGoogleSignOut,cerrarSesion_ir_a_login } 

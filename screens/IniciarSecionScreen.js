@@ -33,8 +33,7 @@ const IniciarSecionScreen = ({navigation}) => {
 
     const { colors } = useTheme();
 
-    const { signIn,regresarHome } = React.useContext(AuthContext);
-    const { handleGLogin } = React.useContext (AuthContext);
+    const { handleGLogin,regresarHome} = React.useContext(AuthContext);
 
     const textInputChange = (val) => {
         if( val.trim().length >= 4 ) {
@@ -91,34 +90,12 @@ const IniciarSecionScreen = ({navigation}) => {
         }
     }
 
-    const loginHandle = (userName, password) => {
-
-        const foundUser = Users.filter( item => { //estraigo con el filter del archivo user.js la informacion que solo y solo sea igual a los campos que estoy poniendo en la condicione y si coincide me regresa el vector completo de es json.
-            return userName == item.username && password == item.password;
-        } );
-
-        if ( data.username.length == 0 || data.password.length == 0 ) {//verifica que los campos esten llenos
-            Alert.alert('Campo vacio', 'Usuario o Contraseña no pueden estar vacios.', [
-                {text: 'Aceptar'}
-            ]);
-            return;
-        }
-
-        if ( foundUser.length == 0 ) { //sí el elemento filtrado es igual a 0 en foundUser significa que no existe ningun usuario igual en la base de datos
-            Alert.alert('Usuario invalido!', 'Usuario o Contraseña incorrectos', [
-                {text: 'Aceptar'}
-            ]);
-            return;
-        }
-        signIn(foundUser);
-    }
-
     return (
     <View style={styles.container}>
         <StatusBar backgroundColor='#0064A2' barStyle="light-content"/>
         <View style={styles.header}>
-            <Animatable.Text animation="bounceIn" style={styles.text_header}>Bienvenido</Animatable.Text>
-            <Animatable.Text animation="bounceIn" style={styles.text_headerBottom}>Inicia secion para poder Inscribirte</Animatable.Text>
+            <Animatable.Text animation="bounceIn" style={styles.text_header}>I T S A</Animatable.Text>
+            <Animatable.Text animation="bounceIn" style={styles.text_headerBottom}>Inicia secion para poder re-inscribirte</Animatable.Text>
             
         </View>
         <Animatable.View 
@@ -137,7 +114,7 @@ const IniciarSecionScreen = ({navigation}) => {
                     size={20}
                 />
                 <TextInput 
-                    placeholder="Correo"
+                    placeholder="Ejemplo: al15020387@itsa.edu.mx"
                     placeholderTextColor="#666666"
                     style={[styles.textInput, {
                         color: colors.text
@@ -160,7 +137,7 @@ const IniciarSecionScreen = ({navigation}) => {
             </View>
             { data.isValidUser ? null : 
             <Animatable.View animation="fadeInLeft" duration={500}>
-            <Text style={styles.errorMsg}>Usuario no valido</Text>
+            <Text style={styles.errorMsg}>No es un correo institucional</Text>
             </Animatable.View>
             }
             
@@ -217,8 +194,7 @@ const IniciarSecionScreen = ({navigation}) => {
             <View style={styles.button}>
                 <TouchableOpacity
                     style={styles.signIn}
-                    // onPress={() => {loginHandle( data.username, data.password )}}
-                    onPress={() => handleGLogin()}
+                    onPress={() => {handleGLogin()}}
                 >
                 <LinearGradient
                     colors={['#0064A2', '#2096BA']}
@@ -226,12 +202,12 @@ const IniciarSecionScreen = ({navigation}) => {
                 >
                     <Text style={[styles.textSign, {
                         color:'#fff'
-                    }]}>Iniciar Secion</Text>
+                    }]}>Iniciar Secion ITSA</Text>
                 </LinearGradient>
                 </TouchableOpacity>
             
                 <TouchableOpacity
-                    onPress={()=>navigation.navigate('Parte1Screen')}
+                    onPress={() => {handleGLogin() }}
                     style={[styles.signIn, {
                         borderColor: '#2096BA',
                         borderWidth: 1,
@@ -241,27 +217,24 @@ const IniciarSecionScreen = ({navigation}) => {
                 >
                     <Text style={[styles.textSign, {
                         color: '#0064A2'
-                    }]}>Registrarse</Text>
+                    }]}>Iniciar Sesion con Google</Text>
                 </TouchableOpacity>
                     
+
                 <TouchableOpacity
-                    style={styles.signIn}
-                    onPress={() => {regresarHome()}}
-                >
-                
-                <LinearGradient
-                    colors={['#0064A2', '#2096BA']}
-                    style={styles.regresar}
+                    onPress={() => {regresarHome() }}
+                    style={[styles.signIn, {
+                        borderColor: '#2096BA',
+                        borderWidth: 1,
+                        marginTop: 15,
+                        marginBottom: 15
+                    }]}
                 >
                     <Text style={[styles.textSign, {
-                        color:'#fff'
-                    }]}><FontAwesome 
-                    name="home"
-                    color={'#fff'}
-                    size={30}
-                />   Regresar a home</Text>
-                </LinearGradient>
+                        color: '#0064A2'
+                    }]}>Regresar</Text>
                 </TouchableOpacity>
+                    
             
 
 

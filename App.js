@@ -16,13 +16,12 @@ import { DrawerContent3 } from "./screens/DraweScreen/DrawerContent3";   //inscr
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import RootStackScreen from "./screens/RootStackScreen";
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as global from "./database/variablesGlobales";
 import { AuthContext } from "./components/context";
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as crudToken from "./database/crudToken";  //Aqui esta lo del crud de token y user
 
-import { useGoogleLogin, useOnAuthStateChanged, useGoogleSignOut } from './firebase/hooks'
+import { useGoogleLogin, useOnAuthStateChanged, useGoogleSignOut, cerrarSesion_ir_a_login} from './firebase/hooks'
 import { useRegisterForPushNotificationsAsync } from './notifications/hooks';
 
 
@@ -34,12 +33,8 @@ const App = () => {
   const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme; //cual es que esta seleccionado
 
   //Manejandro Las vistas que apareceran en la app
-  const [visitante,setVisitante]= useState(false);// no tiene cuenta
-  
-  const [inscripto,setInscripto]= useState(false);// tiene cuenta institucional
-
   //Manejo de la sesión
-  const {isLoading, userLogged, userProfile, setIsLoading, setUserLogged, setUserProfile} = useOnAuthStateChanged();
+  const {isLoading, userLogged, userProfile,visitante,inscripto, setIsLoading, setUserLogged, setUserProfile, setVisitante, setInscripto} = useOnAuthStateChanged();
   //Manejo de las notificaciones
   const {expoPushToken, setExpoPushToken }  = useRegisterForPushNotificationsAsync();
   
@@ -54,35 +49,7 @@ const App = () => {
       case "RETRIEVE_TOKEN":
         return {
           ...prevState,
-          userToken: action.token,
-          isLoading: false,
-        };
-      case "LOGIN":
-        return {
-          ...prevState,
-          userName: action.id,
-          userToken: action.token,
-          isLoading: false,
-        };
-      case "LOGOUT":
-        return {
-          ...prevState,
-          userName: null,
-          userToken: null,
-          isLoading: false,
-        };
-        
-      case "REGISTER":
-        return {
-          ...prevState,
-          userName: action.id,
-          userToken: action.token,
-          isLoading: false,
-        };
-      case "HOME":
-        return {
-          ...prevState,
-          userToken: action.token,
+          userToken: false,
           isLoading: false,
         };
     }
@@ -100,59 +67,24 @@ const App = () => {
       },
       signOutUser: () => {
         console.log('sesión cerrada')
-        useGoogleSignOut();
-        setUserLogged(false);
+        useGoogleSignOut(setVisitante,setInscripto,setUserLogged);
         setUserProfile(null)
         setIsLoading(false)
+        
       },
-      handleGLogin: () => { 
-        useGoogleLogin(setIsLoading, expoPushToken);
+      handleGLogin: async () => { 
+        useGoogleLogin(setIsLoading,setVisitante,setInscripto,setUserLogged, expoPushToken,);
       },
-      signIn: async (foundUser) => {
-        // setUserToken('fgkj');
-        // setIsLoading(false);
-        const userToken = String(foundUser[0].userToken);
-        const userName = foundUser[0].username;
-
-        try {
-          await AsyncStorage.setItem("userToken", userToken);
-          global.usuarioLogueado = true;
-        } catch (e) {
-          console.log(e);
-        }
-        // console.log('user token: ', userToken);
-        dispatch({ type: "LOGIN", id: userName, token: userToken });
+      ir_a_sesion: () => {
+        setVisitante(false);
+        setInscripto(false);
+        setUserLogged(false);
+        cerrarSesion_ir_a_login(setVisitante,setInscripto,setUserLogged);
       },
-      signOut: async () => {
-        // setUserToken(null);
-        // setIsLoading(false);
-        try {
-          await AsyncStorage.removeItem("userToken");
-          global.usuarioLogueado = false;
-        } catch (e) {
-          console.log(e);
-        }
-        dispatch({ type: "LOGOUT" });
-      },
-      signUp: async () => {
-        // setUserToken('fgkj');
-        // setIsLoading(false);
-      },
-      regresarHome: async () => {
-        // setUserToken('fgkj');
-        // setIsLoading(false);
-        let tokenHome = "testtoken";
-        const userToken = "testtoken";
-        try {
-          await AsyncStorage.setItem("userToken", userToken);
-          console.log("aqui paso goku");
-        } catch (e) {
-          console.log(e);
-        }
-        dispatch({ type: "HOME", token: userToken });
-      },
-      toggleTheme: () => {
-        setIsDarkTheme((isDarkTheme) => !isDarkTheme);
+      regresarHome: () => {
+          setVisitante(true);
+          setInscripto(false);
+          setUserLogged(false);
       },
       getIsLoading: () => {
         return isLoading;
@@ -162,7 +94,7 @@ const App = () => {
       },
       getUserProfile: () => {
         return userProfile;
-      } ,
+      },
       getExpoPushToken: () => {
         return expoPushToken ? expoPushToken : null;
       },
@@ -187,7 +119,6 @@ const App = () => {
         return await crudToken.useObtenerSesion();
       },
 
-
     }),
     []
   );
@@ -195,42 +126,7 @@ const App = () => {
   useEffect(() => {
     setTimeout(async () => {
       
-      let entrar = "true";
-      await AsyncStorage.setItem("llave", entrar);
-      let saveLLave = await AsyncStorage.getItem("llave");
-
-      //guardar temporalmente la global.primeravez para que cuando se resetee la aplicacion siga la informacion
-      let userToken;
-      userToken = "testtoken";
-
-      // let infoF={
-      //   curp: 'aumj960505hmnggs03'
-      // }
-      // crudToken.useGuardarToken(infoF);
-
-      // let us= null;
-      // us=await crudToken.useObtenerToken();
-      // console.log("probando token")
-      // console.log(us);
-      
-      // crudToken.useEliminarToken()
-
-      // us=await crudToken.useObtenerToken();
-      // console.log("probando token")
-      // console.log(us);
-
-      try {
-        if (global.primeraVez === true) {
-          userToken = await AsyncStorage.getItem("userToken");
-          global.primeraVez = false; //esta linea ya no sirve
-        } else {
-          global.primeraVez = false; //esta linea ya no sirve global
-        }
-      } catch (e) {
-        console.log(e);
-      }
-      // console.log('user token: ', userToken);
-      dispatch({ type: "RETRIEVE_TOKEN", token: userToken });
+      dispatch({ type: "RETRIEVE_TOKEN", token: true });
     }, 1000);
   }, []);
 
@@ -241,6 +137,7 @@ const App = () => {
       </View>
     );
   }
+
 
   const renderIF=(VIS,UL,INS)=> {//se encarga de desirme si visitante, usuario logueado o usuario inscripto son falsos para poder entrar a inicio de sesion
     if(VIS===false && UL===false && INS ===false){

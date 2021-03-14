@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollView: {
-    backgroundColor: "#fff",
+    
     marginHorizontal: 20,
   },
   userInfoSection: {

@@ -57,8 +57,9 @@ const Reticulas = () => {
 
 const styles = StyleSheet.create({
     contenidoCard:{
+        marginTop:30,
         width: Dimensions.get("window").width,
-        height: Dimensions.get("window").height /3 + 20,
+        height: Dimensions.get("window").height /3 +20,
     },
     
 })

@@ -1,21 +1,5 @@
-import React, { useState, useEffect } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-export let lang = "es";
-export let usuarioLogueado=false;
-export let idUsuario = 0;
-
-export let primeraVez=false;
-
-//export var res = require("../res/app_es.json");
-///////////////////////// Crud para guardar Token ////////////////////////////////////////
-//          ejemplo
-// let infoF={
-//   curp: 'aumj960505hmnggs03'
-// }
-//       crudToken.useGuardarToken(infoF);
-    
 export const useGuardarToken= async(Token)=>{
     try {
             
@@ -72,7 +56,6 @@ export const useEliminarSesion=async()=>{
 
 }
 
-
 export const useObtenerSesion=async()=>{
     try {
         
@@ -86,8 +69,6 @@ export const useObtenerSesion=async()=>{
     }
 
 }
-
-
 
 const useEliminarTodoDB_AS=async()=>{ //Elimina totalmente la base de datos (nota: solo borra cuando existan datos, sino aparecera un error)
     try {

@@ -1,7 +1,7 @@
 export let lang = "es";
-export let usuarioLogueado=false;
+export let usuarioLogueado=true;
 export let idUsuario = 0;
 
-export let primeraVez=false;
+export let primeraVez=true;
 
 //export var res = require("../res/app_es.json");

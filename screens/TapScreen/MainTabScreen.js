@@ -10,6 +10,9 @@ import DetailsScreen from "../DetailsScreen";
 import ExploreScreen from "../ExploreScreen";
 import ProfileScreen from "../ProfileScreen";
 import NotificationScreen from  "../NotificationScreen";
+import IniciarSecionScreen from "../IniciarSecionScreen";
+
+
 import SingleStorage from '../../database/singleStorage';
 
 const HomeStack = createStackNavigator();
