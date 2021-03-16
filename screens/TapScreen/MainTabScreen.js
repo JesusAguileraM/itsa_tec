@@ -3,6 +3,12 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
+import {
+  View,
+  StyleSheet,
+  StatusBar,
+  Dimensions,
+} from "react-native";
 
 
 import HomeScreen from "../HomeScreen";
@@ -12,6 +18,7 @@ import ProfileScreen from "../ProfileScreen";
 import NotificationScreen from  "../NotificationScreen";
 import IniciarSecionScreen from "../IniciarSecionScreen";
 
+import { Appbar,Avatar,Text } from 'react-native-paper';
 
 import SingleStorage from '../../database/singleStorage';
 
@@ -20,6 +27,10 @@ const DetailsStack = createStackNavigator();
 const NotificationStack = createStackNavigator();
 
 const Tab = createMaterialBottomTabNavigator();
+
+let fotoUsuario= "https://maryza.gnomio.com/pluginfile.php/2/course/section/1/logoTecNM.png";
+let nombreCompleto="Jesus Alejandro Aguilera Magaña";
+let correo="panchodelta1000@gmail.com";
 
 
 const MainTabScreen = () => (
@@ -100,7 +111,7 @@ const HomeStackScreen = ({ navigation }) => (
       name="Home"
       component={HomeScreen}
       options={{
-        title: "Home",
+        title: "ITSA",
         headerLeft: () => (
           <Icon.Button
             name="ios-menu"
@@ -109,6 +120,20 @@ const HomeStackScreen = ({ navigation }) => (
             onPress={() => navigation.openDrawer()}
           ></Icon.Button>
         ),
+        headerRight:()=>(
+          <View style={{ flexDirection: "row",alignItems:'center'}}>
+            <View style={{alignItems:'flex-end' }}>
+              <Text style={{ marginRight: 5,marginBottom:5,color:'#fff', justifyContent:'flex-end', fontSize: 12,fontWeight: "bold",}}>Alum. ITSA</Text>
+              <Text style={{ marginRight: 5,color:'#fff',fontSize: 10,fontWeight: "200",}}>{nombreCompleto}</Text>
+            </View>
+            
+            <Avatar.Image
+                          style={{ marginLeft: 5,marginRight: 5}}
+                          source={{uri:fotoUsuario,}}
+                          size={50}
+                      />
+          </View>
+          )
       }}
     />
   </HomeStack.Navigator>
@@ -137,6 +162,20 @@ const NotificationStackScreen = ({navigation}) => (
             onPress={() => navigation.openDrawer()}
           />
         ),
+        headerRight:()=>(
+          <View style={{ flexDirection: "row",alignItems:'center'}}>
+            <View style={{alignItems:'flex-end' }}>
+              <Text style={{ marginRight: 5,marginBottom:5,color:'#fff', justifyContent:'flex-end', fontSize: 12,fontWeight: "bold",}}>Alum. ITSA</Text>
+              <Text style={{ marginRight: 5,color:'#fff',fontSize: 10,fontWeight: "200",}}>{nombreCompleto}</Text>
+            </View>
+            
+            <Avatar.Image
+                          style={{ marginLeft: 5,marginRight: 5}}
+                          source={{uri:fotoUsuario,}}
+                          size={50}
+                      />
+          </View>
+          )
       }}
     />
   </NotificationStack.Navigator>
@@ -158,6 +197,7 @@ const DetailsStackScreen = ({ navigation }) => (
       name="Inscribirse"
       component={DetailsScreen}
       options={{
+        title: "Inscripción",
         headerLeft: () => (
           <Icon.Button
             name="ios-menu"
@@ -166,6 +206,20 @@ const DetailsStackScreen = ({ navigation }) => (
             onPress={() => navigation.openDrawer()}
           ></Icon.Button>
         ),
+        headerRight:()=>(
+          <View style={{ flexDirection: "row",alignItems:'center'}}>
+            <View style={{alignItems:'flex-end' }}>
+              <Text style={{ marginRight: 5,marginBottom:5,color:'#fff', justifyContent:'flex-end', fontSize: 12,fontWeight: "bold",}}>Alum. ITSA</Text>
+              <Text style={{ marginRight: 5,color:'#fff',fontSize: 10,fontWeight: "200",}}>{nombreCompleto}</Text>
+            </View>
+            
+            <Avatar.Image
+                          style={{ marginLeft: 5,marginRight: 5}}
+                          source={{uri:fotoUsuario,}}
+                          size={50}
+                      />
+          </View>
+          )
       }}
     />
   </DetailsStack.Navigator>

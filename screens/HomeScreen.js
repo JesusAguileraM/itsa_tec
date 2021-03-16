@@ -9,6 +9,8 @@ import {
 import Carousel from "../components/Carousel";
 import Reticulas from '../components/Reticulas';
 import { dummyData } from "../database/Data"; //data para carrusel
+import { Appbar } from 'react-native-paper';
+
 
 
 const HomeScreen = ({ navigation }) => {

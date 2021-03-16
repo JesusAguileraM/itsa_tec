@@ -38,7 +38,7 @@ export const useObtenerToken=async()=>{
 export const useGuardarSesion=async(UserObjet)=>{
     try {
         console.log('UserSesion guardado exitosamente')
-        await AsyncStorage.setItem("UserSesion", JSON.stringify(Us_Objet));
+        await AsyncStorage.setItem("UserSesion", JSON.stringify(UserObjet));
     } catch (e) {
         console.log(e);
         console.log('Hubu un error al guardar el UserSesion')
@@ -58,16 +58,15 @@ export const useEliminarSesion=async()=>{
 
 export const useObtenerSesion=async()=>{
     try {
-        
+        const US2=[];
         const UserS= await AsyncStorage.getItem('UserSesion');
-        const US= JSON.parse(UserS);
-        return US;
+        
+        return UserS;
     } catch (e) {
         console.log(e);
         console.log('Hubu un error al guardar el Token')
         return null;
     }
-
 }
 
 const useEliminarTodoDB_AS=async()=>{ //Elimina totalmente la base de datos (nota: solo borra cuando existan datos, sino aparecera un error)

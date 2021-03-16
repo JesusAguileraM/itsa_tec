@@ -125,7 +125,7 @@ const App = () => {
 
   useEffect(() => {
     setTimeout(async () => {
-      
+      const S=crudToken.useObtenerSesion();
       dispatch({ type: "RETRIEVE_TOKEN", token: true });
     }, 1000);
   }, []);

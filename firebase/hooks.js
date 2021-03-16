@@ -5,9 +5,9 @@ import Constants from 'expo-constants'; //So we can read app.json extra
 import * as Google from 'expo-google-app-auth'; //google auth libraries
 import { getToken } from '../notifications/hooks';
 import Odoo from 'react-native-odoo-promise-based';
+import * as crudToken from "../database/crudToken";  //Aqui esta lo del crud de token y user
 
 
- 
   //este efecto se ejecuta al montar el componente no lo olvides, todos los useEffect hacen eso
   //¿sabes que es lo interesante?
   //hemos creado un oyente authListener y este amiguito siempre existirá porque escuchará cuando 
@@ -104,8 +104,7 @@ const useGoogleLogin = async (setIsLoading,setVisitante,setInscripto,setUserLogg
             Firebase.auth()
             .signInWithCredential(credential) //Login to Firebase
             .then(sesion => {
-                //guardarSesion(sesion);
-                
+                crudToken.useGuardarSesion(sesion.additionalUserInfo.profile);
                 // alert('Mandamos el token y correo')
                 // console.log('Mandamos el token y correo al servidor porque ya se validó que el usuario existe')
                 // console.log(sesion);

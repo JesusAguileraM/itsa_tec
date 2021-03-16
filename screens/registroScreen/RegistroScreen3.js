@@ -73,8 +73,7 @@ const RegistroScreen3 = ({navigation}) => {
         });
     }
     const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
-    const [ carreras, setCarreras ] = useState("");
-    const [ turno, setTurno ] = useState("");
+    
 
     return (
     <View style={styles.container}>

@@ -26,9 +26,9 @@ const RegistrarseScreen = ({ navigation }) => {
     const [visible, setVisible] = useState(false);
     const showDialog = () => setVisible(true);
     const hideDialog = () => {
-    setVisible(false);
-    navigation.navigate("IniciarSecionScreen");
-};
+        setVisible(false);
+        navigation.navigate("IniciarSecionScreen");
+    };
 
     return (
     <View style={styles.container}>
