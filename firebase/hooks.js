@@ -19,14 +19,13 @@ import * as crudToken from "../database/crudToken";  //Aqui esta lo del crud de 
 const useOnAuthStateChanged = () => {
 
     
-   
     //guarda si el usuario esta logueado (observe el método Glogin)
     const [userLogged, setUserLogged] = useState(false);
 
     const [visitante,setVisitante]= useState(false);// no tiene cuenta
-  
+
     const [inscripto,setInscripto]= useState(false);// tiene cuenta institucional
-  
+
     
     
     //guarda la sesión de firestore
@@ -79,6 +78,7 @@ const useGoogleLogin = async (setIsLoading,setVisitante,setInscripto,setUserLogg
         } else {
             // console.log('Token indefinido pedimos de nuevo 2')
             token = await getToken();
+            //crudToken.useGuardarToken(token);
             // console.log(token);
         }
 
@@ -105,7 +105,7 @@ const useGoogleLogin = async (setIsLoading,setVisitante,setInscripto,setUserLogg
             .signInWithCredential(credential) //Login to Firebase
             .then(sesion => {
                 crudToken.useGuardarSesion(sesion.additionalUserInfo.profile);
-
+                
                 // console.log(sesion.additionalUserInfo.profile)
                 // console.log(sesion.additionalUserInfo.profile.email)
                 
@@ -246,19 +246,13 @@ const instanciaOdoo = (matricula, token) => {
 //cerrar la sesión de google
 const useGoogleSignOut = (setVisitante,setInscripto,setUserLogged) => {
     Firebase.auth().signOut();
+    crudToken.useEliminarSesion();
+    crudToken.useEliminarToken();
     setVisitante(true);
     setInscripto(false);
     setUserLogged(false);
 
 }
-
-// const cerrarSesion_ir_a_login = (setVisitante,setInscripto,setUserLogged) => {
-//     Firebase.auth().signOut();
-//     setVisitante(false);
-//     setInscripto(false);
-//     setUserLogged(false);
-// }
-
 
 
 export { useOnAuthStateChanged, useGoogleLogin, useGoogleSignOut} 

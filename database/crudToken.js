@@ -58,10 +58,10 @@ export const useEliminarSesion=async()=>{
 
 export const useObtenerSesion=async()=>{
     try {
-        const US2=[];
-        const UserS= await AsyncStorage.getItem('UserSesion');
         
-        return UserS;
+        const UserS= await AsyncStorage.getItem('UserSesion');
+        const User= JSON.parse(UserS);
+        return User;
     } catch (e) {
         console.log(e);
         console.log('Hubu un error al guardar el Token')

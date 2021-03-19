@@ -1,22 +1,38 @@
-import React from "react";
+import React, { useState, useEffect,useRef } from 'react';
 import {View,StyleSheet,Text,TouchableOpacity,Dimensions,SafeAreaView,} from "react-native";
 import {useTheme,Avatar,Title,Caption,Paragraph,Drawer,TouchableRipple,Switch,} from "react-native-paper";
 import Icon from "react-native-vector-icons/Ionicons";
-
+import AsyncStorage from "@react-native-community/async-storage";
 import { AuthContext } from "../../components/context";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
-
+import * as crudToken from "../../database/crudToken";  //Aqui esta lo del crud de token y user
 
 
 export function DrawerContent(props) {
+
+    let DatosGoogle=null;
+
+    const [CorreoInst, setCorreoInst]= useState('');
+    const [foto, setFoto]= useState('');
+    const [nombre, setNombre]= useState('');
     
-const CorreoInst= 'panchodelta1000@gmail.com';
-const foto= 'foto';
-const nombreCompleto= 'jesus alejandro'
 
-//Para cerrar 
-const { signOutUser,ir_a_sesion } = React.useContext(AuthContext);
+    //Para cerrar 
+    const { signOutUser,ir_a_sesion } = React.useContext(AuthContext);
 
+    
+    useEffect(() => {
+        (async () => {
+            DatosGoogle= await crudToken.useObtenerSesion();
+            await setCorreoInst(DatosGoogle.email);
+            await setFoto(DatosGoogle.picture);
+            await setNombre(DatosGoogle.name);
+            await AsyncStorage.setItem('CorreoElectronicoUsuario',CorreoInst);
+            await AsyncStorage.setItem('FotoUsuario',foto);
+            await AsyncStorage.setItem('NombreUsuario',nombre);
+
+        })();
+    }, []);
     return (
         <View style={{ flex: 1 }}>
         <DrawerContentScrollView {...props}>
@@ -26,8 +42,7 @@ const { signOutUser,ir_a_sesion } = React.useContext(AuthContext);
                 <View style={{ flexDirection: "row", marginTop: 15 }}>
                     <Avatar.Image
                         source={{
-                            uri:
-                            "https://maryza.gnomio.com/pluginfile.php/2/course/section/1/logoTecNM.png",
+                            uri:foto,
                         }}
                         size={50}
                     />
