@@ -12,7 +12,6 @@ import { getToken } from '../notifications/hooks';
 import RNPickerSelect from 'react-native-picker-select';
 
 
-
 const DetailsScreen = ({ navigation }) => 
 {
     const camRef= useRef(null);
@@ -25,6 +24,9 @@ const DetailsScreen = ({ navigation }) =>
     const [visible, setVisible] = useState(false);
     const showDialog = () => setVisible(true);
     const hideDialog = () => { setVisible(false);terminarProceso();};
+
+
+////////Es toda la informacion recogida de la app (recuerda que si los agarras sin completar el formulario seran null)
 
     const [data, setData] = React.useState({
         Nombre: "",
@@ -39,10 +41,6 @@ const DetailsScreen = ({ navigation }) =>
         Telefono_Aprobado: false,
     });
 
-
-
-////////Es toda la informacion recogida de la app (recuerda que si los agarras sin completar el formulario seran null)
-
     //datos del usuario
     let dataUser=[
         {   name: data.Nombre, 
@@ -54,28 +52,6 @@ const DetailsScreen = ({ navigation }) =>
             turno: turno
         }
     ];
-    //fotos del usuario
-    let dataFoto=[
-        {   acta_N_Foto: {acta_N_Foto}, 
-            diploma_B_Foto: {diploma_B_Foto},
-            curp_Foto: {curp_Foto},
-            estudio_H_Foto: {estudio_H_Foto},
-        }
-    ];
-
-
-    const terminarProceso=()=>{ //se encarga de ejecutar el ultimo paso de inscripcion
-
-
-        setContinuar5(false);
-        setContinuar1(true);
-        setBarraProces(0);
-        
-    }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
 
     const [acta_N_Foto, setAct_N_Foto] =useState(null);//Acta nacimiento
     const [diploma_B_Foto, setDiploma_B_Foto] =useState(null);// constancia de bachillerato
@@ -85,8 +61,7 @@ const DetailsScreen = ({ navigation }) =>
     const [ carreras, setCarreras ] = useState("");
     const [ turno, setTurno ] = useState("");
 
-
-
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const [no_Documento, setNo_Documento] =useState(1);//Para saber que documento hago referencia
     const [continuar1,setContinuar1] = useState(true);
@@ -97,7 +72,7 @@ const DetailsScreen = ({ navigation }) =>
     const [continuar6,setContinuar6] = useState(false);
 
     const [barraProces,setBarraProces]=useState(0.18);
-    
+
     const procesoCompletado1=()=>{
         setContinuar1(false);
         setContinuar2(true);
@@ -119,10 +94,6 @@ const DetailsScreen = ({ navigation }) =>
         setColorProgress('#00bb2d');
         setBarraProces(1);
     }
-   
-
-    
-
      
     const saveDataUser=async(data)=>{
         try {
@@ -133,6 +104,16 @@ const DetailsScreen = ({ navigation }) =>
         const pruebaData = await AsyncStorage.getItem("DataUser");
         // console.log('Prueba data')
         // console.log(pruebaData);
+    }
+
+    //se encarga de ejecutar el ultimo paso de inscripcion
+    const terminarProceso=()=>{
+        // console.log(dataUser)
+        // console.log(dataFoto)
+        setContinuar5(false);
+        setContinuar1(true);
+        setBarraProces(0);
+        
     }
 
     //cuando presiono enviar
@@ -542,7 +523,6 @@ const DetailsScreen = ({ navigation }) =>
         });
         }
     };
-  
 
     useEffect(() => {
         (async () => {
@@ -557,7 +537,6 @@ const DetailsScreen = ({ navigation }) =>
     if (hasPermission === false) {
         return <Text>No access to camera</Text>;
     }
-
 
     const tomarFoto = async(DocumentoFoto) => {
         switch (DocumentoFoto) {
@@ -615,7 +594,6 @@ const DetailsScreen = ({ navigation }) =>
 
     }
 
-    
     return (
         <SafeAreaView style={styles.container}>
             {activarCamara === true ? (

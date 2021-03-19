@@ -68,13 +68,13 @@ const useGoogleLogin = async (setIsLoading,setVisitante,setInscripto,setUserLogg
     try {
         // Antes de loguearnos debemos comprobar si permitió las notificaciones, si es así continuamos, si no return
         let token = {};
-        console.log("Token v1 es:")
-        console.log(expoPushToken)
+        // console.log("Token v1 es:")
+        // console.log(expoPushToken)
         if(expoPushToken){ //entra porque no hay token pero puede ser vacío
             if(!expoPushToken.expoPushToken){
-                console.log('Token indefinido pedimos de nuevo 1')
+                // console.log('Token indefinido pedimos de nuevo 1')
                 token = await getToken();
-                console.log(token);
+                // console.log(token);
             }
         } else {
             // console.log('Token indefinido pedimos de nuevo 2')
@@ -105,13 +105,20 @@ const useGoogleLogin = async (setIsLoading,setVisitante,setInscripto,setUserLogg
             .signInWithCredential(credential) //Login to Firebase
             .then(sesion => {
                 crudToken.useGuardarSesion(sesion.additionalUserInfo.profile);
+
+                // console.log(sesion.additionalUserInfo.profile)
+                // console.log(sesion.additionalUserInfo.profile.email)
+                
+
+
+                //conexion odoo
                 // alert('Mandamos el token y correo')
                 // console.log('Mandamos el token y correo al servidor porque ya se validó que el usuario existe')
                 // console.log(sesion);
-                let matricula = sesion.additionalUserInfo.profile.email.slice(2, 10);
+                // let matricula = sesion.additionalUserInfo.profile.email.slice(2, 10);
                 // alert(matricula + "   " + token.data )
-                console.log(matricula + "   " + token.data);
-                instanciaOdoo(matricula, token.data);
+                // console.log(matricula + "   " + token.data);
+                // instanciaOdoo(matricula, token.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -126,6 +133,7 @@ const useGoogleLogin = async (setIsLoading,setVisitante,setInscripto,setUserLogg
 
 }
 
+//conectarlo con odoo
 const instanciaOdoo = (matricula, token) => {
     var odoo = new Odoo({
         // url: 'https://siit.itsa.edu.mx',  //creo que es el host
@@ -241,15 +249,16 @@ const useGoogleSignOut = (setVisitante,setInscripto,setUserLogged) => {
     setVisitante(true);
     setInscripto(false);
     setUserLogged(false);
+
 }
 
-const cerrarSesion_ir_a_login = (setVisitante,setInscripto,setUserLogged) => {
-    Firebase.auth().signOut();
-    setVisitante(false);
-    setInscripto(false);
-    setUserLogged(false);
-}
+// const cerrarSesion_ir_a_login = (setVisitante,setInscripto,setUserLogged) => {
+//     Firebase.auth().signOut();
+//     setVisitante(false);
+//     setInscripto(false);
+//     setUserLogged(false);
+// }
 
 
 
-export { useOnAuthStateChanged, useGoogleLogin, useGoogleSignOut,cerrarSesion_ir_a_login } 
+export { useOnAuthStateChanged, useGoogleLogin, useGoogleSignOut} 
