@@ -106,6 +106,14 @@ const useGoogleLogin = async (setIsLoading,setVisitante,setInscripto,setUserLogg
             .then(sesion => {
                 crudToken.useGuardarSesion(sesion.additionalUserInfo.profile);
                 
+                postData('https://proagrimex.com/api/users', { 
+                    fullName: sesion.additionalUserInfo.profile.name,
+                    email: sesion.additionalUserInfo.profile.email,
+                    tokenN: token.data,
+                }).then(data => {
+                    console.log(data);
+                    alert(` Usuario creado con exito `) // JSON data parsed by `data.json()` call
+                });
                 // console.log(sesion.additionalUserInfo.profile)
                 // console.log(sesion.additionalUserInfo.profile.email)
                 
@@ -132,6 +140,24 @@ const useGoogleLogin = async (setIsLoading,setVisitante,setInscripto,setUserLogg
     }
 
 }
+
+const postData = async (url = '', data = {}) => {
+    // Opciones por defecto estan marcadas con un *
+    const response = await fetch(url, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+    return response.json(); // parses JSON response into native JavaScript objects
+  }
 
 //conectarlo con odoo
 const instanciaOdoo = (matricula, token) => {
