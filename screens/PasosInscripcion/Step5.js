@@ -12,7 +12,7 @@ const ComprobarPago = (props) => {
     const showDialog = () => setVisible(true);
     const hideDialog = () => { 
         setVisible(false);
-        terminarProceso();
+        props.terminarProceso();
     };
 
     useEffect(() => {
@@ -61,7 +61,7 @@ const ComprobarPago = (props) => {
                 </SafeAreaView>
                 <TouchableOpacity
                 style={styles.button}
-                onPress={() => {cambiarACamara(5, false)}}>
+                onPress={() => {props.cambiarACamara(5, false)}}>
                 <View style={{ justifyContent: "center" }}>
                     <Text style={styles.textC}>Tomar foto</Text>
                 </View>

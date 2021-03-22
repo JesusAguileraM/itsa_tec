@@ -723,9 +723,10 @@ const InscripcionesScreen = ({ navigation }) =>
             : null }
 
             { continuar5 ?  
-                <ComprobarPago 
+                <Steps.Step5 
                     comprobantePagoFoto={pagoFoto}
                     cambiarACamara={cambiarACamara}
+                    terminarProceso={terminarProceso}
                 />
             : null }
             
