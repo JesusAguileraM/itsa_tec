@@ -4,11 +4,138 @@ import {Divider,Surface,Portal,Dialog,Paragraph,} from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 const ConstanciaMedicaCURP = (props) => {
 
-
-
     return (
-        <View>
-        </View>
+        <SafeAreaView style={{flex:1}}>
+            <View style={styles.containerFoto}>
+                <Surface>
+                    <TouchableOpacity
+                        style={styles.imagenFoto}
+                        onPress={() => {
+                            //setActivarCamara(false)
+                        }}
+                    >
+                        <Image 
+                        style={styles.foto}
+                        source={{uri:props.curp_Foto}}
+                    />
+                    </TouchableOpacity>
+                </Surface>
+
+                <View style={{}}>
+                <SafeAreaView style={{width: Dimensions.get("window").width/2}}>
+                    <Text style={{fontSize:18,fontWeight: "bold",}}>
+                        C U R P
+                    </Text>
+                    <Divider/>
+                    <Divider/>
+                    <Text>
+                        - Asegurate que este iluminado la zona donde se tomara la foto.
+                    </Text>
+                    
+                    <Text>
+                        - Asegurarse sea legible.
+                    </Text>
+                </SafeAreaView>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {props.cambiarACamara(3, false)}}
+                    >
+                    <View style={{justifyContent: 'center',}}>
+                        <Text  style={styles.textC} >Tomar foto</Text>
+                    </View>
+                </TouchableOpacity>
+
+                </View>
+
+            </View>
+            <Divider />
+            <View style={styles.containerFoto}>
+                <Surface>
+                    <TouchableOpacity
+                        style={styles.imagenFoto}
+                        onPress={() => {
+                            //setActivarCamara(false)
+                        }}
+                    >
+                        <Image 
+                        style={styles.foto}
+                        source={{uri:props.estudio_H_Foto}}  
+                    />
+                    </TouchableOpacity>
+                </Surface>
+
+                <View style={{}}>
+                    <SafeAreaView style={{width: Dimensions.get("window").width/2}}>
+                        <Text style={{fontSize:18,fontWeight: "bold",}}>
+                            Estudio de tipo de sangre
+                        </Text>
+                        <Divider/>
+                        <Divider/>
+                        <Text>
+                            - Asegurate que este iluminado la zona donde se tomara la foto.
+                        </Text>
+                        
+                        <Text>
+                            - Asegurarse sea legible.
+                        </Text>
+                    </SafeAreaView>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => {props.cambiarACamara(4, false)}}
+                            >
+                            <View style={{justifyContent: 'center',}}>
+                                <Text  style={styles.textC} >Tomar foto</Text>
+                            </View>
+                        </TouchableOpacity>
+                </View>
+
+            </View>
+            <Divider />
+            {props.estudio_H_Foto != null && props.curp_Foto != null ? 
+                <TouchableOpacity
+                        style={styles2.signIn}
+                        onPress={props.procesoCompletado4}
+                    >
+                            <LinearGradient
+                                colors={["#2096BA", "#2096BA"]}
+                                style={styles2.signIn}
+                            >
+                                <Text
+                                style={[
+                                    styles2.textSign,
+                                    {
+                                    color: "#fff",
+                                    },
+                                ]}
+                                >
+                                    Parte 4/5
+                                </Text>
+                            </LinearGradient>
+                </TouchableOpacity>
+            :null}
+                <View style={styles2.button}>
+                    <TouchableOpacity
+                        style={styles2.signIn}
+                        onPress={props.regresar_al_P3}
+                    >
+                        <LinearGradient
+                            colors={["#fff", "#fff"]}
+                            style={styles2.signIn}
+                        >
+                            <Text
+                            style={[
+                                styles2.textSign,
+                                {
+                                color: "#05375a",
+                                },
+                            ]}
+                            >
+                                Regresar
+                            </Text>
+                        </LinearGradient>
+                    </TouchableOpacity>
+                </View>
+            </SafeAreaView>
     );
 };
 

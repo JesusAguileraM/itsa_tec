@@ -1,17 +1,14 @@
 import {View,Text,Button,StyleSheet,Dimensions,TouchableOpacity,SafeAreaView,ScrollView,Image,StatusBar,TextInput,Platform,} from "react-native";
 import React, { useState, useEffect,useRef } from 'react';
 import { Camera } from 'expo-camera';
-import Feather from "react-native-vector-icons/Feather";
 import { ProgressBar,Divider,Surface,Portal,Dialog,Paragraph,} from "react-native-paper";
 import AsyncStorage from "@react-native-community/async-storage";
-import * as Animatable from "react-native-animatable";
 import { LinearGradient } from "expo-linear-gradient";
 import Odoo from 'react-native-odoo-promise-based';
 import { getToken } from '../notifications/hooks';
 import * as Steps from './PasosInscripcion/index';
-import ComprobarPago from './ComprobarPago';
-import * as valid from '../util/valadaciones';
-
+// import ComprobarPago from './ComprobarPago';
+import Feather from "react-native-vector-icons/Feather";
 
 //Styles
 import {styles, styles2} from './styles/datailsScreen';
@@ -25,6 +22,7 @@ const InscripcionesScreen = ({ navigation }) =>
     const [activarCamara, setActivarCamara] = useState(true);
     const [colorProgres,setColorProgress]=useState('#05375a')
     const [cumpleanos,setCumpleanos]=useState('05/05/1996')
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 ////////Es toda la informacion recogida de la app (recuerda que si los agarras sin completar el formulario seran null)
 
     const [data, setData] = React.useState({
@@ -35,13 +33,13 @@ const InscripcionesScreen = ({ navigation }) =>
         Telefono: "",
         Fecha_nacimiento:"",
         sexo:"",
-        NombreAprobado: false,
-        ApellidoP_Aprobado: false,
-        ApellidoM_Aprobado: false,
-        Curp_Aprobado: false,
-        Telefono_Aprobado: false,
-        Fecha_nacimiento_Aprobado:false,
-        sexo_Aprobado:false,
+        NombreAprobado: true,
+        ApellidoP_Aprobado: true,
+        ApellidoM_Aprobado: true,
+        Curp_Aprobado: true,
+        Telefono_Aprobado: true,
+        Fecha_nacimiento_Aprobado:true,
+        sexo_Aprobado:true,
     });
 
     
@@ -247,11 +245,6 @@ const InscripcionesScreen = ({ navigation }) =>
            });
     }
 
-    
-
-    
-
-
     useEffect(() => {
         (async () => {
             const { status } = await Camera.requestPermissionsAsync();
@@ -337,6 +330,14 @@ const InscripcionesScreen = ({ navigation }) =>
         hideDatePicker();
     };
 
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+    };
+
+    const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+    };
+
     const setSexo = (sexo) => {
         setData({
             ...data,
@@ -344,340 +345,432 @@ const InscripcionesScreen = ({ navigation }) =>
             sexo_Aprobado: true,
     })}
 
+    const establecerCarreras = (valor) => {
+        setCarreras(valor)
+    }
+
+    const establecerTurno = (valor) => {
+        setTurno(valor)
+    }
+
+    const cambiarACamara = (value1, value2) => {
+        setNo_Documento(value1); 
+        setActivarCamara(value2);
+    }
+
+    ///no mover los siguientes eventos
+    const textInputNameChange = (nameUser) => {
+        let val = nameUser.toUpperCase();
+        if (val.length >= 3) {
+        for (let index = 0; index < val.length; index++) {
+            if (
+            val.charAt(index) != "1" &&
+            val.charAt(index) != "2" &&
+            val.charAt(index) != "3" &&
+            val.charAt(index) != "4" &&
+            val.charAt(index) != "5" &&
+            val.charAt(index) != "6" &&
+            val.charAt(index) != "7" &&
+            val.charAt(index) != "8" &&
+            val.charAt(index) != "9" &&
+            val.charAt(index) != "0" &&
+            val.charAt(index) != "," &&
+            val.charAt(index) != "." &&
+            val.charAt(index) != "@" &&
+            val.charAt(index) != '"' &&
+            val.charAt(index) != "_" &&
+            val.charAt(index) != "-" &&
+            val.charAt(index) != "&" &&
+            val.charAt(index) != "$" &&
+            val.charAt(index) != "!" &&
+            val.charAt(index) != "¡" &&
+            val.charAt(index) != "¿" &&
+            val.charAt(index) != "?" &&
+            val.charAt(index) != "=" &&
+            val.charAt(index) != "+" &&
+            val.charAt(index) != ":" &&
+            val.charAt(index) != ";" &&
+            val.charAt(index) != "(" &&
+            val.charAt(index) != ")" &&
+            val.charAt(index) != "/" &&
+            val.charAt(index) != "*" &&
+            val.charAt(index) != "'"
+            ) {
+            setData({
+                ...data,
+                Nombre: val,
+                NombreAprobado: true,
+            });
+            } else {
+            setData({
+                ...data,
+                Nombre: val,
+                NombreAprobado: false,
+            });
+            index = val.length;
+            }
+        }
+        } else {
+        setData({
+            ...data,
+            Nombre: val,
+            NombreAprobado: false,
+        });
+        }
+    };
+    
+    const textInputApellidoPChange = (apellidoPUser) => {
+        let val = apellidoPUser.toUpperCase();
+        if (val.length >= 3) {
+        for (let index = 0; index < val.length; index++) {
+            if (
+            val.charAt(index) != "1" &&
+            val.charAt(index) != "2" &&
+            val.charAt(index) != "3" &&
+            val.charAt(index) != "4" &&
+            val.charAt(index) != "5" &&
+            val.charAt(index) != "6" &&
+            val.charAt(index) != "7" &&
+            val.charAt(index) != "8" &&
+            val.charAt(index) != "9" &&
+            val.charAt(index) != "0" &&
+            val.charAt(index) != "," &&
+            val.charAt(index) != "." &&
+            val.charAt(index) != "@" &&
+            val.charAt(index) != '"' &&
+            val.charAt(index) != "_" &&
+            val.charAt(index) != "-" &&
+            val.charAt(index) != "&" &&
+            val.charAt(index) != "$" &&
+            val.charAt(index) != "!" &&
+            val.charAt(index) != "¡" &&
+            val.charAt(index) != "¿" &&
+            val.charAt(index) != "?" &&
+            val.charAt(index) != "=" &&
+            val.charAt(index) != "+" &&
+            val.charAt(index) != ":" &&
+            val.charAt(index) != ";" &&
+            val.charAt(index) != "(" &&
+            val.charAt(index) != ")" &&
+            val.charAt(index) != "/" &&
+            val.charAt(index) != "*" &&
+            val.charAt(index) != "'"
+            ) {
+            setData({
+                ...data,
+                ApellidoP: val,
+                ApellidoP_Aprobado: true,
+            });
+            } else {
+            setData({
+                ...data,
+                ApellidoP: val,
+                ApellidoP_Aprobado: false,
+            });
+            index = val.length;
+            }
+        }
+        } else {
+        setData({
+            ...data,
+            ApellidoP: val,
+            ApellidoP_Aprobado: false,
+        });
+        }
+    };
+    
+    const textInputApellidoMChange = (apellidoMUser) => {
+        let val = apellidoMUser.toUpperCase();
+        if (val.length >= 3) {
+        for (let index = 0; index < val.length; index++) {
+            if (
+            val.charAt(index) != "1" &&
+            val.charAt(index) != "2" &&
+            val.charAt(index) != "3" &&
+            val.charAt(index) != "4" &&
+            val.charAt(index) != "5" &&
+            val.charAt(index) != "6" &&
+            val.charAt(index) != "7" &&
+            val.charAt(index) != "8" &&
+            val.charAt(index) != "9" &&
+            val.charAt(index) != "0" &&
+            val.charAt(index) != "," &&
+            val.charAt(index) != "." &&
+            val.charAt(index) != "@" &&
+            val.charAt(index) != '"' &&
+            val.charAt(index) != "_" &&
+            val.charAt(index) != "-" &&
+            val.charAt(index) != "&" &&
+            val.charAt(index) != "$" &&
+            val.charAt(index) != "!" &&
+            val.charAt(index) != "¡" &&
+            val.charAt(index) != "¿" &&
+            val.charAt(index) != "?" &&
+            val.charAt(index) != "=" &&
+            val.charAt(index) != "+" &&
+            val.charAt(index) != ":" &&
+            val.charAt(index) != ";" &&
+            val.charAt(index) != "(" &&
+            val.charAt(index) != ")" &&
+            val.charAt(index) != "/" &&
+            val.charAt(index) != "*" &&
+            val.charAt(index) != "'"
+            ) {
+            setData({
+                ...data,
+                ApellidoM: val,
+                ApellidoM_Aprobado: true,
+            });
+            } else {
+            setData({
+                ...data,
+                ApellidoM: val,
+                ApellidoM_Aprobado: false,
+            });
+            index = val.length;
+            }
+        }
+        } else {
+        setData({
+            ...data,
+            ApellidoM: val,
+            ApellidoM_Aprobado: false,
+        });
+        }
+    };
+    
+      //Función para validar una CURP
+    const curpValida = (curp) => {
+        let re = /^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/;
+        let validado = curp.match(re); //este metodo lo unico que hace es regresarme una cadena que este entre los rangos de la variable re, revisar la documentacion de javascript .mach
+    
+        if (!validado)
+        //Coincide con el formato general?
+        return false;
+    
+        //Validar que coincida el dígito verificador
+        const digitoVerificador = (curp17) => {
+        //Fuente https://consultas.curp.gob.mx/CurpSP/
+        var diccionario = "0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZ",
+            lngSuma = 0.0,
+            lngDigito = 0.0;
+        for (var i = 0; i < 17; i++)
+            lngSuma = lngSuma + diccionario.indexOf(curp17.charAt(i)) * (18 - i);
+        lngDigito = 10 - (lngSuma % 10);
+        if (lngDigito == 10) return 0;
+        return lngDigito;
+        };
+    
+        if (validado[2] != digitoVerificador(validado[1])) return false;
+    
+        return true; //Validado
+    };
+    
+    //Lleva la CURP a mayúsculas para validarlo
+    const validarInputCurp = (val) => {
+        let curp = val.toUpperCase();
+        // console.log("curp: " + curp);
+        if (curpValida(curp)) {
+        //  Acá se comprueba
+        setData({
+            ...data,
+            Curp: curp,
+            Curp_Aprobado: true,
+        });
+        } else {
+        setData({
+            ...data,
+            Curp: curp,
+            Curp_Aprobado: false,
+        });
+        }
+    };
+    
+    const textInputTelChange = (numero) => {
+        let val = numero.toUpperCase();
+        if (val.length == 10) {
+        for (let index = 0; index < val.length; index++) {
+            if (
+            val.charAt(index) != " " &&
+            val.charAt(index) != "A" &&
+            val.charAt(index) != "B" &&
+            val.charAt(index) != "C" &&
+            val.charAt(index) != "D" &&
+            val.charAt(index) != "E" &&
+            val.charAt(index) != "F" &&
+            val.charAt(index) != "G" &&
+            val.charAt(index) != "H" &&
+            val.charAt(index) != "I" &&
+            val.charAt(index) != "J" &&
+            val.charAt(index) != "K" &&
+            val.charAt(index) != "L" &&
+            val.charAt(index) != "M" &&
+            val.charAt(index) != "N" &&
+            val.charAt(index) != "Ñ" &&
+            val.charAt(index) != "O" &&
+            val.charAt(index) != "P" &&
+            val.charAt(index) != "Q" &&
+            val.charAt(index) != "R" &&
+            val.charAt(index) != "S" &&
+            val.charAt(index) != "T" &&
+            val.charAt(index) != "W" &&
+            val.charAt(index) != "X" &&
+            val.charAt(index) != "Y" &&
+            val.charAt(index) != "Z" &&
+            val.charAt(index) != "," &&
+            val.charAt(index) != "." &&
+            val.charAt(index) != "@" &&
+            val.charAt(index) != '"' &&
+            val.charAt(index) != "_" &&
+            val.charAt(index) != "-" &&
+            val.charAt(index) != "&" &&
+            val.charAt(index) != "$" &&
+            val.charAt(index) != "!" &&
+            val.charAt(index) != "¡" &&
+            val.charAt(index) != "¿" &&
+            val.charAt(index) != "?" &&
+            val.charAt(index) != "=" &&
+            val.charAt(index) != "+" &&
+            val.charAt(index) != ":" &&
+            val.charAt(index) != ";" &&
+            val.charAt(index) != "(" &&
+            val.charAt(index) != ")" &&
+            val.charAt(index) != "/" &&
+            val.charAt(index) != "*" &&
+            val.charAt(index) != "'"
+            ) {
+            setData({
+                ...data,
+                Telefono: val,
+                Telefono_Aprobado: true,
+            });
+            
+            } else {
+            setData({
+                ...data,
+                Telefono: val,
+                Telefono_Aprobado: false,
+            });
+            index = val.length;
+            }
+        }
+        } else {
+        setData({
+            ...data,
+            Telefono: val,
+            Telefono_Aprobado: false,
+        });
+        }
+    };
+
     return (
         <SafeAreaView style={styles.container}>
-            {activarCamara === true ? (
-            <View  style={{flex:1,alignItems: 'center'}}>
-                <Text style={{fontSize:20, color:"#05375a",marginBottom:10,marginTop:10}}>Proceso de Inscripcion</Text>
+        {activarCamara === true ? (
+        <View  style={{flex:1,alignItems: 'center'}}>
+            <Text style={{fontSize:20, color:"#05375a",marginBottom:10,marginTop:10}}>Proceso de Inscripcion</Text>
 
-                <ScrollView>
-                <ProgressBar progress={barraProces} color={colorProgres} />
-                
-                { continuar3 ?  
-                    <SafeAreaView style={{flex:1, }}>
-                        
-                        <View style={styles.containerFoto}>
-                            <Surface>
-                                <TouchableOpacity
-                                    style={styles.imagenFoto}
-                                    onPress={() => {
-                                        //setActivarCamara(false)
-                                    }}
-                                >
-                                    <Image 
-                                    style={styles.foto}
-                                    source={{uri:acta_N_Foto}}
-                                />
-                                </TouchableOpacity>
-                            </Surface>
+            <ScrollView>
+            <ProgressBar progress={barraProces} color={colorProgres} />
+            
+            { continuar1 ?  
+                <Steps.Step1 procesoCompletado1={procesoCompletado1}
+                    cumpleanos={cumpleanos}
+                    isDatePickerVisible={isDatePickerVisible}
+                    setSexo={setSexo} 
+                    data={data} 
+                    showDatePicker={showDatePicker}
+                    handleConfirm={handleConfirm} 
+                    hideDatePicker={hideDatePicker}
+                    textInputNameChange ={textInputNameChange}
+                    textInputApellidoPChange={textInputApellidoPChange}
+                    textInputApellidoMChange={textInputApellidoMChange}
+                    validarInputCurp={validarInputCurp}
+                    textInputTelChange={textInputTelChange}
+                />
+            : null }
 
-                            <View style={{}}>
-                            <SafeAreaView style={{width: Dimensions.get("window").width/2}}>
-                                <Text style={{fontSize:18,fontWeight: "bold",}}>
-                                    Acta de nacimiento
-                                </Text>
-                                <Divider/>
-                                <Divider/>
-                                <Text>
-                                    - Asegurate que este iluminado la zona donde se tomara la foto.
-                                </Text>
-                                
-                                <Text>
-                                    - Asegurarse sea legible.
-                                </Text>
-                            </SafeAreaView>
-                            <TouchableOpacity
-                                style={styles.button}
-                                onPress={() => {setNo_Documento(1),setActivarCamara(false)}}
-                                >
-                                <View style={{justifyContent: 'center',}}>
-                                    <Text  style={styles.textC} >Tomar foto</Text>
-                                </View>
-                            </TouchableOpacity>
+            { continuar2 ?  
+                <Steps.Step2 
+                    data={data}
+                    carreras={carreras}
+                    turno={turno}
+                    establecerCarreras={establecerCarreras}
+                    establecerTurno={establecerTurno}
+                    textInputApellidoPChange={textInputApellidoPChange}
+                    procesoCompletado2={procesoCompletado2}
+                    regresar_al_P1={regresar_al_P1}
+                />
+            : null }
 
-                            </View>
+            { continuar3 ?  
+                <Steps.Step3 
+                    acta_N_Foto={acta_N_Foto}
+                    diploma_B_Foto={diploma_B_Foto}
+                    procesoCompletado3={procesoCompletado3}
+                    cambiarACamara={cambiarACamara}
+                    regresar_al_P2={regresar_al_P2}
+                />
+            : null }
 
-                        </View>
-                        <Divider />
-                        <View style={styles.containerFoto}>
-                            <Surface>
-                                <TouchableOpacity
-                                    style={styles.imagenFoto}
-                                    onPress={() => {
-                                        //setActivarCamara(false)
-                                    }}
-                                >
-                                    <Image 
-                                    style={styles.foto}
-                                    source={{uri:diploma_B_Foto}}
-                                />
-                                </TouchableOpacity>
-                            </Surface>
+            { continuar4 ?  
+                <Steps.Step4 
+                    curp_Foto={curp_Foto}
+                    estudio_H_Foto={estudio_H_Foto}
+                    cambiarACamara={cambiarACamara}
+                    regresar_al_P3={regresar_al_P3}
+                    procesoCompletado4={procesoCompletado4}
+                />
+            : null }
 
-                            <View style={{}}>
-                            <SafeAreaView style={{width: Dimensions.get("window").width/2}}>
-                                <Text style={{fontSize:18,fontWeight: "bold",}}>
-                                Constancia de bachillerato
-                                </Text>
-                                <Divider/>
-                                <Divider/>
-                                <Text>
-                                    - Asegurate que este iluminado la zona donde se tomara la foto.
-                                </Text>
-                                
-                                <Text>
-                                    - Asegurarse sea legible.
-                                </Text>
-                            </SafeAreaView>
-                            <TouchableOpacity
-                                style={styles.button}
-                                onPress={() => {setNo_Documento(2),setActivarCamara(false)}}
-                                >
-                                <View style={{justifyContent: 'center',}}>
-                                    <Text  style={styles.textC} >Tomar foto</Text>
-                                </View>
-                            </TouchableOpacity>
+            { continuar5 ?  
+                <ComprobarPago 
+                    comprobantePagoFoto={pagoFoto}
+                    cambiarACamara={cambiarACamara}
+                />
+            : null }
+            
+            </ScrollView>
+        </View>
+        ) : (
+            
+        <Camera ref={camRef} style={styles.container} type={type}>
+            <View style={styles.buttonContainerC}>
+            <TouchableOpacity
+                style={styles.buttonC}
+                    onPress={() => {
+                    setActivarCamara(true);
+                }}
+            >
+                <Feather name="arrow-left" color="#fff" size={35} />
+            </TouchableOpacity>
 
-                            </View>
-                            
-
-                        </View>
-                        <Divider />
-                        {acta_N_Foto != null && diploma_B_Foto != null ? 
-                            <TouchableOpacity style={styles2.signIn}
-                                    onPress={() => {procesoCompletado3();}}
-                                    >
-                                        <LinearGradient colors={["#2096BA", "#2096BA"]} style={styles2.signIn}>
-                                            <Text style={[styles2.textSign,{color: "#fff",},]}>
-                                                Parte 3/5
-                                            </Text>
-                                        </LinearGradient>
-                            </TouchableOpacity>
-                        :null }
-                        <View style={styles2.button}>
-                                <TouchableOpacity
-                                    style={styles2.signIn}
-                                    onPress={() => {
-                                        regresar_al_P2();
-                                    }}
-                                >
-                                    <LinearGradient
-                                        colors={["#fff", "#fff"]}
-                                        style={styles2.signIn}
-                                    >
-                                        <Text
-                                        style={[
-                                            styles2.textSign,
-                                            {
-                                            color: "#05375a",
-                                            },
-                                        ]}
-                                        >
-                                            Regresar
-                                        </Text>
-                                    </LinearGradient>
-                            </TouchableOpacity>
-                        </View>
-                </SafeAreaView>
-                : null }
-
-                { continuar4 ?  
-                    <SafeAreaView style={{flex:1}}>
+            <TouchableOpacity
+                style={styles.buttonC}
+                onPress={() => {
+                    tomarFoto_Salir(no_Documento);
                     
-                    <View style={styles.containerFoto}>
-                        <Surface>
-                            <TouchableOpacity
-                                style={styles.imagenFoto}
-                                onPress={() => {
-                                    //setActivarCamara(false)
-                                }}
-                            >
-                                <Image 
-                                style={styles.foto}
-                                source={{uri:curp_Foto}}
-                            />
-                            </TouchableOpacity>
-                        </Surface>
+                }}
+            >
+                <Feather name="circle" color="white" size={50} />
+            </TouchableOpacity>
 
-                        <View style={{}}>
-                        <SafeAreaView style={{width: Dimensions.get("window").width/2}}>
-                            <Text style={{fontSize:18,fontWeight: "bold",}}>
-                                C U R P
-                            </Text>
-                            <Divider/>
-                            <Divider/>
-                            <Text>
-                                - Asegurate que este iluminado la zona donde se tomara la foto.
-                            </Text>
-                            
-                            <Text>
-                                - Asegurarse sea legible.
-                            </Text>
-                        </SafeAreaView>
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => {setNo_Documento(3),setActivarCamara(false)}}
-                            >
-                            <View style={{justifyContent: 'center',}}>
-                                <Text  style={styles.textC} >Tomar foto</Text>
-                            </View>
-                        </TouchableOpacity>
-
-                        </View>
-
-                    </View>
-                    <Divider />
-                    <View style={styles.containerFoto}>
-                        <Surface>
-                            <TouchableOpacity
-                                style={styles.imagenFoto}
-                                onPress={() => {
-                                    //setActivarCamara(false)
-                                }}
-                            >
-                                <Image 
-                                style={styles.foto}
-                                source={{uri:estudio_H_Foto}}  
-                            />
-                            </TouchableOpacity>
-                        </Surface>
-
-                        <View style={{}}>
-                            <SafeAreaView style={{width: Dimensions.get("window").width/2}}>
-                                <Text style={{fontSize:18,fontWeight: "bold",}}>
-                                    Estudio de tipo de sangre
-                                </Text>
-                                <Divider/>
-                                <Divider/>
-                                <Text>
-                                    - Asegurate que este iluminado la zona donde se tomara la foto.
-                                </Text>
-                                
-                                <Text>
-                                    - Asegurarse sea legible.
-                                </Text>
-                            </SafeAreaView>
-                                <TouchableOpacity
-                                    style={styles.button}
-                                    onPress={() => {setNo_Documento(4),setActivarCamara(false)}}
-                                    >
-                                    <View style={{justifyContent: 'center',}}>
-                                        <Text  style={styles.textC} >Tomar foto</Text>
-                                    </View>
-                                </TouchableOpacity>
-                        </View>
-
-                    </View>
-                    <Divider />
-                    {estudio_H_Foto != null && curp_Foto != null ? 
-                        <TouchableOpacity
-                                style={styles2.signIn}
-                                onPress={() => {
-                                    procesoCompletado4();
-                                }}
-                            >
-                                    <LinearGradient
-                                        colors={["#2096BA", "#2096BA"]}
-                                        style={styles2.signIn}
-                                    >
-                                        <Text
-                                        style={[
-                                            styles2.textSign,
-                                            {
-                                            color: "#fff",
-                                            },
-                                        ]}
-                                        >
-                                            Parte 4/5
-                                        </Text>
-                                    </LinearGradient>
-                        </TouchableOpacity>
-                    :null}
-
-                                        <View style={styles2.button}>
-                                            <TouchableOpacity
-                                                style={styles2.signIn}
-                                                onPress={() => {
-                                                    regresar_al_P3();
-                                                }}
-                                            >
-                                                <LinearGradient
-                                                    colors={["#fff", "#fff"]}
-                                                    style={styles2.signIn}
-                                                >
-                                                    <Text
-                                                    style={[
-                                                        styles2.textSign,
-                                                        {
-                                                        color: "#05375a",
-                                                        },
-                                                    ]}
-                                                    >
-                                                        Regresar
-                                                    </Text>
-                                                </LinearGradient>
-                                            </TouchableOpacity>
-                                        </View>
-                </SafeAreaView>
-                : null }
-
-                
-                { continuar2 ?  
-                    <Steps.Step2 />
-                : null }
-
-
-                { continuar5 ?  
-                    <ComprobarPago uri={pagoFoto}/>
-                : null }
-
-
-                { continuar1 ?  
-                    <Steps.Step1 valid={valid} procesoCompletado1={procesoCompletado1} setSexo={setSexo} data={data} handleConfirm={handleConfirm}/>
-                : null }
-                
-                </ScrollView>
+            <TouchableOpacity
+                style={styles.buttonC}
+                onPress={() => {
+                setType(
+                    type === Camera.Constants.Type.back
+                    ? Camera.Constants.Type.front
+                    : Camera.Constants.Type.back
+                );
+                }}
+            >
+                <Feather name="refresh-cw" color="white" size={35} />
+            </TouchableOpacity>
             </View>
-            ) : (
-                
-            <Camera ref={camRef} style={styles.container} type={type}>
-                <View style={styles.buttonContainerC}>
-                <TouchableOpacity
-                    style={styles.buttonC}
-                        onPress={() => {
-                        setActivarCamara(true);
-                    }}
-                >
-                    <Feather name="arrow-left" color="#fff" size={35} />
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    style={styles.buttonC}
-                    onPress={() => {
-                        tomarFoto_Salir(no_Documento);
-                        
-                    }}
-                >
-                    <Feather name="circle" color="white" size={50} />
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    style={styles.buttonC}
-                    onPress={() => {
-                    setType(
-                        type === Camera.Constants.Type.back
-                        ? Camera.Constants.Type.front
-                        : Camera.Constants.Type.back
-                    );
-                    }}
-                >
-                    <Feather name="refresh-cw" color="white" size={35} />
-                </TouchableOpacity>
-                </View>
-            </Camera>
-            )}
-        </SafeAreaView>
-        );
+        </Camera>
+        )}
+    </SafeAreaView>
+    );
 };
 
 export default InscripcionesScreen;

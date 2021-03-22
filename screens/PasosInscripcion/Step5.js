@@ -42,7 +42,7 @@ const ComprobarPago = (props) => {
                     //setActivarCamara(false)
                 }}
                 >
-                <Image style={styles.foto} source={{ uri:props.uri }} />
+                <Image style={styles.foto} source={{ uri:props.comprobantePagoFoto }} />
                 </TouchableOpacity>
             </Surface>
 
@@ -61,10 +61,7 @@ const ComprobarPago = (props) => {
                 </SafeAreaView>
                 <TouchableOpacity
                 style={styles.button}
-                onPress={() => {
-                    setNo_Documento(5), setActivarCamara(false);
-                }}
-                >
+                onPress={() => {cambiarACamara(5, false)}}>
                 <View style={{ justifyContent: "center" }}>
                     <Text style={styles.textC}>Tomar foto</Text>
                 </View>
@@ -74,10 +71,7 @@ const ComprobarPago = (props) => {
             <View style={styles2.button}>
             <TouchableOpacity
                 style={styles2.signIn}
-                onPress={() => {
-                showDialog();
-                }}
-            >
+                onPress={() => {showDialog();}}>
                 <LinearGradient
                 colors={["#05375a", "#2096BA"]}
                 style={styles2.signIn}

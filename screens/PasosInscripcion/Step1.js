@@ -1,21 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import {View,Text,Button,StyleSheet,Dimensions,TouchableOpacity,SafeAreaView,ScrollView,Image,StatusBar,TextInput,Platform,} from "react-native";
-import {Divider,Surface,Portal,Dialog,Paragraph,} from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import * as Animatable from "react-native-animatable";
+import Feather from "react-native-vector-icons/Feather";
 
 const InformacionPersonal = (props) => {
-    
-    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
-    const showDatePicker = () => {
-        setDatePickerVisibility(true);
-    };
-
-    const hideDatePicker = () => {
-        setDatePickerVisibility(false);
-    };
 
     return (
         <View>
@@ -23,10 +14,10 @@ const InformacionPersonal = (props) => {
                 <Text style={styles2.text_footer}>Nombre del Alumno</Text>
                 <View style={styles2.action}>
                     <TextInput
-                    placeholder="Nombre Completo"
-                    style={styles2.textInput}
-                    autoCapitalize="none"
-                    onChangeText={(val) => props.valid.textInputNameChange(val)}
+                        placeholder="Nombre Completo"
+                        style={styles2.textInput}
+                        autoCapitalize="none"
+                        onChangeText={props.textInputNameChange}
                     />
                     {props.data.NombreAprobado ? (
                     <Animatable.View animation="bounceIn">
@@ -41,7 +32,7 @@ const InformacionPersonal = (props) => {
                     placeholder="Primer Apellido"
                     style={styles2.textInput}
                     autoCapitalize="none"
-                    onChangeText={(val) => props.valid.textInputApellidoPChange(val)}
+                    onChangeText={props.textInputApellidoPChange}
                     />
                     {props.data.ApellidoP_Aprobado ? (
                     <Animatable.View animation="bounceIn">
@@ -56,7 +47,7 @@ const InformacionPersonal = (props) => {
                     placeholder="Segundo apellido"
                     style={styles2.textInput}
                     autoCapitalize="none"
-                    onChangeText={(val) => props.valid.textInputApellidoMChange(val)}
+                    onChangeText={props.textInputApellidoMChange}
                     />
                     {props.data.ApellidoM_Aprobado ? (
                     <Animatable.View animation="bounceIn">
@@ -71,11 +62,7 @@ const InformacionPersonal = (props) => {
                     placeholder="Ejemp. PEMM780912MBCLRR00"
                     style={styles2.textInput}
                     autoCapitalize="none"
-                    onChangeText={(val) => {
-                        
-                        // console.log(val);
-                        return props.valid.validarInputCurp(val);
-                    }}
+                    onChangeText={props.validarInputCurp}
                     />
                     {props.data.Curp_Aprobado ? (
                     <Animatable.View animation="bounceIn">
@@ -90,7 +77,7 @@ const InformacionPersonal = (props) => {
                     placeholder="4531231234 nota: sin espacios"
                     style={styles2.textInput}
                     autoCapitalize="none"
-                    onChangeText={(val) => props.valid.textInputTelChange(val)}
+                    onChangeText={props.textInputTelChange}
                     />
                     {props.data.Telefono_Aprobado ? (
                     <Animatable.View animation="bounceIn">
@@ -119,12 +106,12 @@ const InformacionPersonal = (props) => {
                 <Text style={styles2.text_footer}>Fecha de nacimiento</Text>
                 <View style={{width:200,height:10,marginBottom:60}}>
 
-                    {props.data.Fecha_nacimiento_Aprobado ? <Text style={{color:'grey',margin:5,marginLeft:10}}>{cumpleanos}</Text>:<Text style={{color:'grey',margin:5,marginLeft:10}}>1990/01/01</Text>}
-                    <Button title="Selecciona tu fecha de nacimiento" onPress={showDatePicker} style={{backgroundColor:"#05375a"}} />
-                    <DateTimePickerModal isVisible={isDatePickerVisible} 
+                    {props.data.Fecha_nacimiento_Aprobado ? <Text style={{color:'grey',margin:5,marginLeft:10}}>{props.cumpleanos}</Text>:<Text style={{color:'grey',margin:5,marginLeft:10}}>1990/01/01</Text>}
+                    <Button title="Selecciona tu fecha de nacimiento" onPress={props.showDatePicker} style={{backgroundColor:"#05375a"}} />
+                    <DateTimePickerModal isVisible={props.isDatePickerVisible} 
                         mode="date"
                         onConfirm={props.handleConfirm}
-                        onCancel={hideDatePicker}
+                        onCancel={props.hideDatePicker}
                         date={new Date('01/01/2004')}
                     />
                 </View>
@@ -196,7 +183,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems:'center',
         width: Dimensions.get("window").width,
-        
     
     },
     foto:{

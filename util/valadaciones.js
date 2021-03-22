@@ -58,7 +58,7 @@ const textInputNameChange = (nameUser, setData, data) => {
     }
 };
 
-const textInputApellidoPChange = (apellidoPUser, setData, data) => {
+const textInputApellidoPChange = (apellidoPUser) => {
     let val = apellidoPUser.toUpperCase();
     if (val.length >= 3) {
     for (let index = 0; index < val.length; index++) {
@@ -118,7 +118,7 @@ const textInputApellidoPChange = (apellidoPUser, setData, data) => {
     }
 };
 
-const textInputApellidoMChange = (apellidoMUser, setData, data) => {
+const textInputApellidoMChange = (apellidoMUser) => {
     let val = apellidoMUser.toUpperCase();
     if (val.length >= 3) {
     for (let index = 0; index < val.length; index++) {
@@ -206,7 +206,7 @@ const curpValida = (curp) => {
 };
 
 //Lleva la CURP a mayúsculas para validarlo
-const validarInputCurp = (val, setData, data) => {
+const validarInputCurp = (val) => {
     let curp = val.toUpperCase();
     // console.log("curp: " + curp);
     if (curpValida(curp)) {
@@ -225,7 +225,7 @@ const validarInputCurp = (val, setData, data) => {
     }
 };
 
-const textInputTelChange = (numero, setData, data) => {
+const textInputTelChange = (numero) => {
     let val = numero.toUpperCase();
     if (val.length == 10) {
     for (let index = 0; index < val.length; index++) {

@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import {View,Text,Button,StyleSheet,Dimensions,TouchableOpacity,SafeAreaView,ScrollView,Image,StatusBar,TextInput,Platform,} from "react-native";
-import {Divider,Surface,Portal,Dialog,Paragraph,} from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
+import RNPickerSelect from 'react-native-picker-select';
+import * as Animatable from "react-native-animatable";
+import Feather from "react-native-vector-icons/Feather";
 const InformacionEscolar = (props) => {
 
     return (
@@ -9,14 +11,14 @@ const InformacionEscolar = (props) => {
             <Text style={{color:'#05375a',fontSize:18,marginLeft:10,marginTop:20,fontWeight: "bold",}}>Datos de Carrera</Text>
                 <View style={{marginTop:10}}>
                     <Text style={{fontSize:16}}>
-                        {carreras ?
-                        `-- Carrera ${carreras}` :
+                        {props.carreras ?
+                        `-- Carrera ${props.carreras}` :
                             "¿Que carrera le interesa?"
                         }
                     </Text>
                     <RNPickerSelect
                         useNativeAndroidPickerStyle={false}
-                        onValueChange={(carreras) => setCarreras(carreras)}
+                        onValueChange={props.establecerCarreras}
                         items={[
                             { label: "Ing. Sistemas Computacionales", value: "IISC" },
                             { label: "Ing. Informatica", value: "IINF" },
@@ -32,10 +34,10 @@ const InformacionEscolar = (props) => {
                 </View> 
 
             <View style={{marginTop:30}}>
-                <Text style={{fontSize:16}}> {turno ? `-- Turno ${turno}` : "¿Que turno le interesa inscribirse?"}</Text>
+                <Text style={{fontSize:16}}> {props.turno ? `-- Turno ${props.turno}` : "¿Que turno le interesa inscribirse?"}</Text>
                         <RNPickerSelect
                             useNativeAndroidPickerStyle={false}
-                            onValueChange={(turno) => setTurno(turno)}
+                            onValueChange={props.establecerTurno}
                             items={[
                                 { label: "Matutino", value: "Matutino" },
                                 { label: "Verpertino", value: "Verpertino" },
@@ -47,10 +49,10 @@ const InformacionEscolar = (props) => {
             <Text style={{color:'#05375a',fontSize:18,marginLeft:10,marginTop:30,fontWeight: "bold",}}>Datos de Direccion</Text>
                 
             <View style={{marginTop:30}}>
-                <Text style={{fontSize:16}}> {turno ? `-- Turno ${turno}` : "Estado"}</Text>
+                <Text style={{fontSize:16}}> {props.turno ? `-- Turno ${props.turno}` : "Estado"}</Text>
                         <RNPickerSelect
                             useNativeAndroidPickerStyle={false}
-                            onValueChange={(turno) => setTurno(turno)}
+                            onValueChange={props.establecerTurno}
                             items={[
                                 { label: "Matutino", value: "Matutino" },
                                 { label: "Verpertino", value: "Verpertino" },
@@ -60,10 +62,10 @@ const InformacionEscolar = (props) => {
             </View>
 
             <View style={{marginTop:30}}>
-                <Text style={{fontSize:16}}> {turno ? `-- Turno ${turno}` : "Municipio"}</Text>
+                <Text style={{fontSize:16}}> {props.turno ? `-- Turno ${props.turno}` : "Municipio"}</Text>
                         <RNPickerSelect
                             useNativeAndroidPickerStyle={false}
-                            onValueChange={(turno) => setTurno(turno)}
+                            onValueChange={props.establecerTurno}
                             items={[
                                 { label: "Matutino", value: "Matutino" },
                                 { label: "Verpertino", value: "Verpertino" },
@@ -73,10 +75,10 @@ const InformacionEscolar = (props) => {
             </View>
 
             <View style={{marginTop:30}}>
-                <Text style={{fontSize:16}}> {turno ? `-- Turno ${turno}` : "Colonia"}</Text>
+                <Text style={{fontSize:16}}> {props.turno ? `-- Turno ${props.turno}` : "Colonia"}</Text>
                         <RNPickerSelect
                             useNativeAndroidPickerStyle={false}
-                            onValueChange={(turno) => setTurno(turno)}
+                            onValueChange={props.establecerTurno}
                             items={[
                                 { label: "Matutino", value: "Matutino" },
                                 { label: "Verpertino", value: "Verpertino" },
@@ -86,10 +88,10 @@ const InformacionEscolar = (props) => {
             </View>
 
             <View style={{marginTop:30}}>
-                <Text style={{fontSize:16}}> {turno ? `-- Turno ${turno}` : "Poblacion"}</Text>
+                <Text style={{fontSize:16}}> {props.turno ? `-- Turno ${props.turno}` : "Poblacion"}</Text>
                         <RNPickerSelect
                             useNativeAndroidPickerStyle={false}
-                            onValueChange={(turno) => setTurno(turno)}
+                            onValueChange={props.establecerTurno}
                             items={[
                                 { label: "Matutino", value: "Matutino" },
                                 { label: "Verpertino", value: "Verpertino" },
@@ -104,9 +106,9 @@ const InformacionEscolar = (props) => {
                 placeholder="Primer Apellido"
                 style={styles2.textInput}
                 autoCapitalize="none"
-                onChangeText={(val) => valid.textInputApellidoPChange(val, setData, data)}
+                onChangeText={props.textInputApellidoPChange}
                 />
-                {data.ApellidoP_Aprobado ? (
+                {props.data.ApellidoP_Aprobado ? (
                 <Animatable.View animation="bounceIn">
                     <Feather name="check-circle" color="green" size={20} />
                 </Animatable.View>
@@ -119,9 +121,9 @@ const InformacionEscolar = (props) => {
                 placeholder="Primer Apellido"
                 style={styles2.textInput}
                 autoCapitalize="none"
-                onChangeText={(val) => valid.textInputApellidoPChange(val, setData, data)}
+                onChangeText={props.textInputApellidoPChange}
                 />
-                {data.ApellidoP_Aprobado ? (
+                {props.data.ApellidoP_Aprobado ? (
                 <Animatable.View animation="bounceIn">
                     <Feather name="check-circle" color="green" size={20} />
                 </Animatable.View>
@@ -134,9 +136,9 @@ const InformacionEscolar = (props) => {
                 placeholder="Primer Apellido"
                 style={styles2.textInput}
                 autoCapitalize="none"
-                onChangeText={(val) => valid.textInputApellidoPChange(val, setData, data)}
+                onChangeText={props.textInputApellidoPChange}
                 />
-                {data.ApellidoP_Aprobado ? (
+                {props.data.ApellidoP_Aprobado ? (
                 <Animatable.View animation="bounceIn">
                     <Feather name="check-circle" color="green" size={20} />
                 </Animatable.View>
@@ -146,13 +148,11 @@ const InformacionEscolar = (props) => {
 
 
 
-            {carreras!=null && turno!=null ? 
+            {props.carreras!=null && props.turno!=null ? 
                 <View style={styles2.button}>
                     <TouchableOpacity
                         style={styles2.signIn}
-                        onPress={() => {
-                            procesoCompletado2();
-                        }}
+                        onPress={props.procesoCompletado2}
                     >
                         <LinearGradient
                             colors={["#2096BA", "#2096BA"]}
@@ -175,9 +175,7 @@ const InformacionEscolar = (props) => {
                 <View style={styles2.button}>
                     <TouchableOpacity
                         style={styles2.signIn}
-                        onPress={() => {
-                            regresar_al_P1();
-                        }}
+                        onPress={props.regresar_al_P1}
                     >
                         <LinearGradient
                             colors={["#fff", "#fff"]}
