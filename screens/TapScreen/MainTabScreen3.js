@@ -6,11 +6,11 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 
 import HomeScreen from "../HomeScreen";
-import DetailsScreen from "../DetailsScreen";
+// import Inscripciones from "../InscripcionesScreen";
 import ExploreScreen from "../ExploreScreen";
 import ProfileScreen from "../ProfileScreen";
-import NotificationScreen from  "../NotificationScreen";
-import SingleStorage from '../../database/singleStorage';
+// import NotificationScreen from  "../NotificationScreen";
+// import SingleStorage from '../../database/singleStorage';
 
 const HomeStack = createStackNavigator();
 const DetailsStack = createStackNavigator();

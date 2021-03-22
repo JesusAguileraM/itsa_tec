@@ -6,7 +6,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 
 import HomeScreen from "../HomeScreen";
-import DetailsScreen from "../DetailsScreen";
+import Inscripciones from "../InscripcionesScreen";
 import ExploreScreen from "../ExploreScreen";
 import ProfileScreen from "../ProfileScreen";
 //import NotificationScreen from  "./NotificationScreen";
@@ -152,7 +152,7 @@ const DetailsStackScreen = ({ navigation }) => (
   >
     <DetailsStack.Screen
       name="Inscribirse"
-      component={DetailsScreen}
+      component={Inscripciones}
       options={{
         headerLeft: () => (
           <Icon.Button
