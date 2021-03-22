@@ -58,17 +58,6 @@ const MainTabScreen = () => {
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          tabBarLabel: "Perfil",
-          tabBarColor: "#808684",
-          tabBarIcon: ({ color }) => (
-            <Icon name="ios-person" color={color} size={26} />
-          ),
-        }}
-      />
-      <Tab.Screen
         name="Info"
         component={ExploreScreen}
         options={{
