@@ -10,29 +10,29 @@ import * as crudToken from "../../database/crudToken";  //Aqui esta lo del crud 
 
 export function DrawerContent(props) {
 
-    let DatosGoogle=null;
+    // let DatosGoogle=null;
 
-    const [CorreoInst, setCorreoInst]= useState('');
-    const [foto, setFoto]= useState('https://maryza.gnomio.com/pluginfile.php/2/course/section/1/logoTecNM.png');
-    const [nombre, setNombre]= useState('Usuario');
+    // const [CorreoInst, setCorreoInst]= useState('');
+    // const [foto, setFoto]= useState('https://maryza.gnomio.com/pluginfile.php/2/course/section/1/logoTecNM.png');
+    // const [nombre, setNombre]= useState('Usuario');
     
 
     //Para cerrar 
     const { signOutUser,ir_a_sesion } = React.useContext(AuthContext);
 
     
-    useEffect(() => {
-        (async () => {
-            DatosGoogle= await crudToken.useObtenerSesion();
-            await setCorreoInst(DatosGoogle.email);
-            await setFoto(DatosGoogle.picture);
-            await setNombre(DatosGoogle.name);
-            await AsyncStorage.setItem('CorreoElectronicoUsuario',CorreoInst);
-            await AsyncStorage.setItem('FotoUsuario',foto);
-            await AsyncStorage.setItem('NombreUsuario',nombre);
+    // useEffect(() => {
+    //     (async () => {
+    //         DatosGoogle= await crudToken.useObtenerSesion();
+    //         await setCorreoInst(DatosGoogle.email);
+    //         await setFoto(DatosGoogle.picture);
+    //         await setNombre(DatosGoogle.name);
+    //         await AsyncStorage.setItem('CorreoElectronicoUsuario',CorreoInst);
+    //         await AsyncStorage.setItem('FotoUsuario',foto);
+    //         await AsyncStorage.setItem('NombreUsuario',nombre);
 
-        })();
-    }, []);
+    //     })();
+    // }, []);
     return (
         <View style={{ flex: 1 }}>
         <DrawerContentScrollView {...props}>
