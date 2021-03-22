@@ -13,8 +13,8 @@ export function DrawerContent(props) {
     let DatosGoogle=null;
 
     const [CorreoInst, setCorreoInst]= useState('');
-    const [foto, setFoto]= useState('');
-    const [nombre, setNombre]= useState('');
+    const [foto, setFoto]= useState('https://maryza.gnomio.com/pluginfile.php/2/course/section/1/logoTecNM.png');
+    const [nombre, setNombre]= useState('Usuario');
     
 
     //Para cerrar 

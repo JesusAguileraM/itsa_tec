@@ -10,6 +10,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.14.1",
     "@react-native-community/async-storage": "^1.12.1",
+    "@react-native-community/datetimepicker": "3.0.4",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-picker/picker": "1.9.2",
     "@react-navigation/drawer": "^5.12.3",
@@ -34,6 +35,7 @@
     "react-native-elements": "^3.3.0",
     "react-native-gesture-handler": "^1.10.1",
     "react-native-linear-gradient": "^2.5.6",
+    "react-native-modal-datetime-picker": "^9.2.0",
     "react-native-odoo-promise-based": "^0.6.8",
     "react-native-paper": "^4.7.1",
     "react-native-picker-select": "^8.0.4",

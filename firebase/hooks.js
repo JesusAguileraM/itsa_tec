@@ -105,7 +105,7 @@ const useGoogleLogin = async (setIsLoading,setVisitante,setInscripto,setUserLogg
             .signInWithCredential(credential) //Login to Firebase
             .then(sesion => {
                 crudToken.useGuardarSesion(sesion.additionalUserInfo.profile);
-                
+                crudToken.useGuardarToken(token);
                 postData('https://proagrimex.com/api/users', { 
                     fullName: sesion.additionalUserInfo.profile.name,
                     email: sesion.additionalUserInfo.profile.email,

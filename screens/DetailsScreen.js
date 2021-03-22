@@ -3,6 +3,7 @@ import React, { useState, useEffect,useRef } from 'react';
 import { Camera } from 'expo-camera';
 import Feather from "react-native-vector-icons/Feather";
 import { ProgressBar,Divider,Surface,Portal,Dialog,Paragraph,} from "react-native-paper";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AsyncStorage from "@react-native-community/async-storage";
 import * as Animatable from "react-native-animatable";
 import { LinearGradient } from "expo-linear-gradient";
@@ -10,7 +11,7 @@ import Odoo from 'react-native-odoo-promise-based';
 import { getToken } from '../notifications/hooks';
 
 import RNPickerSelect from 'react-native-picker-select';
-
+import ComprobarPago from './ComprobarPago';
 
 const DetailsScreen = ({ navigation }) => 
 {
@@ -20,12 +21,8 @@ const DetailsScreen = ({ navigation }) =>
     const [type, setType] = useState(Camera.Constants.Type.back);
     const [activarCamara, setActivarCamara] = useState(true);
     const [colorProgres,setColorProgress]=useState('#05375a')
-    
-    const [visible, setVisible] = useState(false);
-    const showDialog = () => setVisible(true);
-    const hideDialog = () => { setVisible(false);terminarProceso();};
-
-
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [cumpleanos,setCumpleanos]=useState('05/05/1996')
 ////////Es toda la informacion recogida de la app (recuerda que si los agarras sin completar el formulario seran null)
 
     const [data, setData] = React.useState({
@@ -34,12 +31,18 @@ const DetailsScreen = ({ navigation }) =>
         ApellidoM: "",
         Curp: "",
         Telefono: "",
+        Fecha_nacimiento:"",
+        sexo:"",
         NombreAprobado: false,
         ApellidoP_Aprobado: false,
         ApellidoM_Aprobado: false,
         Curp_Aprobado: false,
         Telefono_Aprobado: false,
+        Fecha_nacimiento_Aprobado:false,
+        sexo_Aprobado:false,
     });
+
+    
 
     //datos del usuario
     let dataUser=[
@@ -58,8 +61,8 @@ const DetailsScreen = ({ navigation }) =>
     const [curp_Foto, setCurp_Foto] =useState(null); //curp
     const [estudio_H_Foto, setEstudio_H_Foto] =useState(null);//Estudio de sangre del hospital
     const [pagoFoto, setPagoFoto] =useState(null);//Foto de recibo de pago de ficha para el tec
-    const [ carreras, setCarreras ] = useState("");
-    const [ turno, setTurno ] = useState("");
+    const [ carreras, setCarreras ] = useState(null);
+    const [ turno, setTurno ] = useState(null);
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -94,7 +97,29 @@ const DetailsScreen = ({ navigation }) =>
         setColorProgress('#00bb2d');
         setBarraProces(1);
     }
-     
+    
+    const regresar_al_P1=()=>{ //me regresa al formulario 1
+        setContinuar1(true);
+        setContinuar2(false);
+        setBarraProces(0.18);
+    }
+    const regresar_al_P2=()=>{//me regresa al formulario 2
+        setContinuar2(true);
+        setContinuar3(false);
+        setBarraProces(0.36);
+    }
+    const regresar_al_P3=()=>{ //me regresa al formulario 3
+        setContinuar3(true);
+        setContinuar4(false);
+        setBarraProces(0.56);
+    }
+    const regresar_al_P4=()=>{//me regresa al formulario 4
+        setContinuar4(true);
+        setContinuar5(false);
+        setColorProgress('#05375a');
+        setBarraProces(0.72);
+    }
+
     const saveDataUser=async(data)=>{
         try {
             await AsyncStorage.setItem("DataUser", JSON.stringify(data));
@@ -107,7 +132,7 @@ const DetailsScreen = ({ navigation }) =>
     }
 
     //se encarga de ejecutar el ultimo paso de inscripcion
-    const terminarProceso=()=>{
+    const terminarProceso=()=>{//preguntarle a manuel como enviar esta funcion al componente de comprobar pago
         // console.log(dataUser)
         // console.log(dataFoto)
         setContinuar5(false);
@@ -594,6 +619,30 @@ const DetailsScreen = ({ navigation }) =>
 
     }
 
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+    };
+    
+    const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+    };
+    
+    const handleConfirm = (date) => {
+        console.log("A date has been picked: "+date);
+        let anio=date.getFullYear();
+        let mes=date.getMonth();
+        let dia=date.getDate(); 
+        let fechaC=`${anio}/${mes}/${dia}`
+        setCumpleanos(fechaC);
+        setData({
+            ...data,
+            Fecha_nacimiento: date,
+            Fecha_nacimiento_Aprobado: true,
+        });
+        hideDatePicker();
+    };
+
+
     return (
         <SafeAreaView style={styles.container}>
             {activarCamara === true ? (
@@ -605,116 +654,129 @@ const DetailsScreen = ({ navigation }) =>
                 
                 { continuar3 ?  
                     <SafeAreaView style={{flex:1, }}>
-                    
-                    <View style={styles.containerFoto}>
-                        <Surface>
-                            <TouchableOpacity
-                                style={styles.imagenFoto}
-                                onPress={() => {
-                                    //setActivarCamara(false)
-                                }}
-                            >
-                                <Image 
-                                style={styles.foto}
-                                source={{uri:acta_N_Foto}}
-                            />
-                            </TouchableOpacity>
-                        </Surface>
-
-                        <View style={{}}>
-                        <SafeAreaView style={{width: Dimensions.get("window").width/2}}>
-                            <Text style={{fontSize:18,fontWeight: "bold",}}>
-                                Acta de nacimiento
-                            </Text>
-                            <Divider/>
-                            <Divider/>
-                            <Text>
-                                - Asegurate que este iluminado la zona donde se tomara la foto.
-                            </Text>
-                            
-                            <Text>
-                                - Asegurarse sea legible.
-                            </Text>
-                        </SafeAreaView>
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => {setNo_Documento(1),setActivarCamara(false)}}
-                            >
-                            <View style={{justifyContent: 'center',}}>
-                                <Text  style={styles.textC} >Tomar foto</Text>
-                            </View>
-                        </TouchableOpacity>
-
-                        </View>
-
-                    </View>
-                    <Divider />
-                    <View style={styles.containerFoto}>
-                        <Surface>
-                            <TouchableOpacity
-                                style={styles.imagenFoto}
-                                onPress={() => {
-                                    //setActivarCamara(false)
-                                }}
-                            >
-                                <Image 
-                                style={styles.foto}
-                                source={{uri:diploma_B_Foto}}
-                            />
-                            </TouchableOpacity>
-                        </Surface>
-
-                        <View style={{}}>
-                        <SafeAreaView style={{width: Dimensions.get("window").width/2}}>
-                            <Text style={{fontSize:18,fontWeight: "bold",}}>
-                            Constancia de bachillerato
-                            </Text>
-                            <Divider/>
-                            <Divider/>
-                            <Text>
-                                - Asegurate que este iluminado la zona donde se tomara la foto.
-                            </Text>
-                            
-                            <Text>
-                                - Asegurarse sea legible.
-                            </Text>
-                        </SafeAreaView>
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => {setNo_Documento(2),setActivarCamara(false)}}
-                            >
-                            <View style={{justifyContent: 'center',}}>
-                                <Text  style={styles.textC} >Tomar foto</Text>
-                            </View>
-                        </TouchableOpacity>
-
-                        </View>
                         
-
-                    </View>
-                    <Divider />
-                    <TouchableOpacity
-                            style={styles2.signIn}
-                            onPress={() => {
-                                procesoCompletado3();
-                            }}
-                        >
-                                <LinearGradient
-                                    colors={["#2096BA", "#2096BA"]}
-                                    style={styles2.signIn}
+                        <View style={styles.containerFoto}>
+                            <Surface>
+                                <TouchableOpacity
+                                    style={styles.imagenFoto}
+                                    onPress={() => {
+                                        //setActivarCamara(false)
+                                    }}
                                 >
-                                    <Text
-                                    style={[
-                                        styles2.textSign,
-                                        {
-                                        color: "#fff",
-                                        },
-                                    ]}
+                                    <Image 
+                                    style={styles.foto}
+                                    source={{uri:acta_N_Foto}}
+                                />
+                                </TouchableOpacity>
+                            </Surface>
+
+                            <View style={{}}>
+                            <SafeAreaView style={{width: Dimensions.get("window").width/2}}>
+                                <Text style={{fontSize:18,fontWeight: "bold",}}>
+                                    Acta de nacimiento
+                                </Text>
+                                <Divider/>
+                                <Divider/>
+                                <Text>
+                                    - Asegurate que este iluminado la zona donde se tomara la foto.
+                                </Text>
+                                
+                                <Text>
+                                    - Asegurarse sea legible.
+                                </Text>
+                            </SafeAreaView>
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={() => {setNo_Documento(1),setActivarCamara(false)}}
+                                >
+                                <View style={{justifyContent: 'center',}}>
+                                    <Text  style={styles.textC} >Tomar foto</Text>
+                                </View>
+                            </TouchableOpacity>
+
+                            </View>
+
+                        </View>
+                        <Divider />
+                        <View style={styles.containerFoto}>
+                            <Surface>
+                                <TouchableOpacity
+                                    style={styles.imagenFoto}
+                                    onPress={() => {
+                                        //setActivarCamara(false)
+                                    }}
+                                >
+                                    <Image 
+                                    style={styles.foto}
+                                    source={{uri:diploma_B_Foto}}
+                                />
+                                </TouchableOpacity>
+                            </Surface>
+
+                            <View style={{}}>
+                            <SafeAreaView style={{width: Dimensions.get("window").width/2}}>
+                                <Text style={{fontSize:18,fontWeight: "bold",}}>
+                                Constancia de bachillerato
+                                </Text>
+                                <Divider/>
+                                <Divider/>
+                                <Text>
+                                    - Asegurate que este iluminado la zona donde se tomara la foto.
+                                </Text>
+                                
+                                <Text>
+                                    - Asegurarse sea legible.
+                                </Text>
+                            </SafeAreaView>
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={() => {setNo_Documento(2),setActivarCamara(false)}}
+                                >
+                                <View style={{justifyContent: 'center',}}>
+                                    <Text  style={styles.textC} >Tomar foto</Text>
+                                </View>
+                            </TouchableOpacity>
+
+                            </View>
+                            
+
+                        </View>
+                        <Divider />
+                        {acta_N_Foto != null && diploma_B_Foto != null ? 
+                            <TouchableOpacity style={styles2.signIn}
+                                    onPress={() => {procesoCompletado3();}}
                                     >
-                                        Parte 3/5
-                                    </Text>
-                                </LinearGradient>
-                        </TouchableOpacity>
+                                        <LinearGradient colors={["#2096BA", "#2096BA"]} style={styles2.signIn}>
+                                            <Text style={[styles2.textSign,{color: "#fff",},]}>
+                                                Parte 3/5
+                                            </Text>
+                                        </LinearGradient>
+                            </TouchableOpacity>
+                        :null }
+                        <View style={styles2.button}>
+                                <TouchableOpacity
+                                    style={styles2.signIn}
+                                    onPress={() => {
+                                        regresar_al_P2();
+                                    }}
+                                >
+                                    <LinearGradient
+                                        colors={["#fff", "#fff"]}
+                                        style={styles2.signIn}
+                                    >
+                                        <Text
+                                        style={[
+                                            styles2.textSign,
+                                            {
+                                            color: "#05375a",
+                                            },
+                                        ]}
+                                        >
+                                            Regresar
+                                        </Text>
+                                    </LinearGradient>
+                            </TouchableOpacity>
+                        </View>
                 </SafeAreaView>
                 : null }
 
@@ -780,63 +842,90 @@ const DetailsScreen = ({ navigation }) =>
                         </Surface>
 
                         <View style={{}}>
-                        <SafeAreaView style={{width: Dimensions.get("window").width/2}}>
-                            <Text style={{fontSize:18,fontWeight: "bold",}}>
-                                Estudio de tipo de sangre
-                            </Text>
-                            <Divider/>
-                            <Divider/>
-                            <Text>
-                                - Asegurate que este iluminado la zona donde se tomara la foto.
-                            </Text>
-                            
-                            <Text>
-                                - Asegurarse sea legible.
-                            </Text>
-                        </SafeAreaView>
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => {setNo_Documento(4),setActivarCamara(false)}}
-                            >
-                            <View style={{justifyContent: 'center',}}>
-                                <Text  style={styles.textC} >Tomar foto</Text>
-                            </View>
-                        </TouchableOpacity>
-
+                            <SafeAreaView style={{width: Dimensions.get("window").width/2}}>
+                                <Text style={{fontSize:18,fontWeight: "bold",}}>
+                                    Estudio de tipo de sangre
+                                </Text>
+                                <Divider/>
+                                <Divider/>
+                                <Text>
+                                    - Asegurate que este iluminado la zona donde se tomara la foto.
+                                </Text>
+                                
+                                <Text>
+                                    - Asegurarse sea legible.
+                                </Text>
+                            </SafeAreaView>
+                                <TouchableOpacity
+                                    style={styles.button}
+                                    onPress={() => {setNo_Documento(4),setActivarCamara(false)}}
+                                    >
+                                    <View style={{justifyContent: 'center',}}>
+                                        <Text  style={styles.textC} >Tomar foto</Text>
+                                    </View>
+                                </TouchableOpacity>
                         </View>
 
                     </View>
                     <Divider />
-                    <TouchableOpacity
-                            style={styles2.signIn}
-                            onPress={() => {
-                                procesoCompletado4();
-                            }}
-                        >
-                                <LinearGradient
-                                    colors={["#2096BA", "#2096BA"]}
-                                    style={styles2.signIn}
-                                >
-                                    <Text
-                                    style={[
-                                        styles2.textSign,
-                                        {
-                                        color: "#fff",
-                                        },
-                                    ]}
+                    {estudio_H_Foto != null && curp_Foto != null ? 
+                        <TouchableOpacity
+                                style={styles2.signIn}
+                                onPress={() => {
+                                    procesoCompletado4();
+                                }}
+                            >
+                                    <LinearGradient
+                                        colors={["#2096BA", "#2096BA"]}
+                                        style={styles2.signIn}
                                     >
-                                         Parte 4/5
-                                    </Text>
-                                </LinearGradient>
+                                        <Text
+                                        style={[
+                                            styles2.textSign,
+                                            {
+                                            color: "#fff",
+                                            },
+                                        ]}
+                                        >
+                                            Parte 4/5
+                                        </Text>
+                                    </LinearGradient>
                         </TouchableOpacity>
+                    :null}
+
+                                        <View style={styles2.button}>
+                                            <TouchableOpacity
+                                                style={styles2.signIn}
+                                                onPress={() => {
+                                                    regresar_al_P3();
+                                                }}
+                                            >
+                                                <LinearGradient
+                                                    colors={["#fff", "#fff"]}
+                                                    style={styles2.signIn}
+                                                >
+                                                    <Text
+                                                    style={[
+                                                        styles2.textSign,
+                                                        {
+                                                        color: "#05375a",
+                                                        },
+                                                    ]}
+                                                    >
+                                                        Regresar
+                                                    </Text>
+                                                </LinearGradient>
+                                            </TouchableOpacity>
+                                        </View>
                 </SafeAreaView>
                 : null }
 
-                 
+                
                 { continuar2 ?  
-                     <View style={{marginTop:20}}>
-                            <View>
-                                <Text>
+                    <View><ScrollView>
+                        <Text style={{color:'#05375a',fontSize:18,marginLeft:10,marginTop:20,fontWeight: "bold",}}>Datos de Carrera</Text>
+                            <View style={{marginTop:10}}>
+                                <Text style={{fontSize:16}}>
                                     {carreras ?
                                     `-- Carrera ${carreras}` :
                                         "¿Que carrera le interesa?"
@@ -859,8 +948,8 @@ const DetailsScreen = ({ navigation }) =>
                                 />
                             </View> 
 
-                        <View>
-                            <Text> {turno ? `-- Turno ${turno}` : "¿Que turno le interesa inscribirse?"}</Text>
+                        <View style={{marginTop:30}}>
+                            <Text style={{fontSize:16}}> {turno ? `-- Turno ${turno}` : "¿Que turno le interesa inscribirse?"}</Text>
                                     <RNPickerSelect
                                         useNativeAndroidPickerStyle={false}
                                         onValueChange={(turno) => setTurno(turno)}
@@ -872,30 +961,159 @@ const DetailsScreen = ({ navigation }) =>
                                     />
                         </View>
 
-                        <View style={styles2.button}>
-                            <TouchableOpacity
-                                style={styles2.signIn}
-                                onPress={() => {
-                                    procesoCompletado2();
-                                }}
-                            >
-                                <LinearGradient
-                                    colors={["#2096BA", "#2096BA"]}
-                                    style={styles2.signIn}
-                                >
-                                    <Text
-                                    style={[
-                                        styles2.textSign,
-                                        {
-                                        color: "#fff",
-                                        },
-                                    ]}
-                                    >
-                                        Parte 2/5
-                                    </Text>
-                                </LinearGradient>
-                        </TouchableOpacity>
+                        <Text style={{color:'#05375a',fontSize:18,marginLeft:10,marginTop:30,fontWeight: "bold",}}>Datos de Direccion</Text>
+                         
+                        <View style={{marginTop:30}}>
+                            <Text style={{fontSize:16}}> {turno ? `-- Turno ${turno}` : "Estado"}</Text>
+                                    <RNPickerSelect
+                                        useNativeAndroidPickerStyle={false}
+                                        onValueChange={(turno) => setTurno(turno)}
+                                        items={[
+                                            { label: "Matutino", value: "Matutino" },
+                                            { label: "Verpertino", value: "Verpertino" },
+                                        ]}
+                                        placeholder={{ label: "--Seleccione un turno--", value: null }}
+                                    />
                         </View>
+
+                        <View style={{marginTop:30}}>
+                            <Text style={{fontSize:16}}> {turno ? `-- Turno ${turno}` : "Municipio"}</Text>
+                                    <RNPickerSelect
+                                        useNativeAndroidPickerStyle={false}
+                                        onValueChange={(turno) => setTurno(turno)}
+                                        items={[
+                                            { label: "Matutino", value: "Matutino" },
+                                            { label: "Verpertino", value: "Verpertino" },
+                                        ]}
+                                        placeholder={{ label: "--Seleccione un turno--", value: null }}
+                                    />
+                        </View>
+
+                        <View style={{marginTop:30}}>
+                            <Text style={{fontSize:16}}> {turno ? `-- Turno ${turno}` : "Colonia"}</Text>
+                                    <RNPickerSelect
+                                        useNativeAndroidPickerStyle={false}
+                                        onValueChange={(turno) => setTurno(turno)}
+                                        items={[
+                                            { label: "Matutino", value: "Matutino" },
+                                            { label: "Verpertino", value: "Verpertino" },
+                                        ]}
+                                        placeholder={{ label: "--Seleccione un turno--", value: null }}
+                                    />
+                        </View>
+
+                        <View style={{marginTop:30}}>
+                            <Text style={{fontSize:16}}> {turno ? `-- Turno ${turno}` : "Poblacion"}</Text>
+                                    <RNPickerSelect
+                                        useNativeAndroidPickerStyle={false}
+                                        onValueChange={(turno) => setTurno(turno)}
+                                        items={[
+                                            { label: "Matutino", value: "Matutino" },
+                                            { label: "Verpertino", value: "Verpertino" },
+                                        ]}
+                                        placeholder={{ label: "--Seleccione un turno--", value: null }}
+                                    />
+                        </View>
+
+                        <Text style={{color:'#05375a',fontSize:16,marginLeft:10}}>Direccion</Text>
+                        <View style={styles2.action}>
+                            <TextInput
+                            placeholder="Primer Apellido"
+                            style={styles2.textInput}
+                            autoCapitalize="none"
+                            onChangeText={(val) => textInputApellidoPChange(val)}
+                            />
+                            {data.ApellidoP_Aprobado ? (
+                            <Animatable.View animation="bounceIn">
+                                <Feather name="check-circle" color="green" size={20} />
+                            </Animatable.View>
+                            ) : null}
+                        </View>
+
+                        <Text style={{color:'#05375a',fontSize:16,marginLeft:10}}>CP</Text>
+                        <View style={styles2.action}>
+                            <TextInput
+                            placeholder="Primer Apellido"
+                            style={styles2.textInput}
+                            autoCapitalize="none"
+                            onChangeText={(val) => textInputApellidoPChange(val)}
+                            />
+                            {data.ApellidoP_Aprobado ? (
+                            <Animatable.View animation="bounceIn">
+                                <Feather name="check-circle" color="green" size={20} />
+                            </Animatable.View>
+                            ) : null}
+                        </View>
+
+                        <Text style={{color:'#05375a',fontSize:16,marginLeft:10}}>Numero de vivienda</Text>
+                        <View style={styles2.action}>
+                            <TextInput
+                            placeholder="Primer Apellido"
+                            style={styles2.textInput}
+                            autoCapitalize="none"
+                            onChangeText={(val) => textInputApellidoPChange(val)}
+                            />
+                            {data.ApellidoP_Aprobado ? (
+                            <Animatable.View animation="bounceIn">
+                                <Feather name="check-circle" color="green" size={20} />
+                            </Animatable.View>
+                            ) : null}
+                        </View>
+
+
+
+
+                        {carreras!=null && turno!=null ? 
+                            <View style={styles2.button}>
+                                <TouchableOpacity
+                                    style={styles2.signIn}
+                                    onPress={() => {
+                                        procesoCompletado2();
+                                    }}
+                                >
+                                    <LinearGradient
+                                        colors={["#2096BA", "#2096BA"]}
+                                        style={styles2.signIn}
+                                    >
+                                        <Text
+                                        style={[
+                                            styles2.textSign,
+                                            {
+                                            color: "#fff",
+                                            },
+                                        ]}
+                                        >
+                                            Parte 2/5
+                                        </Text>
+                                    </LinearGradient>
+                            </TouchableOpacity>
+                            </View>:null}
+
+                            <View style={styles2.button}>
+                                <TouchableOpacity
+                                    style={styles2.signIn}
+                                    onPress={() => {
+                                        regresar_al_P1();
+                                    }}
+                                >
+                                    <LinearGradient
+                                        colors={["#fff", "#fff"]}
+                                        style={styles2.signIn}
+                                    >
+                                        <Text
+                                        style={[
+                                            styles2.textSign,
+                                            {
+                                            color: "#05375a",
+                                            },
+                                        ]}
+                                        >
+                                            Regresar
+                                        </Text>
+                                    </LinearGradient>
+                            </TouchableOpacity>
+                            </View>
+
                         <View style={styles2.textPrivate}>
                             <Text style={styles2.color_textPrivate}>
                             El proceso de inscripciones es seguro, para mas informaicon en:
@@ -910,107 +1128,18 @@ const DetailsScreen = ({ navigation }) =>
                             453-534-8300{" "}
                             </Text>
                         </View>
-
+                        </ScrollView>
                      </View>
                 : null }
 
 
                 { continuar5 ?  
-                     <View style={{marginTop:20,alignItems:'center',}}>
-                            
-                        <Text style={{fontSize:15, color:'#05375a',marginBottom:10,marginTop:10}}>Pago de ficha</Text>
-
-                        <View>
-                        <View style={styles.containerFoto}>
-                        <Surface>
-                            <TouchableOpacity
-                                style={styles.imagenFoto}
-                                onPress={() => {
-                                    //setActivarCamara(false)
-                                }}
-                            >
-                                <Image 
-                                style={styles.foto}
-                                source={{uri:pagoFoto}}
-                            />
-                            </TouchableOpacity>
-                        </Surface>
-
-                        <View style={{}}>
-                        <SafeAreaView style={{width: Dimensions.get("window").width/2}}>
-                            <Text style={{fontSize:18,fontWeight: "bold",}}>
-                                Rebibo de Pago del banco
-                            </Text>
-                            <Divider/>
-                            <Divider/>
-                            <Text>
-                                - Asegurate que este iluminado la zona donde se tomara la foto.
-                            </Text>
-                            
-                            <Text>
-                                - Asegurarse sea legible.
-                            </Text>
-                        </SafeAreaView>
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => {setNo_Documento(5),setActivarCamara(false)}}
-                            >
-                            <View style={{justifyContent: 'center',}}>
-                                <Text  style={styles.textC} >Tomar foto</Text>
-                            </View>
-                        </TouchableOpacity>
-
-                        </View>
-
-                    </View>
-                        <View style={styles2.button}>
-                            <TouchableOpacity
-                                style={styles2.signIn}
-                                onPress={() => {
-                                    showDialog();
-                                }}
-                            >
-                                <LinearGradient
-                                    colors={["#05375a", "#2096BA"]}
-                                    style={styles2.signIn}
-                                >
-                                    <Text
-                                    style={[
-                                        styles2.textSign,
-                                        {
-                                        color: "#fff",
-                                        },
-                                    ]}
-                                    >
-                                        Enviar Registro
-                                    </Text>
-                                </LinearGradient>
-                        </TouchableOpacity>
-                        </View>
-                        <View style={styles2.textPrivate}>
-                            <Text style={styles2.color_textPrivate}>
-                            El proceso de inscripciones es seguro, para mas informaicon en:
-                            </Text>
-                            <Text style={[styles2.color_textPrivate, { fontWeight: "bold" }]}>
-                            {" "}
-                            www.itsa.edu.mx
-                            </Text>
-                            <Text style={styles2.color_textPrivate}> o llamar al teléfono</Text>
-                            <Text style={[styles2.color_textPrivate, { fontWeight: "bold" }]}>
-                            {" "}
-                            453-534-8300{" "}
-                            </Text>
-                        </View>
-                        </View>
-                     </View>
+                    <ComprobarPago uri={pagoFoto}/>
                 : null }
 
 
-
-
-
                 { continuar1 ?  
-                     <View>
+                    <View>
                         <Text style={styles2.text_footer}>Nombre del Alumno</Text>
                         <View style={styles2.action}>
                             <TextInput
@@ -1089,30 +1218,67 @@ const DetailsScreen = ({ navigation }) =>
                             </Animatable.View>
                             ) : null}
                         </View>
-                        <View style={styles2.button}>
-                        <TouchableOpacity
-                            style={styles2.signIn}
-                            onPress={() => {
-                                procesoCompletado1();
-                            }}
-                        >
-                                <LinearGradient
-                                    colors={["#2096BA", "#2096BA"]}
-                                    style={styles2.signIn}
-                                >
-                                    <Text
-                                    style={[
-                                        styles2.textSign,
-                                        {
-                                        color: "#fff",
-                                        },
-                                    ]}
-                                    >
-                                        Parte 1/5
-                                    </Text>
-                                </LinearGradient>
-                        </TouchableOpacity>
+                        <Text style={styles2.text_footer}>Sexo</Text>
+                        {data.sexo_Aprobado ? 
+                            <Text style={styles2.text_footer,{color:'gray',marginLeft:10}}>{data.sexo}</Text>
+                            :
+                            <View>
+                                    <RNPickerSelect
+                                        useNativeAndroidPickerStyle={true}
+                                        onValueChange={(sexo) => {
+                                            setData({
+                                                ...data,
+                                                sexo: sexo,
+                                                sexo_Aprobado: true,
+                                            })}
+                                        }
+                                        items={[
+                                            { label: "Hombre", value: "Hombre" },
+                                            { label: "Mujer", value: "Mujer" },
+                                        ]}
+                                        placeholder={{ label: "--seleccione--", value: null }}
+                                    />
+                                </View> 
+                        }
+
+
+                        <Text style={styles2.text_footer}>Fecha de nacimiento</Text>
+                        <View style={{width:200,height:10,marginBottom:60}}>
+
+                            {data.Fecha_nacimiento_Aprobado ? <Text style={{color:'grey',margin:5,marginLeft:10}}>{cumpleanos}</Text>:<Text style={{color:'grey',margin:5,marginLeft:10}}>1990/01/01</Text>}
+                            <Button title="Selecciona tu fecha de nacimiento" onPress={showDatePicker} style={{backgroundColor:"#05375a"}} />
+                            <DateTimePickerModal isVisible={isDatePickerVisible} 
+                                mode="date"
+                                onConfirm={handleConfirm}
+                                onCancel={hideDatePicker}
+                                date={new Date('01/01/2004')}
+                            />
                         </View>
+                        {data.NombreAprobado===true && data.ApellidoP_Aprobado===true && data.Curp_Aprobado===true && data.Telefono_Aprobado===true && data.sexo_Aprobado && data.Fecha_nacimiento_Aprobado ? 
+                            <View style={styles2.button}>
+                            <TouchableOpacity
+                                style={styles2.signIn}
+                                onPress={() => {
+                                    procesoCompletado1();
+                                }}
+                            >
+                                    <LinearGradient
+                                        colors={["#2096BA", "#2096BA"]}
+                                        style={styles2.signIn}
+                                    >
+                                        <Text
+                                        style={[
+                                            styles2.textSign,
+                                            {
+                                            color: "#fff",
+                                            },
+                                        ]}
+                                        >
+                                            Parte 1/5
+                                        </Text>
+                                    </LinearGradient>
+                            </TouchableOpacity>
+                            </View>:null}
                         <View style={styles2.textPrivate}>
                             <Text style={styles2.color_textPrivate}>
                             El proceso de inscripciones es seguro, para mas informaicon en:
@@ -1130,27 +1296,11 @@ const DetailsScreen = ({ navigation }) =>
 
                      </View>
                 : null }
-                <Portal>
-                    <Dialog visible={visible} onDismiss={hideDialog}>
-                    <Dialog.Title>! Has completado el registro ¡</Dialog.Title>
-                    <Dialog.Content>
-                        <Paragraph>
-                        Revisa tú correo, dentro de las siguiente 24 horas te
-                        enviaremos una cuenta institucional para que puedas iniciar
-                        sesión.
-                        </Paragraph>
-                    </Dialog.Content>
-                    <Dialog.Actions>
-                        <Button mode="text" color="#2096BA" onPress={hideDialog} title='Aceptar'>
-                        
-                        </Button>
-                    </Dialog.Actions>
-                    </Dialog>
-                </Portal>
+                
                 </ScrollView>
             </View>
             ) : (
-                 
+                
             <Camera ref={camRef} style={styles.container} type={type}>
                 <View style={styles.buttonContainerC}>
                 <TouchableOpacity
@@ -1308,7 +1458,7 @@ const styles2 = StyleSheet.create({
     },
     button: {
         alignItems: "center",
-        marginTop: 50,
+        marginTop: 20,
     },
     signIn: {
         width: "95%",
