@@ -151,17 +151,17 @@ const App = () => {
     <PaperProvider theme={theme}>
       <AuthContext.Provider value={authContext}>
         <NavigationContainer >        
-              {userLogged === true ? (
+              {/* {userLogged === true ? (
                 <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent {...props} />} >
                   <DrawerUserLogged.Screen name="UsuarioLogueado" component={MainTabScreen} />
                 </DrawerUserLogged.Navigator>
-              ): null}
-              {inscripto === true ? (
+              ): null} */}
+              {inscripto === false ? (
                 <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent2 {...props} />} >
                   <DrawerUserLogged.Screen name="UsuarioInscripto" component={MainTabScreen2} />
                 </DrawerUserLogged.Navigator>
               ): null}
-              {visitante === true ? (
+              {/* {visitante === true ? (
                 <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent3 {...props} />} >
                   <DrawerUserLogged.Screen name="Visitante" component={MainTabScreen3} />
                 </DrawerUserLogged.Navigator>
@@ -169,7 +169,7 @@ const App = () => {
 
               {renderIF(visitante,inscripto,userLogged) === true ? (
                 <RootStackScreen />
-              ) : null}
+              ) : null} */}
         </NavigationContainer>
       </AuthContext.Provider>
     </PaperProvider>

@@ -1,39 +1,37 @@
-import React from "react";
-import {
-    View,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    Dimensions,
-    SafeAreaView,
-} from "react-native";
-import {
-    useTheme,
-    Avatar,
-    Title,
-    Caption,
-    Paragraph,
-    Drawer,
-    TouchableRipple,
-    Switch,
-} from "react-native-paper";
-//import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import React, { useState, useEffect,useRef } from 'react';
+import {View,StyleSheet,Text,TouchableOpacity,Dimensions,SafeAreaView,} from "react-native";
+import {useTheme,Avatar,Title,Caption,Paragraph,Drawer,TouchableRipple,Switch,} from "react-native-paper";
 import Icon from "react-native-vector-icons/Ionicons";
-
-import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
-
+import AsyncStorage from "@react-native-community/async-storage";
 import { AuthContext } from "../../components/context";
-import * as global from "../../database/variablesGlobales";
+import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
+import * as crudToken from "../../database/crudToken";  //Aqui esta lo del crud de token y user
 
 
 export function DrawerContent2(props) {
-    
-const CorreoInst= 'Tal15020357@itsa.edu.mx';
-const paperTheme = useTheme();
-const { signOut, toggleTheme } = React.useContext(AuthContext);
-//Para cerrar 
-const { signOutUser } = React.useContext(AuthContext);
 
+    let DatosGoogle=null;
+
+    const [CorreoInst, setCorreoInst]= useState('');
+    const [foto, setFoto]= useState('https://maryza.gnomio.com/pluginfile.php/2/course/section/1/logoTecNM.png');
+    const [nombre, setNombre]= useState('Usuario');
+    
+
+    //Para cerrar 
+    const { signOutUser,ir_a_sesion } = React.useContext(AuthContext);
+
+    
+    useEffect(() => {
+        (async () => {
+            DatosGoogle= await crudToken.useObtenerSesion();
+            await setCorreoInst(DatosGoogle.email);
+            await setNombre(DatosGoogle.name);
+            await AsyncStorage.setItem('CorreoElectronicoUsuario',CorreoInst);
+            await AsyncStorage.setItem('FotoUsuario',foto);
+            await AsyncStorage.setItem('NombreUsuario',nombre);
+
+        })();
+    }, []);
     return (
         <View style={{ flex: 1 }}>
         <DrawerContentScrollView {...props}>
@@ -43,87 +41,20 @@ const { signOutUser } = React.useContext(AuthContext);
                 <View style={{ flexDirection: "row", marginTop: 15 }}>
                     <Avatar.Image
                         source={{
-                            uri:
-                            "https://maryza.gnomio.com/pluginfile.php/2/course/section/1/logoTecNM.png",
+                            uri:foto,
                         }}
                         size={50}
                     />
-                    <View style={{ marginLeft: 15, flexDirection: "column" }}>
-                    <Text style={styles.title}>
-                        Instituto Tecnologico Superior de Apatzingan
-                    </Text>
-                    {global.usuarioLogueado === true ? (
+                    <View style={{ marginLeft: 10, flexDirection: "column" }}>
+                        <Text style={styles.title}>
+                            Instituto Tecnologico Superior de Apatzingan
+                        </Text>
                         <Caption style={styles.caption}>
                             {CorreoInst}
                         </Caption>
-                    ) : (
-                        <></>
-                    )}
                     </View>
                 </View>
                 </SafeAreaView>
-
-                {global.usuarioLogueado === false ? (
-                <View style={{ flexDirection: "row", marginTop: 12 }}>
-                    <TouchableOpacity
-                    onPress={() => {
-                        signOut();
-                    }}
-                    style={[
-                        styles.signIn,
-                        {
-                        borderColor: "#2096BA",
-                        borderWidth: 1,
-                        marginTop: 12,
-
-                        flexDirection: "column",
-                        backgroundColor: "#0064A2",
-                        },
-                    ]}
-                    >
-                    <Text
-                        style={[
-                        styles.textSign,
-                        {
-                            color: "#fff",
-                        },
-                        ]}
-                    >
-                        Iniciar sesión
-                    </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                    // onPress={() => navigation.navigate("Parte1Screen")}
-                    onPress={() => {
-                        signOutUser();
-                    }}
-                    style={[
-                        styles.signIn,
-                        {
-                        borderColor: "#2096BA",
-                        borderWidth: 1,
-                        marginTop: 12,
-                        marginLeft: 10,
-                        flexDirection: "column",
-                        },
-                    ]}
-                    >
-                        <Text
-                            style={[
-                                styles.textSign,
-                                {
-                                    color: "#0064A2",
-                                },
-                            ]}
-                        >
-                            Salir
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-                ) : (
-                <></>
-                )}
             </View>
 
             <Drawer.Section style={styles.drawerSection}>
@@ -140,65 +71,53 @@ const { signOutUser } = React.useContext(AuthContext);
                     icon={({ color, size }) => (
                         <Icon name="ios-person" color={color} size={size} />
                     )}
-                    label="Perfil"
+                    label="Alumno"
                     onPress={() => {
-                    props.navigation.navigate("Profile");
+                    props.navigation.navigate("Alumno");
                 }}
                 />
                 <DrawerItem
                     icon={({ color, size }) => (
-                        <Icon name="create-outline" color={color} size={size} />
+                        <Icon name="archive" color={color} size={size} />
                     )}
-                    label="Inscribirse"
+                    label="Cargas"
                     onPress={() => {
-                    props.navigation.navigate("Inscribirse");
+                    props.navigation.navigate("Cargas");
                 }}
                 />
                 <DrawerItem
                     icon={({ color, size }) => (
-                        <Icon name="create" color={color} size={size} />
+                        <Icon name="documents" color={color} size={size} />
                     )}
-                    label="Re-inscribirse"
+                    label="Descargas"
                     onPress={() => {
-                    props.navigation.navigate("SupportScreen");
-                    }}
-                />
-            </Drawer.Section>
-            <Drawer.Section title="Preferencias">
-                <TouchableRipple
-                onPress={() => {
-                    toggleTheme();
+                    props.navigation.navigate("Descargas");
                 }}
-                >
-                <View style={styles.preference}>
-                    <Text>Modo Oscuro</Text>
-                    <View pointerEvents="none">
-                    <Switch value={paperTheme.dark} />
-                    </View>
-                </View>
-                </TouchableRipple>
+                />
+                 <DrawerItem
+                    icon={({ color, size }) => (
+                        <Icon name="barcode" color={color} size={size} />
+                    )}
+                    label="Depositos Bancarios"
+                    onPress={() => {
+                    props.navigation.navigate("Depositos");
+                }}
+                />
+                
             </Drawer.Section>
             </View>
         </DrawerContentScrollView>
         <Drawer.Section style={styles.bottomDrawerSection}>
-            {global.usuarioLogueado === true ? (
+            
             <DrawerItem
                 icon={({ color, size }) => (
                 <Icon name="log-out" color={color} size={size} />
                 )}
                 label="Cerrar sesión"
                 onPress={() => {
-                signOut();
+                    signOutUser();
                 }}
             />
-            ) : (
-            <DrawerItem
-                icon={({ color, size }) => (
-                <Icon name="log-out" color={color} size={size} />
-                )}
-                label=""
-            />
-            )}
         </Drawer.Section>
         </View>
     );
@@ -206,15 +125,17 @@ const { signOutUser } = React.useContext(AuthContext);
 
 const styles = StyleSheet.create({
     drawerContent: {
-        flex: 1
+        flex: 1,
+        
     },
     containerSafeArea: {
         width: Dimensions.get("window").width / 2,
-        height: 30,
-        marginBottom: 40,
+        height: 50,
+        marginBottom: 50,
+        
     },
     userInfoSection: {
-        paddingLeft: 20,
+        paddingLeft: 15,
     },
     title: {
         fontSize: 16,
@@ -228,9 +149,11 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
     },
     caption: {
-        fontSize: 14,
+        fontSize: 11,
         lineHeight: 14,
         marginTop: 10,
+        marginBottom: 10,
+        fontWeight: "bold",
     },
     row: {
         marginTop: 20,
@@ -245,9 +168,10 @@ const styles = StyleSheet.create({
     paragraph: {
         fontWeight: "bold",
         marginRight: 3,
+        
     },
     drawerSection: {
-        marginTop: 15,
+        marginTop: 1,
     },
     bottomDrawerSection: {
         marginBottom: 15,
@@ -261,11 +185,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
     },
     signIn: {
-        width: Dimensions.get("window").width / 4,
-        height: 30,
+        width: 250,
+        height: 40,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 5,
+        
     },
     textSign: {
         fontSize: 14,

@@ -1,25 +1,39 @@
 import React from "react";
 import Icon from "react-native-vector-icons/Ionicons";
-
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
+import {View, SafeAreaView, StyleSheet,ScrollView,TouchableOpacity,Text} from 'react-native';
+import {Avatar,Title,Caption,Surface} from 'react-native-paper';
 
-
+import NotificationScreen from  "../NotificationScreen";
 import HomeScreen from "../HomeScreen";
-import Inscripciones from "../InscripcionesScreen";
-import ExploreScreen from "../ExploreScreen";
-import ProfileScreen from "../ProfileScreen";
-//import NotificationScreen from  "./NotificationScreen";
+import AlumnoScreen from '../ProcesoSIIT/Alumnos/AlumnoScreen';
+    import Procedencia from '../ProcesoSIIT/Alumnos/ProcedenciaScreen';
+    import DatosGenerales from '../ProcesoSIIT/Alumnos/DatosGeneralesScreen';
+    import DatosFamiliares from '../ProcesoSIIT/Alumnos/DatosFamiliaresScreen';
+    import SituacionActual from '../ProcesoSIIT/Alumnos/SituacionActualScreen';
+    import Calificaciones from '../ProcesoSIIT/Alumnos/CalificacionesScreen';
+    import Expedientes from '../ProcesoSIIT/Alumnos/ExpedientesScreen';
+    
+
+import CargasScreen from '../ProcesoSIIT/Cargas/CargasScreen';
+import DepositosScreen from '../ProcesoSIIT/DepositosBancarios/DepositosScreen';
+import DescargasScreen from '../ProcesoSIIT/Descargas/DescargasScreen';
+
 import SingleStorage from '../../database/singleStorage';
+
+
 const HomeStack = createStackNavigator();
-const DetailsStack = createStackNavigator();
+const AlumnoStack = createStackNavigator();
 const NotificationStack = createStackNavigator();
 
 const Tab = createMaterialBottomTabNavigator();
 
 
-const MainTabScreen = () => (
-  <Tab.Navigator initialRouteName="Home" activeColor="#fff">
+const MainTabScreen2 = () => {
+  
+  return (
+    <Tab.Navigator initialRouteName="Home" activeColor="#fff">
     <Tab.Screen
       name="Home"
       component={HomeStackScreen}
@@ -33,7 +47,7 @@ const MainTabScreen = () => (
     />
     <Tab.Screen
       name="Notifications"
-      component={SingleStorage}
+      component={NotificationStackScreen}
       options={{
         tabBarLabel: 'Notificaciones',
         tabBarColor: '#006460',
@@ -43,21 +57,10 @@ const MainTabScreen = () => (
       }}
     />
     <Tab.Screen
-      name="Inscribirse"
-      component={DetailsStackScreen}
+      name="Alumno"
+      component={AlumnoStackScreen}
       options={{
-        tabBarLabel: "Inscribirse",
-        tabBarColor: "#2096B4",
-        tabBarIcon: ({ color }) => (
-          <Icon name="create" color={color} size={26} />
-        ),
-      }}
-    />
-    <Tab.Screen
-      name="Profile"
-      component={ProfileScreen}
-      options={{
-        tabBarLabel: "Perfil",
+        tabBarLabel: "Alumno",
         tabBarColor: "#808684",
         tabBarIcon: ({ color }) => (
           <Icon name="ios-person" color={color} size={26} />
@@ -65,20 +68,42 @@ const MainTabScreen = () => (
       }}
     />
     <Tab.Screen
-      name="Info"
-      component={ExploreScreen}
+      name="Cargas"
+      component={CargasScreen}
       options={{
-        tabBarLabel: "Info.",
+        tabBarLabel: "Cargas",
         tabBarColor: "#006460",
         tabBarIcon: ({ color }) => (
-          <Icon name="ios-information-circle" color={color} size={26} />
+          <Icon name="archive" color={color} size={26} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Descargas"
+      component={DepositosScreen}
+      options={{
+        tabBarLabel: "Descargas",
+        tabBarColor: "#808684",
+        tabBarIcon: ({ color }) => (
+          <Icon name="documents" color={color} size={26} />
+        ),
+      }}
+    />
+    <Tab.Screen
+      name="Depositos"
+      component={DescargasScreen}
+      options={{
+        tabBarLabel: "Depositos",
+        tabBarColor: "#006460",
+        tabBarIcon: ({ color }) => (
+          <Icon name="barcode" color={color} size={24} />
         ),
       }}
     />
   </Tab.Navigator>
-);
-
-export default MainTabScreen;
+  );
+}
+export default MainTabScreen2;
 
 const HomeStackScreen = ({ navigation }) => (
   <HomeStack.Navigator
@@ -108,6 +133,9 @@ const HomeStackScreen = ({ navigation }) => (
       }}
     />
   </HomeStack.Navigator>
+
+
+
 );
 
 const NotificationStackScreen = ({navigation}) => (
@@ -138,31 +166,119 @@ const NotificationStackScreen = ({navigation}) => (
   </NotificationStack.Navigator>
 );
 
-const DetailsStackScreen = ({ navigation }) => (
-  <DetailsStack.Navigator
-    screenOptions={{
-      headerStyle: {
-        backgroundColor: "#2096BA",
-      },
-      headerTintColor: "#fff",
-      headerTitleStyle: {
-        fontWeight: "bold",
-      },
-    }}
-  >
-    <DetailsStack.Screen
-      name="Inscribirse"
-      component={Inscripciones}
-      options={{
-        headerLeft: () => (
-          <Icon.Button
-            name="ios-menu"
-            size={25}
-            backgroundColor="#2096BA"
-            onPress={() => navigation.openDrawer()}
-          ></Icon.Button>
-        ),
-      }}
-    />
-  </DetailsStack.Navigator>
-);
+const AlumnoStackScreen = ({navigation}) => {
+  
+  return (
+    <AlumnoStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#fff',
+          shadowColor: '#000', // iOS
+          elevation: 0, // Android
+        },
+        headerTintColor: '#000',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}>
+        <AlumnoStack.Screen
+          name="Alumno"
+          component={AlumnoScreen}
+          options={{
+            title: ' ',
+            headerLeft: () => (
+              <View style={{marginLeft: 5,flexDirection: 'row',width:400,}}>
+                <ScrollView  horizontal={true} showsHorizontalScrollIndicator={true} pagingEnabled={false} >
+                <Surface>
+                  <TouchableOpacity onPress={() => navigation.navigate('DatosGenerales')} style={styles.botonTabHeader}>
+                    <Text style={{fontSize: 14,fontWeight: 'bold',color: '#000'}}>Datos Generales</Text> 
+                  </TouchableOpacity>
+                  </Surface> 
+                  <TouchableOpacity onPress={() => navigation.navigate('Procedencia')} style={styles.botonTabHeader}>
+                    <Text style={{fontSize: 14,fontWeight: 'bold',color: '#000'}}>Procedencia</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => navigation.navigate('DatosFamiliares')} style={styles.botonTabHeader}>
+                    <Text style={{fontSize: 14,fontWeight: 'bold',color: '#000'}}>Datos Familiares</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => navigation.navigate('SituacionActual')} style={styles.botonTabHeader}>
+                    <Text style={{fontSize: 14,fontWeight: 'bold',color: '#000'}}>Situación Actual</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => navigation.navigate('Calificaciones')} style={styles.botonTabHeader}>
+                    <Text style={{fontSize: 14,fontWeight: 'bold',color: '#000'}}>Calificaciones</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => navigation.navigate('Expedientes')} style={styles.botonTabHeader}>
+                    <Text style={{fontSize: 14,fontWeight: 'bold',color: '#000'}}>Expedientes</Text>
+                  </TouchableOpacity>
+                </ScrollView>
+              </View>
+            ),
+            
+          }}
+        />
+        <AlumnoStack.Screen 
+          name="Procedencia"
+          component={Procedencia}
+          options={{
+            title: 'Procedencia',
+          }}
+        />
+        <AlumnoStack.Screen 
+          name="DatosGenerales"
+          component={DatosGenerales}
+          options={{
+            title: 'Datos generales',
+          }}
+        />
+        <AlumnoStack.Screen 
+          name="DatosFamiliares"
+          component={DatosFamiliares}
+          options={{
+            title: 'Datos Familiares',
+          }}
+        />
+        <AlumnoStack.Screen 
+          name="SituacionActual"
+          component={SituacionActual}
+          options={{
+            title: 'Situación Actual',
+          }}
+        />
+        <AlumnoStack.Screen 
+          name="Calificaciones"
+          component={Calificaciones}
+          options={{
+            title: 'Calificaciones',
+          }}
+        />
+        <AlumnoStack.Screen 
+          name="Expedientes"
+          component={Expedientes}
+          options={{
+            title: 'Expedientes',
+          }}
+        />
+    </AlumnoStack.Navigator>
+  );
+};
+
+const styles = StyleSheet.create({
+  botonTabHeader:{
+    borderBottomColor:'#fff',
+    borderTopColor:'#fff',
+    borderLeftColor:'#fff',
+    borderRightColor:'gray',
+    backgroundColor: '#fff', 
+    height:50,
+    padding:5,
+    justifyContent:'center',
+    margin:5,
+    shadowColor: '#000',
+    shadowOpacity: 0.8,
+    elevation: 6,
+    shadowRadius: 25 ,
+    shadowOffset : { width: 56, height: 13},
+    borderWidth:0,
+    borderRadius:0,
+  }
+
+})
