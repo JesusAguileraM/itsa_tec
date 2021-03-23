@@ -62,7 +62,6 @@ const useOnAuthStateChanged = () => {
 
 const useGoogleLogin = async (setIsLoading,setVisitante,setInscripto,setUserLogged, expoPushToken, setExpoPushToken ) => {
      
-    
 // const useGoogleLogin = async (setIsLoading) => {
     try {
         // Antes de loguearnos debemos comprobar si permitió las notificaciones, si es así continuamos, si no return
