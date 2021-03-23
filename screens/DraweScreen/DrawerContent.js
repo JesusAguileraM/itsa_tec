@@ -21,17 +21,17 @@ export function DrawerContent(props) {
     const { signOutUser,ir_a_sesion } = React.useContext(AuthContext);
 
     
-    useEffect(() => {
-        (async () => {
-            DatosGoogle= await crudToken.useObtenerSesion();
-            await setCorreoInst(DatosGoogle.email);
-            await setNombre(DatosGoogle.name);
-            // await AsyncStorage.setItem('CorreoElectronicoUsuario',CorreoInst);
-            await AsyncStorage.setItem('FotoUsuario',foto);
-            await AsyncStorage.setItem('NombreUsuario',nombre);
+    // useEffect(() => {
+    //     (async () => {
+    //         DatosGoogle= await crudToken.useObtenerSesion();
+    //         await setCorreoInst(DatosGoogle.email);
+    //         await setNombre(DatosGoogle.name);
+    //         // await AsyncStorage.setItem('CorreoElectronicoUsuario',CorreoInst);
+    //         await AsyncStorage.setItem('FotoUsuario',foto);
+    //         await AsyncStorage.setItem('NombreUsuario',nombre);
 
-            })();
-        }, []);
+    //         })();
+    //     }, []);
     return (
         <View style={{ flex: 1 }}>
         <DrawerContentScrollView {...props}>
