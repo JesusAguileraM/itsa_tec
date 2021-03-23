@@ -6,7 +6,7 @@ import * as Google from 'expo-google-app-auth'; //google auth libraries
 import { getToken } from '../notifications/hooks';
 import Odoo from 'react-native-odoo-promise-based';
 import * as crudToken from "../database/crudToken";  //Aqui esta lo del crud de token y user
-
+import * as config from '../auth/config';
 
   //este efecto se ejecuta al montar el componente no lo olvides, todos los useEffect hacen eso
   //¿sabes que es lo interesante?
@@ -105,14 +105,14 @@ const useGoogleLogin = async (setIsLoading,setVisitante,setInscripto,setUserLogg
             .then(sesion => {
                 crudToken.useGuardarSesion(sesion.additionalUserInfo.profile);
                 crudToken.useGuardarToken(token);
-                postData('https://proagrimex.com/api/users', { 
-                    fullName: sesion.additionalUserInfo.profile.name,
-                    email: sesion.additionalUserInfo.profile.email,
-                    tokenN: token.data,
-                }).then(data => {
-                    console.log(data);
-                    alert(` Usuario creado con exito `) // JSON data parsed by `data.json()` call
-                });
+                // postData(`${config}/users`, { 
+                //     fullName: sesion.additionalUserInfo.profile.name,
+                //     email: sesion.additionalUserInfo.profile.email,
+                //     tokenN: token.data,
+                // }).then(data => {
+                //     console.log(data);
+                //     alert(` Usuario creado con exito `) // JSON data parsed by `data.json()` call
+                // });
                 // console.log(sesion.additionalUserInfo.profile)
                 // console.log(sesion.additionalUserInfo.profile.email)
                 
