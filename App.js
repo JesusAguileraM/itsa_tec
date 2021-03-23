@@ -147,21 +147,23 @@ const App = () => {
     }
   }
   
+  // const status = AsyncStorage  
+
   return (
     <PaperProvider theme={theme}>
       <AuthContext.Provider value={authContext}>
         <NavigationContainer >        
-              {/* {userLogged === true ? (
+              {userLogged === true ? (
                 <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent {...props} />} >
                   <DrawerUserLogged.Screen name="UsuarioLogueado" component={MainTabScreen} />
                 </DrawerUserLogged.Navigator>
-              ): null} */}
-              {inscripto === false ? (
+              ): null}
+              {/* {inscripto === false ? (
                 <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent2 {...props} />} >
                   <DrawerUserLogged.Screen name="UsuarioInscripto" component={MainTabScreen2} />
                 </DrawerUserLogged.Navigator>
-              ): null}
-              {/* {visitante === true ? (
+              ): null} */}
+              {visitante === true ? (
                 <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent3 {...props} />} >
                   <DrawerUserLogged.Screen name="Visitante" component={MainTabScreen3} />
                 </DrawerUserLogged.Navigator>
@@ -169,7 +171,7 @@ const App = () => {
 
               {renderIF(visitante,inscripto,userLogged) === true ? (
                 <RootStackScreen />
-              ) : null} */}
+              ) : null}
         </NavigationContainer>
       </AuthContext.Provider>
     </PaperProvider>

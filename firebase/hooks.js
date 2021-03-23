@@ -6,7 +6,7 @@ import * as Google from 'expo-google-app-auth'; //google auth libraries
 import { getToken } from '../notifications/hooks';
 import Odoo from 'react-native-odoo-promise-based';
 import * as crudToken from "../database/crudToken";  //Aqui esta lo del crud de token y user
-
+import * as config from '../auth/config';
 
   //este efecto se ejecuta al montar el componente no lo olvides, todos los useEffect hacen eso
   //¿sabes que es lo interesante?
@@ -61,7 +61,7 @@ const useOnAuthStateChanged = () => {
 ///Este es el metodo chido para iniciar sesión en google
 
 const useGoogleLogin = async (setIsLoading,setVisitante,setInscripto,setUserLogged, expoPushToken, setExpoPushToken ) => {
-     
+    setIsLoading(true);
 // const useGoogleLogin = async (setIsLoading) => {
     try {
         // Antes de loguearnos debemos comprobar si permitió las notificaciones, si es así continuamos, si no return
@@ -89,10 +89,6 @@ const useGoogleLogin = async (setIsLoading,setVisitante,setInscripto,setUserLogg
 
         if (result.type === 'success') {
             // console.log(result); //este es el objeto de sesion correcto para empezar el logueo con firestore
-            setIsLoading(true);
-            setUserLogged(false);
-            setVisitante(false);
-            setInscripto(false);
             //Creamos las credenciales para prepar todo para autentificarnos con google
             const credential = firebase.auth.GoogleAuthProvider.credential( //Set the tokens to Firebase
             result.idToken,
@@ -103,16 +99,23 @@ const useGoogleLogin = async (setIsLoading,setVisitante,setInscripto,setUserLogg
             Firebase.auth()
             .signInWithCredential(credential) //Login to Firebase
             .then(sesion => {
+                // const status = axios.get()// alumnno, noalumno, visitante
+                
+                setUserLogged(false);
+                setVisitante(false);
+                setInscripto(false);
+
+
                 crudToken.useGuardarSesion(sesion.additionalUserInfo.profile);
                 crudToken.useGuardarToken(token);
-                postData('https://proagrimex.com/api/users', { 
-                    fullName: sesion.additionalUserInfo.profile.name,
-                    email: sesion.additionalUserInfo.profile.email,
-                    tokenN: token.data,
-                }).then(data => {
-                    console.log(data);
-                    alert(` Usuario creado con exito `) // JSON data parsed by `data.json()` call
-                });
+                // postData(`${config}/users`, { 
+                //     fullName: sesion.additionalUserInfo.profile.name,
+                //     email: sesion.additionalUserInfo.profile.email,
+                //     tokenN: token.data,
+                // }).then(data => {
+                //     console.log(data);
+                //     alert(` Usuario creado con exito `) // JSON data parsed by `data.json()` call
+                // });
                 // console.log(sesion.additionalUserInfo.profile)
                 // console.log(sesion.additionalUserInfo.profile.email)
                 
