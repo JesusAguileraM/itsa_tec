@@ -17,6 +17,13 @@ import useAxios, {configure} from 'axios-hooks';
 import LRU from 'lru-cache';
 import Axios from 'axios';
 
+
+// const axios = Axios.create({
+//     baseURL: config.BACKENDURL,
+// })
+// const cache = new LRU({ max: 10 });
+// configure({ axios, cache });
+
 const InscripcionesScreen = ({ navigation }) => 
 {
     const camRef= useRef(null);
@@ -66,12 +73,7 @@ const InscripcionesScreen = ({ navigation }) =>
     const [ carreras, setCarreras ] = useState(null);
     const [ turno, setTurno ] = useState(null);
 
-    const axios = Axios.create({
-        baseURL: config.BACKENDURL,
-    })
-    const cache = new LRU({ max: 10 });
-    configure({ axios, cache });
-    const [{datos, loading, error}, refetch] = useAxios();
+    // const [{datos, loading, error}, refetch] = useAxios('/users');
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
