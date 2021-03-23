@@ -21,6 +21,7 @@ export function DrawerContent(props) {
     const { signOutUser,ir_a_sesion } = React.useContext(AuthContext);
 
     
+<<<<<<< HEAD
     // useEffect(() => {
     //     (async () => {
     //         DatosGoogle= await crudToken.useObtenerSesion();
@@ -30,6 +31,16 @@ export function DrawerContent(props) {
     //         await AsyncStorage.setItem('CorreoElectronicoUsuario',CorreoInst);
     //         await AsyncStorage.setItem('FotoUsuario',foto);
     //         await AsyncStorage.setItem('NombreUsuario',nombre);
+=======
+    useEffect(() => {
+        (async () => {
+            DatosGoogle= await crudToken.useObtenerSesion();
+            await setCorreoInst(DatosGoogle.email);
+            await setNombre(DatosGoogle.name);
+            await AsyncStorage.setItem('CorreoElectronicoUsuario',CorreoInst);
+            await AsyncStorage.setItem('FotoUsuario',foto);
+            await AsyncStorage.setItem('NombreUsuario',nombre);
+>>>>>>> 527f34865ab36e31c6e4406b20550fcd2038db78
 
     //     })();
     // }, []);
@@ -95,30 +106,12 @@ export function DrawerContent(props) {
                 />
                 <DrawerItem
                     icon={({ color, size }) => (
-                        <Icon name="ios-person" color={color} size={size} />
-                    )}
-                    label="Perfil"
-                    onPress={() => {
-                    props.navigation.navigate("Profile");
-                }}
-                />
-                <DrawerItem
-                    icon={({ color, size }) => (
                         <Icon name="create-outline" color={color} size={size} />
                     )}
                     label="Inscribirse"
                     onPress={() => {
                     props.navigation.navigate("Inscribirse");
                 }}
-                />
-                <DrawerItem
-                    icon={({ color, size }) => (
-                        <Icon name="create" color={color} size={size} />
-                    )}
-                    label="Re-inscribirse"
-                    onPress={() => {
-                    props.navigation.navigate("SupportScreen");
-                    }}
                 />
             </Drawer.Section>
             </View>

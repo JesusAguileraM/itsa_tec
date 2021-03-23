@@ -24,7 +24,6 @@ import * as crudToken from "./database/crudToken";  //Aqui esta lo del crud de t
 import { useGoogleLogin, useOnAuthStateChanged, useGoogleSignOut, cerrarSesion_ir_a_login} from './firebase/hooks'
 import { useRegisterForPushNotificationsAsync } from './notifications/hooks';
 
-
 const DrawerUserLogged = createDrawerNavigator();
 
 const App = () => {

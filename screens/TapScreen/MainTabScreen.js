@@ -58,6 +58,7 @@ const MainTabScreen = () => {
         }}
       />
       <Tab.Screen
+<<<<<<< HEAD
         name="Profile"
         component={ProfileScreen}
         options={{
@@ -69,6 +70,8 @@ const MainTabScreen = () => {
         }}
       />
       <Tab.Screen
+=======
+>>>>>>> 527f34865ab36e31c6e4406b20550fcd2038db78
         name="Info"
         component={ExploreScreen}
         options={{

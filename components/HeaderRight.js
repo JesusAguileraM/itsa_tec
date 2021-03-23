@@ -20,7 +20,11 @@ const HeaderRight = () => {
     return (
         <View style={{ flexDirection: "row",alignItems:'center'}}>
             <View style={{alignItems:'flex-end' }}>
+<<<<<<< HEAD
                 <Text style={{ marginRight: 5,marginBottom:5,color:'#fff', justifyContent:'flex-end', fontSize: 12,fontWeight: "bold",}}>Alum. ITSA</Text>
+=======
+                <Text style={{ marginRight: 5,marginBottom:5,color:'#fff', justifyContent:'flex-end', fontSize: 12,fontWeight: "bold",}}>Cuenta de: </Text>
+>>>>>>> 527f34865ab36e31c6e4406b20550fcd2038db78
                 <Text style={{ marginRight: 5,color:'#fff',fontSize: 10,fontWeight: "200",}}>{nombreCompleto}</Text>
             </View>
             
