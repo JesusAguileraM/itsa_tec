@@ -9,9 +9,13 @@ import { getToken } from '../notifications/hooks';
 import * as Steps from './PasosInscripcion/index';
 // import ComprobarPago from './ComprobarPago';
 import Feather from "react-native-vector-icons/Feather";
-
 //Styles
 import {styles, styles2} from './styles/datailsScreen';
+//api permissions
+import * as config from '../auth/config';
+import useAxios, {configure} from 'axios-hooks';
+import LRU from 'lru-cache';
+import Axios from 'axios';
 
 const InscripcionesScreen = ({ navigation }) => 
 {
@@ -42,8 +46,6 @@ const InscripcionesScreen = ({ navigation }) =>
         sexo_Aprobado:true,
     });
 
-    
-
     //datos del usuario
     let dataUser=[
         {   name: data.Nombre, 
@@ -64,9 +66,16 @@ const InscripcionesScreen = ({ navigation }) =>
     const [ carreras, setCarreras ] = useState(null);
     const [ turno, setTurno ] = useState(null);
 
+    const axios = Axios.create({
+        baseURL: config.BACKENDURL,
+    })
+    const cache = new LRU({ max: 10 });
+    configure({ axios, cache });
+    const [{datos, loading, error}, refetch] = useAxios();
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    const [no_Documento, setNo_Documento] =useState(1);//Para saber que documento hago referencia
+    const [no_Documento, setNo_Documento] = useState(1);//Para saber que documento hago referencia
     const [continuar1,setContinuar1] = useState(true);
     const [continuar2,setContinuar2] = useState(false);
     const [continuar3,setContinuar3] = useState(false);
@@ -133,8 +142,12 @@ const InscripcionesScreen = ({ navigation }) =>
 
     //se encarga de ejecutar el ultimo paso de inscripcion
     const terminarProceso=()=>{//preguntarle a manuel como enviar esta funcion al componente de comprobar pago
-        // console.log(dataUser)
-        // console.log(dataFoto)
+        alert("Vamos a subir las imagenes al servidor");
+        // config.BACKENDURL        
+        // acta_N_Foto
+
+
+
         setContinuar5(false);
         setContinuar1(true);
         setBarraProces(0);
