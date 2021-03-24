@@ -13,8 +13,6 @@ import Feather from "react-native-vector-icons/Feather";
 import {styles, styles2} from './styles/datailsScreen';
 //api permissions
 import * as config from '../auth/config';
-import useAxios, {configure} from 'axios-hooks';
-import LRU from 'lru-cache';
 import Axios from 'axios';
 
 

@@ -6,7 +6,8 @@ import * as Google from 'expo-google-app-auth'; //google auth libraries
 import { getToken } from '../notifications/hooks';
 import Odoo from 'react-native-odoo-promise-based';
 import * as crudToken from "../database/crudToken";  //Aqui esta lo del crud de token y user
-import * as config from '../auth/config';
+import * as api from '../auth/request';
+import axios from 'axios';
 
   //este efecto se ejecuta al montar el componente no lo olvides, todos los useEffect hacen eso
   //¿sabes que es lo interesante?
@@ -37,13 +38,21 @@ const useOnAuthStateChanged = () => {
     
     useEffect(() => {
         const authListener = Firebase.auth().onAuthStateChanged((user) => {
-            
             if(user ? true : false){
                 //setUserLogged(user ? true : false);
+                const userData = user.providerData[0];
+                const perfil = {
+                    "name": userData.displayName,
+                    "email": userData.email,
+                    "picture": userData.photoURL,
+                };
+                crudToken.useGuardarSesion(perfil);
                 setUserLogged(true);
                 setVisitante(false);
                 setInscripto(false);
             }else{
+                crudToken.useEliminarSesion();
+                crudToken.useEliminarToken();
                 setUserLogged(false);
                 setVisitante(true);
                 setInscripto(false);
@@ -60,9 +69,8 @@ const useOnAuthStateChanged = () => {
 
 ///Este es el metodo chido para iniciar sesión en google
 
-const useGoogleLogin = async (setIsLoading,setVisitante,setInscripto,setUserLogged, expoPushToken, setExpoPushToken ) => {
-     
-// const useGoogleLogin = async (setIsLoading) => {
+async function useGoogleLogin(setIsLoading,setVisitante,setInscripto,setUserLogged, expoPushToken, setExpoPushToken )  {
+    setIsLoading(true);
     try {
         // Antes de loguearnos debemos comprobar si permitió las notificaciones, si es así continuamos, si no return
         let token = {};
@@ -89,22 +97,35 @@ const useGoogleLogin = async (setIsLoading,setVisitante,setInscripto,setUserLogg
 
         if (result.type === 'success') {
             // console.log(result); //este es el objeto de sesion correcto para empezar el logueo con firestore
-            setIsLoading(true);
-            setUserLogged(false);
-            setVisitante(false);
-            setInscripto(false);
             //Creamos las credenciales para prepar todo para autentificarnos con google
             const credential = firebase.auth.GoogleAuthProvider.credential( //Set the tokens to Firebase
-            result.idToken,
-            result.accessToken
+                result.idToken,
+                result.accessToken
             );
 
             //Empezamos la authetificación con google y una vez que se atentifique la seión nos devuelve un objeto con la sesión
             Firebase.auth()
             .signInWithCredential(credential) //Login to Firebase
-            .then(sesion => {
-                crudToken.useGuardarSesion(sesion.additionalUserInfo.profile);
+            .then( async sesion => {
                 crudToken.useGuardarToken(token);
+                const profile = sesion.additionalUserInfo.profile;
+                let formData = new FormData()
+                formData.append("usuario", profile.name);
+                formData.append("emailPersonal", profile.email);
+                formData.append("tokenN", token.data);
+                const user = await api.postUserT(formData, 'temporaryusers');    
+                console.log("Ususario devuelto")
+                console.log(user);
+                
+                // let resp = null;
+                // try {
+                //     resp = await axios.post('https://proagrimex.com/api/v1/temporaryusers', obj);
+                //     console.log(resp.data);
+                // } catch (err) {
+                //     // Handle Error Here
+                //     console.error(err);
+                // }
+
                 // postData(`${config}/users`, { 
                 //     fullName: sesion.additionalUserInfo.profile.name,
                 //     email: sesion.additionalUserInfo.profile.email,
