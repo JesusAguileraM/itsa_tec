@@ -18,7 +18,7 @@ export function DrawerContent(props) {
     
 
     //Para cerrar 
-    const { signOutUser,ir_a_sesion } = React.useContext(AuthContext);
+    const { signOutUser } = React.useContext(AuthContext);
 
     
     // useEffect(() => {
@@ -59,7 +59,7 @@ export function DrawerContent(props) {
                 <View style={{  marginTop: 12,marginBottom:50 }}>
                     <TouchableOpacity
                     onPress={() => {
-                        ir_a_sesion();
+                        
                     }}
                     style={[
                         styles.signIn,

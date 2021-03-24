@@ -20,21 +20,13 @@ import axios from 'axios';
 const useOnAuthStateChanged = () => {
 
     
-    //guarda si el usuario esta logueado (observe el método Glogin)
-    const [userLogged, setUserLogged] = useState(false);
-
-    const [visitante,setVisitante]= useState(false);// no tiene cuenta
-
-    const [inscripto,setInscripto]= useState(false);// tiene cuenta institucional
-
-    
     
     //guarda la sesión de firestore
     const [userProfile, setUserProfile] = useState(null);
     //pues ya sabes es pera bloquear la interfaz con un circulito jjajajaja
     const [isLoading, setIsLoading] = useState(true);
 
-    
+    const [isStatus,setIsStatus]=useState('');
     
     useEffect(() => {
         const authListener = Firebase.auth().onAuthStateChanged((user) => {
@@ -47,15 +39,16 @@ const useOnAuthStateChanged = () => {
                     "picture": userData.photoURL,
                 };
                 crudToken.useGuardarSesion(perfil);
-                setUserLogged(true);
-                setVisitante(false);
-                setInscripto(false);
+                const status = crudToken.ObtenerInfoPersonalInscripcion();
+                crudToken.GuardarIsStatus(status.data.status);
+                setIsStatus(status);
+                
             }else{
                 crudToken.useEliminarSesion();
                 crudToken.useEliminarToken();
-                setUserLogged(false);
-                setVisitante(true);
-                setInscripto(false);
+                crudToken.seIsStatus('noalumno');
+                setIsStatus('noalumno');
+                
             }
             
         
@@ -64,12 +57,12 @@ const useOnAuthStateChanged = () => {
         });
         return authListener; //cuando se cierre la app se desmontará el oyente
       }, []);   
-    return {userLogged, userProfile, isLoading ,visitante,inscripto, setUserLogged, setUserProfile, setIsLoading, setVisitante, setInscripto};
+    return {userProfile, isLoading , setUserProfile, setIsLoading, };
 }
 
 ///Este es el metodo chido para iniciar sesión en google
 
-async function useGoogleLogin(setIsLoading,setVisitante,setInscripto,setUserLogged, expoPushToken, setExpoPushToken )  {
+async function useGoogleLogin(setIsLoading, expoPushTokensd,seIsStatus )  {
     setIsLoading(true);
     try {
         // Antes de loguearnos debemos comprobar si permitió las notificaciones, si es así continuamos, si no return
@@ -115,6 +108,7 @@ async function useGoogleLogin(setIsLoading,setVisitante,setInscripto,setUserLogg
                     "tokenN": token.data
                 }
                 const user = await api.postUserT(obj, 'temporaryusers');    
+                crudToken.GuardarInfoPersonalInscripcion(user);
                 console.log(user.data); //guardar en la base de datos informacionPersonalInscripciones
                 //user.data.status es para el control de switch
                 console.log("Borrar esto");
@@ -302,14 +296,12 @@ const instanciaOdoo = (matricula, token) => {
 }
 
 //cerrar la sesión de google
-const useGoogleSignOut = (setVisitante,setInscripto,setUserLogged) => {
+const useGoogleSignOut = (seIsStatus) => {
     Firebase.auth().signOut();
     crudToken.useEliminarSesion();
     crudToken.useEliminarToken();
-    setVisitante(true);
-    setInscripto(false);
-    setUserLogged(false);
-
+    crudToken.GuardarIsStatus('noalumno');
+    seIsStatus('noalumno');  
 }
 
 

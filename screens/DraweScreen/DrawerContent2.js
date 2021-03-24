@@ -18,7 +18,7 @@ export function DrawerContent2(props) {
     
 
     //Para cerrar 
-    const { signOutUser,ir_a_sesion } = React.useContext(AuthContext);
+    const { signOutUser } = React.useContext(AuthContext);
 
     
     useEffect(() => {

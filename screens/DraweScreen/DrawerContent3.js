@@ -32,7 +32,7 @@ const CorreoInst= 'Tal15020357@itsa.edu.mx';
 const paperTheme = useTheme();
 const { signOut, toggleTheme } = React.useContext(AuthContext);
 //Para cerrar 
-const { signOutUser,handleGLogin,ir_a_sesion } = React.useContext(AuthContext);
+const { signOutUser,handleGLogin } = React.useContext(AuthContext);
     return (
         <View style={{ flex: 1 }}>
         <DrawerContentScrollView {...props}>
@@ -59,7 +59,7 @@ const { signOutUser,handleGLogin,ir_a_sesion } = React.useContext(AuthContext);
                 <View style={{ marginBottom:5,marginTop:20 }}>
                     <TouchableOpacity
                     onPress={() => {
-                        ir_a_sesion();
+                        
                     }}
                     style={[
                         styles.signIn,

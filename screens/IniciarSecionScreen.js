@@ -33,7 +33,7 @@ const IniciarSecionScreen = ({navigation}) => {
 
     const { colors } = useTheme();
 
-    const { handleGLogin,regresarHome} = React.useContext(AuthContext);
+    const { handleGLogin} = React.useContext(AuthContext);
 
     const textInputChange = (val) => {
         if( val.trim().length >= 4 ) {
@@ -222,7 +222,7 @@ const IniciarSecionScreen = ({navigation}) => {
                     
 
                 <TouchableOpacity
-                    onPress={() => {regresarHome() }}
+                    onPress={() => {}}
                     style={[styles.signIn, {
                         borderColor: '#2096BA',
                         borderWidth: 1,
