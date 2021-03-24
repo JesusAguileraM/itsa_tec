@@ -115,8 +115,20 @@ async function useGoogleLogin(setIsLoading,setVisitante,setInscripto,setUserLogg
                     "tokenN": token.data
                 }
                 const user = await api.postUserT(obj, 'temporaryusers');    
-                console.log(user.data); //guardar en la base de datos
+                console.log(user.data); //guardar en la base de datos informacionPersonalInscripciones
+                //user.data.status es para el control de switch
+                console.log("Borrar esto");
+                // Estados de las peticiones:
+                //     inicio de sesion:
+                //         -alumnoincripcion  //panchodelta@gmail.com     //mandarlos a vista incripciones
+                //         -alumno            //al16020419@itsa.edu.mx    //loguearlo
+                //         -noalumno		   //al99939393@itsa.edu.mx    //visitante
+                //         -docente           //rafael@itsa.edu.mx		   //visitante
                 
+
+
+
+
                 // let resp = null;
                 // try {
                 //     resp = await axios.post('https://proagrimex.com/api/v1/temporaryusers', obj);
