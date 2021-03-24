@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator,Text } from "react-native";
 import {CustomDefaultTheme,CustomDarkTheme} from './tema/TemaStyles';
 import { Provider as PaperProvider} from "react-native-paper";
 import {NavigationContainer} from "@react-navigation/native";
@@ -16,7 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as crudToken from "./database/crudToken";  //Aqui esta lo del crud de token y user
 import { useGoogleLogin, useOnAuthStateChanged, useGoogleSignOut} from './firebase/hooks'
 import { useRegisterForPushNotificationsAsync } from './notifications/hooks';
-
+import Splash from './components/Splash';
 
 const DrawerUserLogged = createDrawerNavigator();
 
@@ -58,6 +58,7 @@ const App = () => {
       signOutUser: async () => {
         setIsLoading(true);
         await useGoogleSignOut(setIsStatus);
+        setIsStatus('noalumno');
         setIsLoading(false);
         console.log('sesión cerrada')
       },
@@ -95,10 +96,10 @@ const App = () => {
     }, 1000);
   }, []);
 
-  if (loginState.isLoading || isLoading) {//le metí isLoading para la de google
+  if (isLoading) {//le metí isLoading para la de google
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" />
+          <Splash/>
       </View>
     );
   }

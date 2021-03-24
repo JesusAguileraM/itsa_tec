@@ -5,8 +5,8 @@ const Splash = ()=> {
     {
         return (
             <SafeAreaView style={styles.containerSplash}>
-                <Image style={styles.imagenLogo} source={require('./assets/itsaLogoSplash.png')} />
-                <Image style={styles.imagenGif} source={require('./assets/doubleRinCarga.gif')} />
+                <Image style={styles.imagenLogo} source={require('../assets/itsaLogoSplash.png')} />
+                <Image style={styles.imagenGif} source={require('../assets/doubleRinCarga.gif')} />
             </SafeAreaView>
         );
     }

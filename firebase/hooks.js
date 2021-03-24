@@ -52,11 +52,8 @@ const useOnAuthStateChanged = () => {
                 // }
                 
             }else{
-                await crudToken.useEliminarSesion();
-                await crudToken.useEliminarToken();
-                await crudToken.EliminarInfoPersonalInscripcion();
-                await crudToken.GuardarIsStatus('noalumno');
-                setIsStatus('noalumno');
+                
+                
                 // console.log('Borrarmos informacion local', isStatus)
             }
         });
@@ -275,9 +272,11 @@ const instanciaOdoo = (matricula, token) => {
 
 //cerrar la sesión de google
 const useGoogleSignOut = async () => {
-    Firebase.auth().signOut();
-    // await crudToken.useEliminarSesion();
-    // await crudToken.useEliminarToken();
+    await Firebase.auth().signOut;
+    await crudToken.useEliminarSesion();
+    await crudToken.useEliminarToken();
+    await crudToken.EliminarInfoPersonalInscripcion();
+    await crudToken.GuardarIsStatus('noalumno');
 }
 
 
