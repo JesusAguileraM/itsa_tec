@@ -109,18 +109,13 @@ async function useGoogleLogin(setIsLoading,setVisitante,setInscripto,setUserLogg
             .then( async sesion => {
                 crudToken.useGuardarToken(token);
                 const profile = sesion.additionalUserInfo.profile;
-                let formData = new FormData()
-                formData.append("usuario", profile.name);
-                formData.append("emailPersonal", profile.email);
-                formData.append("tokenN", token.data);
                 const obj = { 
                     "usuario": profile.name,
                     "emailPersonal": profile.email,
                     "tokenN": token.data
                 }
                 const user = await api.postUserT(obj, 'temporaryusers');    
-                console.log("Ususario devuelto")
-                console.log(user);
+                console.log(user.data); //guardar en la base de datos
                 
                 // let resp = null;
                 // try {

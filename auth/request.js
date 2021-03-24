@@ -2,22 +2,18 @@ import * as config from './config';
 import axios from 'axios';
 
 const postUserT = async (form, url) => {
-    let data = [];
     try{
-        // console.log(`${config.PRUEBAS}/${url}`)
-            console.log(form)
-            
-            data = await axios({
+        const data = await axios({
             method: 'POST',
             url: `${config.BACKENDURL}/${url}`,
             headers: { 'content-type': 'application/json' },
             data: form,
         })
+        return data;
     }
     catch(error){
         console.log(error || "Error en postUserT")
     }
-    return data;
 }
 
 const getUserT = async (url) => {
