@@ -218,11 +218,11 @@ export const ObtenerInfoBanco=async()=>{
 //isStatus
 export const GuardarIsStatus=async(status)=>{
     try {
-        await AsyncStorage.setItem("isStatus", JSON.stringify({status: status}));
+        await AsyncStorage.setItem("isStatus", JSON.stringify( status ));
         console.log('Info del isStatus guardado exitosamente');
     } catch (e) {
         console.log(e);
-        console.log('Hubu un error al guardar la info del isStatus')
+        console.log('guardar Hubu un error al guardar la info del isStatus')
     }
 }   
 
@@ -232,7 +232,7 @@ export const EliminarIsStatus=async()=>{
         console.log('Info del isStatus eliminado');
     } catch (e) {
         console.log(e);
-        console.log('Hubu un error al eliminar la isStatus')
+        console.log('Eliminar Hubu un error al eliminar la isStatus')
     }
 }
 
@@ -244,7 +244,7 @@ export const ObtenerIsStatus=async()=>{
         return User;
     } catch (e) {
         console.log(e);
-        console.log('Hubu un error al obtener a info del banco')
+        console.log('Obtener un error al obtener a info del banco')
         return null;
     }
 }

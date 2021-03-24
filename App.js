@@ -27,7 +27,7 @@ const App = () => {
 
   //Manejandro Las vistas que apareceran en la app
   //Manejo de la sesión
-  const {isLoading, isStatus, setIsLoading,seIsStatus} = useOnAuthStateChanged();
+  const {isLoading, isStatus, setIsLoading, setIsStatus} = useOnAuthStateChanged();
   //Manejo de las notificaciones
   const {expoPushToken, setExpoPushToken }  = useRegisterForPushNotificationsAsync();
   
@@ -57,12 +57,13 @@ const App = () => {
     () => ({
       signOutUser: () => {
         console.log('sesión cerrada')
-        useGoogleSignOut(seIsStatus);
+        useGoogleSignOut(setIsStatus);
         setIsLoading(false)
-        
+        crudToken.GuardarIsStatus('noalumno');
+        setIsStatus('noalumno');  
       },
       handleGLogin: async () => { 
-        useGoogleLogin(setIsLoading, expoPushToken, seIsStatus);
+        useGoogleLogin(setIsLoading, expoPushToken);
         
       },
       setIsStatus: async (status) => { 
@@ -92,8 +93,6 @@ const App = () => {
       </View>
     );
   }
-
-
 
   // const status = AsyncStorage  
 

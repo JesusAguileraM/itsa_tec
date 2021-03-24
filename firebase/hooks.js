@@ -18,18 +18,15 @@ import axios from 'axios';
   //    se llamará este mismo método para actualizar los datos de setUserLogged para si está logueado o no, de
   //    setIsLoading para si vamos a cargar o no, setUserProfile para guardar el usuario con sesión o null si no tiene sesión
 const useOnAuthStateChanged = () => {
-
-    
-    
     //guarda la sesión de firestore
     const [userProfile, setUserProfile] = useState(null);
     //pues ya sabes es pera bloquear la interfaz con un circulito jjajajaja
     const [isLoading, setIsLoading] = useState(true);
 
-    const [isStatus,setIsStatus]=useState('');
+    const [isStatus, setIsStatus] = useState('noalumno');
     
     useEffect(() => {
-        const authListener = Firebase.auth().onAuthStateChanged((user) => {
+        const authListener = Firebase.auth().onAuthStateChanged(async (user) => {
             if(user ? true : false){
                 //setUserLogged(user ? true : false);
                 const userData = user.providerData[0];
@@ -39,16 +36,22 @@ const useOnAuthStateChanged = () => {
                     "picture": userData.photoURL,
                 };
                 crudToken.useGuardarSesion(perfil);
-                const status = crudToken.ObtenerInfoPersonalInscripcion();
-                crudToken.GuardarIsStatus(status.data.status);
-                setIsStatus(status);
+                const data = await crudToken.ObtenerInfoPersonalInscripcion();
+                // setIsStatus('noalumno');
+                
+                console.log('######################')
+                console.log(data.status)
+
+                if(data.status){
+                    crudToken.GuardarIsStatus(data.status);
+                    setIsStatus(data.status);
+                }
                 
             }else{
                 crudToken.useEliminarSesion();
                 crudToken.useEliminarToken();
-                crudToken.seIsStatus('noalumno');
+                crudToken.GuardarIsStatus('noalumno');
                 setIsStatus('noalumno');
-                
             }
             
         
@@ -57,12 +60,12 @@ const useOnAuthStateChanged = () => {
         });
         return authListener; //cuando se cierre la app se desmontará el oyente
       }, []);   
-    return {userProfile, isLoading , setUserProfile, setIsLoading, };
+    return { isLoading , setIsLoading, isStatus, setIsStatus};
 }
 
 ///Este es el metodo chido para iniciar sesión en google
 
-async function useGoogleLogin(setIsLoading, expoPushTokensd,seIsStatus )  {
+async function useGoogleLogin(setIsLoading, expoPushToken)  {
     setIsLoading(true);
     try {
         // Antes de loguearnos debemos comprobar si permitió las notificaciones, si es así continuamos, si no return
@@ -108,10 +111,10 @@ async function useGoogleLogin(setIsLoading, expoPushTokensd,seIsStatus )  {
                     "tokenN": token.data
                 }
                 const user = await api.postUserT(obj, 'temporaryusers');    
-                crudToken.GuardarInfoPersonalInscripcion(user);
-                console.log(user.data); //guardar en la base de datos informacionPersonalInscripciones
+                crudToken.GuardarInfoPersonalInscripcion(user.data);
+                // console.log(user.data); //guardar en la base de datos informacionPersonalInscripciones
                 //user.data.status es para el control de switch
-                console.log("Borrar esto");
+                
                 // Estados de las peticiones:
                 //     inicio de sesion:
                 //         -alumnoincripcion  //panchodelta@gmail.com     //mandarlos a vista incripciones
@@ -296,12 +299,10 @@ const instanciaOdoo = (matricula, token) => {
 }
 
 //cerrar la sesión de google
-const useGoogleSignOut = (seIsStatus) => {
+const useGoogleSignOut = (setIsStatus) => {
     Firebase.auth().signOut();
     crudToken.useEliminarSesion();
     crudToken.useEliminarToken();
-    crudToken.GuardarIsStatus('noalumno');
-    seIsStatus('noalumno');  
 }
 
 
