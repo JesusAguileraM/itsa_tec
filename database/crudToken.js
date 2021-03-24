@@ -36,7 +36,7 @@ export const useObtenerToken=async()=>{
 
 export const useGuardarSesion=async(UserObjet)=>{
     try {
-        console.log('UserSesion guardado exitosamente')
+        // console.log('UserSesion guardado exitosamente')
         await AsyncStorage.setItem("UserSesion", JSON.stringify(UserObjet));
     } catch (e) {
         console.log(e);
@@ -74,7 +74,7 @@ export const GuardarInfoPersonalInscripcion=async(UserObjet)=>{
     try {
         
         await AsyncStorage.setItem("guardarInfoPersonalInscripcion", JSON.stringify(UserObjet));
-        console.log('Informacion personal de inscripcion guardado exitosamente');
+        // console.log('Informacion personal de inscripcion guardado exitosamente');
     } catch (e) {
         console.log(e);
         console.log('Hubu un error al guardar el UserSesion')
@@ -84,7 +84,7 @@ export const GuardarInfoPersonalInscripcion=async(UserObjet)=>{
 export const EliminarInfoPersonalInscripcion=async()=>{
     try {
         await AsyncStorage.removeItem("guardarInfoPersonalInscripcion");
-        console.log('Informacion personal de inscripcion Eliminado')
+        // console.log('Informacion personal de inscripcion Eliminado')
     } catch (e) {
         console.log(e);
         console.log('Hubu un error al eliminar UserSesion')
@@ -96,7 +96,7 @@ export const EliminarInfoPersonalInscripcion=async()=>{
 export const ObtenerInfoPersonalInscripcion=async()=>{
     try {
         const UserS= await AsyncStorage.getItem('guardarInfoPersonalInscripcion');
-        console.log('Informacion personal de inscripcion Obtenida')
+        // console.log('Informacion personal de inscripcion Obtenida')
         const User= JSON.parse(UserS);
         return User;
     } catch (e) {
@@ -219,7 +219,7 @@ export const ObtenerInfoBanco=async()=>{
 export const GuardarIsStatus=async(status)=>{
     try {
         await AsyncStorage.setItem("isStatus", JSON.stringify( status ));
-        console.log('Info del isStatus guardado exitosamente');
+        // console.log('Info del isStatus guardado exitosamente');
     } catch (e) {
         console.log(e);
         console.log('guardar Hubu un error al guardar la info del isStatus')
@@ -239,7 +239,7 @@ export const EliminarIsStatus=async()=>{
 export const ObtenerIsStatus=async()=>{
     try {
         const UserS= await AsyncStorage.getItem('isStatus');
-        console.log('Info del isStatus obtenida');
+        // console.log('Info del isStatus obtenida');
         const User= JSON.parse(UserS);
         return User;
     } catch (e) {

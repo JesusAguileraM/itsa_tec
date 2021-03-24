@@ -18,10 +18,8 @@ import axios from 'axios';
   //    se llamará este mismo método para actualizar los datos de setUserLogged para si está logueado o no, de
   //    setIsLoading para si vamos a cargar o no, setUserProfile para guardar el usuario con sesión o null si no tiene sesión
 const useOnAuthStateChanged = () => {
-    //guarda la sesión de firestore
-    const [userProfile, setUserProfile] = useState(null);
     //pues ya sabes es pera bloquear la interfaz con un circulito jjajajaja
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [isStatus, setIsStatus] = useState('noalumno');
     
@@ -29,34 +27,38 @@ const useOnAuthStateChanged = () => {
         const authListener = Firebase.auth().onAuthStateChanged(async (user) => {
             if(user ? true : false){
                 //setUserLogged(user ? true : false);
-                const userData = user.providerData[0];
-                const perfil = {
-                    "name": userData.displayName,
-                    "email": userData.email,
-                    "picture": userData.photoURL,
-                };
-                crudToken.useGuardarSesion(perfil);
-                const data = await crudToken.ObtenerInfoPersonalInscripcion();
+                // const userData = user.providerData[0];
+                // const perfil = {
+                //     "name": userData.displayName,
+                //     "email": userData.email,
+                //     "picture": userData.photoURL,
+                // };
+
                 // setIsStatus('noalumno');
                 
-                console.log('######################')
-                console.log(data.status)
+                // const data = await crudToken.ObtenerInfoPersonalInscripcion();
+                // Firebase.auth().signOut();
+                // console.log(data.status);
 
-                if(data.status){
-                    crudToken.GuardarIsStatus(data.status);
-                    setIsStatus(data.status);
-                }
+                // if(!data){
+                //     console.log('Esperamos hasta que halla data');
+                // }
+                
+                // console.log('##########auth State#########', data.status )
+                
+                // else if(data.status){
+                //     await crudToken.GuardarIsStatus(data.status);
+                //     setIsStatus(data.status);
+                // }
                 
             }else{
-                crudToken.useEliminarSesion();
-                crudToken.useEliminarToken();
-                crudToken.GuardarIsStatus('noalumno');
+                await crudToken.useEliminarSesion();
+                await crudToken.useEliminarToken();
+                await crudToken.EliminarInfoPersonalInscripcion();
+                await crudToken.GuardarIsStatus('noalumno');
                 setIsStatus('noalumno');
+                // console.log('Borrarmos informacion local', isStatus)
             }
-            
-        
-            setIsLoading(false);
-            setUserProfile(user);
         });
         return authListener; //cuando se cierre la app se desmontará el oyente
       }, []);   
@@ -65,9 +67,9 @@ const useOnAuthStateChanged = () => {
 
 ///Este es el metodo chido para iniciar sesión en google
 
-async function useGoogleLogin(setIsLoading, expoPushToken)  {
-    setIsLoading(true);
+const useGoogleLogin = async (expoPushToken)=>  {
     try {
+        let isLoginCancel = true;
         // Antes de loguearnos debemos comprobar si permitió las notificaciones, si es así continuamos, si no return
         let token = {};
         // console.log("Token v1 es:")
@@ -76,7 +78,6 @@ async function useGoogleLogin(setIsLoading, expoPushToken)  {
             if(!expoPushToken.expoPushToken){
                 // console.log('Token indefinido pedimos de nuevo 1')
                 token = await getToken();
-                // console.log(token);
             }
         } else {
             // console.log('Token indefinido pedimos de nuevo 2')
@@ -86,10 +87,10 @@ async function useGoogleLogin(setIsLoading, expoPushToken)  {
         }
 
         //await GoogleSignIn.askForPlayServicesAsync();
-        const result = await Google.logInAsync({ //return an object with result token and user
+        let result = result = await Google.logInAsync({ //return an object with result token and user
             iosClientId: Constants.manifest.extra.IOS_KEY, //From app.json
             androidClientId: Constants.manifest.extra.ANDROID_KEY, //From app.json
-        });
+        }); 
 
         if (result.type === 'success') {
             // console.log(result); //este es el objeto de sesion correcto para empezar el logueo con firestore
@@ -100,18 +101,24 @@ async function useGoogleLogin(setIsLoading, expoPushToken)  {
             );
 
             //Empezamos la authetificación con google y una vez que se atentifique la seión nos devuelve un objeto con la sesión
-            Firebase.auth()
+            await Firebase.auth()
             .signInWithCredential(credential) //Login to Firebase
             .then( async sesion => {
-                crudToken.useGuardarToken(token);
+                // console.log('Guardamos token')
+                await crudToken.useGuardarToken(token);
                 const profile = sesion.additionalUserInfo.profile;
+                // console.log('Guardamos seGuardarSesion')
+                await crudToken.useGuardarSesion(profile);
                 const obj = { 
                     "usuario": profile.name,
                     "emailPersonal": profile.email,
                     "tokenN": token.data
                 }
-                const user = await api.postUserT(obj, 'temporaryusers');    
-                crudToken.GuardarInfoPersonalInscripcion(user.data);
+                // console.log('Obtenemos el temporaryUser creado')
+                const user = await api.postUserT(obj, 'temporaryusers');  //devuelve algo como  user{data{data, status, message}}  
+                // console.log('Guardamos localmente el temporaryuser como InfoPersonalInscripcion')
+                await crudToken.GuardarInfoPersonalInscripcion(user.data);
+                await crudToken.GuardarIsStatus(user.data.status);
                 // console.log(user.data); //guardar en la base de datos informacionPersonalInscripciones
                 //user.data.status es para el control de switch
                 
@@ -121,53 +128,21 @@ async function useGoogleLogin(setIsLoading, expoPushToken)  {
                 //         -alumno            //al16020419@itsa.edu.mx    //loguearlo
                 //         -noalumno		   //al99939393@itsa.edu.mx    //visitante
                 //         -docente           //rafael@itsa.edu.mx		   //visitante
-                
-
-
-
-
-                // let resp = null;
-                // try {
-                //     resp = await axios.post('https://proagrimex.com/api/v1/temporaryusers', obj);
-                //     console.log(resp.data);
-                // } catch (err) {
-                //     // Handle Error Here
-                //     console.error(err);
-                // }
-
-                // postData(`${config}/users`, { 
-                //     fullName: sesion.additionalUserInfo.profile.name,
-                //     email: sesion.additionalUserInfo.profile.email,
-                //     tokenN: token.data,
-                // }).then(data => {
-                //     console.log(data);
-                //     alert(` Usuario creado con exito `) // JSON data parsed by `data.json()` call
-                // });
-                // console.log(sesion.additionalUserInfo.profile)
-                // console.log(sesion.additionalUserInfo.profile.email)
-                
-
-
-                //conexion odoo
-                // alert('Mandamos el token y correo')
-                // console.log('Mandamos el token y correo al servidor porque ya se validó que el usuario existe')
-                // console.log(sesion);
-                // let matricula = sesion.additionalUserInfo.profile.email.slice(2, 10);
-                // alert(matricula + "   " + token.data )
-                // console.log(matricula + "   " + token.data);
-                // instanciaOdoo(matricula, token.data);
+                isLoginCancel = false //devolvemos ue si se pudo loguear
             })
             .catch((error) => {
-                console.log(error);
+                // console.log(error);
                 alert('No hay conexión a internet')
             });
         } else {
+            // console.log('Cancelamos iniciar sesion google')
+            isLoginCancel = true; //devolvemos que no se pudo loguear
             //CANCEL
         }
+        return {isLoginCancel};
     } catch ({ message }) {
         alert('login: Error:' + message);
     }
-
 }
 
 const postData = async (url = '', data = {}) => {
@@ -299,11 +274,44 @@ const instanciaOdoo = (matricula, token) => {
 }
 
 //cerrar la sesión de google
-const useGoogleSignOut = (setIsStatus) => {
+const useGoogleSignOut = async () => {
     Firebase.auth().signOut();
-    crudToken.useEliminarSesion();
-    crudToken.useEliminarToken();
+    // await crudToken.useEliminarSesion();
+    // await crudToken.useEliminarToken();
 }
 
 
 export { useOnAuthStateChanged, useGoogleLogin, useGoogleSignOut} 
+
+
+//A Futuro
+// let resp = null;
+                // try {
+                //     resp = await axios.post('https://proagrimex.com/api/v1/temporaryusers', obj);
+                //     console.log(resp.data);
+                // } catch (err) {
+                //     // Handle Error Here
+                //     console.error(err);
+                // }
+
+                // postData(`${config}/users`, { 
+                //     fullName: sesion.additionalUserInfo.profile.name,
+                //     email: sesion.additionalUserInfo.profile.email,
+                //     tokenN: token.data,
+                // }).then(data => {
+                //     console.log(data);
+                //     alert(` Usuario creado con exito `) // JSON data parsed by `data.json()` call
+                // });
+                // console.log(sesion.additionalUserInfo.profile)
+                // console.log(sesion.additionalUserInfo.profile.email)
+                
+
+
+                //conexion odoo
+                // alert('Mandamos el token y correo')
+                // console.log('Mandamos el token y correo al servidor porque ya se validó que el usuario existe')
+                // console.log(sesion);
+                // let matricula = sesion.additionalUserInfo.profile.email.slice(2, 10);
+                // alert(matricula + "   " + token.data )
+                // console.log(matricula + "   " + token.data);
+                // instanciaOdoo(matricula, token.data);

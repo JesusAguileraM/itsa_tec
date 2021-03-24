@@ -14,7 +14,7 @@ import RootStackScreen from "./screens/RootStackScreen";
 import { AuthContext } from "./components/context";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as crudToken from "./database/crudToken";  //Aqui esta lo del crud de token y user
-import { useGoogleLogin, useOnAuthStateChanged, useGoogleSignOut, cerrarSesion_ir_a_login} from './firebase/hooks'
+import { useGoogleLogin, useOnAuthStateChanged, useGoogleSignOut} from './firebase/hooks'
 import { useRegisterForPushNotificationsAsync } from './notifications/hooks';
 
 
@@ -55,16 +55,25 @@ const App = () => {
 
   const authContext = React.useMemo(
     () => ({
-      signOutUser: () => {
+      signOutUser: async () => {
+        setIsLoading(true);
+        await useGoogleSignOut(setIsStatus);
+        setIsLoading(false);
         console.log('sesión cerrada')
-        useGoogleSignOut(setIsStatus);
-        setIsLoading(false)
-        crudToken.GuardarIsStatus('noalumno');
-        setIsStatus('noalumno');  
       },
       handleGLogin: async () => { 
-        useGoogleLogin(setIsLoading, expoPushToken);
-        
+        setIsLoading(true);
+        const {isLoginCancel} = await useGoogleLogin(expoPushToken);
+        // console.log(`Estado de loguin: ${!isLoginCancel}`)
+        if(isLoginCancel){
+          await crudToken.GuardarIsStatus('noalumno');
+          setIsStatus('noalumno');
+        } else { //hay loguin entonces
+          const status = await crudToken.ObtenerIsStatus();
+          // console.log(`status: ${status}`);
+          setIsStatus(status);
+        }
+        setIsLoading(false);
       },
       setIsStatus: async (status) => { 
         crudToken.GuardarIsStatus(status);
