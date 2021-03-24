@@ -10,7 +10,7 @@ const postUserT = async (form, url) => {
             data = await axios({
             method: 'POST',
             url: `${config.BACKENDURL}/${url}`,
-            headers: { 'content-type': 'multipart/form-data' },
+            headers: { 'content-type': 'application/json' },
             data: form,
         })
     }

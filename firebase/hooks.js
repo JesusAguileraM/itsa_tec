@@ -113,7 +113,12 @@ async function useGoogleLogin(setIsLoading,setVisitante,setInscripto,setUserLogg
                 formData.append("usuario", profile.name);
                 formData.append("emailPersonal", profile.email);
                 formData.append("tokenN", token.data);
-                const user = await api.postUserT(formData, 'temporaryusers');    
+                const obj = { 
+                    "usuario": profile.name,
+                    "emailPersonal": profile.email,
+                    "tokenN": token.data
+                }
+                const user = await api.postUserT(obj, 'temporaryusers');    
                 console.log("Ususario devuelto")
                 console.log(user);
                 
