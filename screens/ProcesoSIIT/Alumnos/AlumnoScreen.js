@@ -20,7 +20,6 @@ const AlumnoScreen = ({navigation}) => {
         TipoAlumno:"Regular",
         PlanEstudios:"ISIC2010224-W",
         uri_foto:'https://maryza.gnomio.com/pluginfile.php/2/course/section/1/logoTecNM.png',
-    
     });
     return (
         <SafeAreaView style={styles.container}>
@@ -47,57 +46,59 @@ const AlumnoScreen = ({navigation}) => {
                     <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={false} >
                         <DataTable>
                             <DataTable.Header>
-                                <DataTable.Title>Datos Alumno</DataTable.Title>
+                                <DataTable.Title>Datos del Alumno</DataTable.Title>
                             </DataTable.Header>
 
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}>Nombre</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Nombre</Text></DataTable.Cell>
                                 <DataTable.Cell style={styles.containerCelda}>{Alumno.nombre}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}>Apellido Paterno</DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.ApellidoP}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Apellido Paterno</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{Alumno.ApellidoPaterno}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}>Apellido Materno</DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.ApellidoM}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Apellido Materno</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{Alumno.apellidoMaterno}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}>Tipo de Alta</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Tipo de Alta</Text></DataTable.Cell>
                                 <DataTable.Cell style={styles.containerCelda}>{Alumno.TipoAlta}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}>Estado del Alumno</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Estado del Alumno</Text></DataTable.Cell>
                                 <DataTable.Cell style={styles.containerCelda}>{Alumno.EstadoAlumno}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}>Carrera</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Carrera</Text></DataTable.Cell>
                                 <DataTable.Cell style={styles.containerCelda}>{Alumno.Carrera}</DataTable.Cell>
                             </DataTable.Row>
                             <Divider/>
                             <Divider/>
+                            <Divider/>
+                            <Divider/>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}>Fecha de Nacimiento</DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.Fecha_nacimiento}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Fecha de Nacimiento</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{Alumno.fechaNacimiento}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}>Curp</DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.Curp}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Curp</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{Alumno.curp}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}>Sexo</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Sexo</Text></DataTable.Cell>
                                 <DataTable.Cell style={styles.containerCelda}>{Alumno.sexo}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}>Año de Ingreso</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Año de Ingreso</Text></DataTable.Cell>
                                 <DataTable.Cell style={styles.containerCelda}>{Alumno.AnoIngreso}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}>Tipo de Alumno</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Tipo de Alumno</Text></DataTable.Cell>
                                 <DataTable.Cell style={styles.containerCelda}>{Alumno.TipoAlumno}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}>Plan de estudios</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Plan de estudios</Text></DataTable.Cell>
                                 <DataTable.Cell style={styles.containerCelda}>{Alumno.PlanEstudios}</DataTable.Cell>
                             </DataTable.Row>
                         </DataTable>
