@@ -115,7 +115,7 @@ const useGoogleLogin = async (expoPushToken)=>  {
                     "tokenN": token.data
                 }
                 // console.log('Obtenemos el temporaryUser creado')
-                const user = await api.postUserT(obj, 'temporaryusers');  //devuelve algo como  user{data{data, status, message}}  
+                const user = await api.postUserT(obj);  //devuelve algo como  user{data{data, status, message}}  
                 // console.log('Guardamos localmente el temporaryuser como InfoPersonalInscripcion')
                 await crudToken.GuardarInfoPersonalInscripcion(user.data);
                 await crudToken.GuardarIsStatus(user.data.status);

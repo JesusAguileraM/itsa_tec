@@ -1,11 +1,12 @@
 import * as config from './config';
 import axios from 'axios';
 
+//User temporary
 const postUserT = async (form, url) => {
     try{
         const data = await axios({
             method: 'POST',
-            url: `${config.BACKENDURL}/${url}`,
+            url: `${config.BACKENDURL}/${config.TEMPORARYUSERS}`,
             headers: { 'content-type': 'application/json' },
             data: form,
         })
@@ -21,7 +22,7 @@ const getUserT = async (url) => {
     try{
             data = await axios({
             method: 'GET',
-            url: `${config.PRUEBAS}/${url}`,
+            url: `${config.PRUEBAS}/${config.TEMPORARYUSERS}`,
             headers: { 'content-type': 'application/json' },
         })
     }
@@ -29,6 +30,10 @@ const getUserT = async (url) => {
         console.log(error || "Error en getUserT")
     }
     return data;
+}
+
+const postInfoPersonal = async () => {
+    
 }
 
 export {getUserT, postUserT};
