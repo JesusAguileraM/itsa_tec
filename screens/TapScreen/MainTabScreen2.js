@@ -14,17 +14,22 @@ import AlumnoScreen from '../ProcesoSIIT/Alumnos/AlumnoScreen';
     import SituacionActual from '../ProcesoSIIT/Alumnos/SituacionActualScreen';
     import Calificaciones from '../ProcesoSIIT/Alumnos/CalificacionesScreen';
     import Expedientes from '../ProcesoSIIT/Alumnos/ExpedientesScreen';
-    
-
 import CargasScreen from '../ProcesoSIIT/Cargas/CargasScreen';
-import DepositosScreen from '../ProcesoSIIT/DepositosBancarios/DepositosScreen';
 import DescargasScreen from '../ProcesoSIIT/Descargas/DescargasScreen';
+import DepositosScreen from '../ProcesoSIIT/DepositosBancarios/DepositosScreen';
+    import VisualizarPagoScreen from '../ProcesoSIIT/DepositosBancarios/VisualizarPagoScreen';
+    import CrearPagoScreen from '../ProcesoSIIT/DepositosBancarios/CrearPagoScreen';
 
+    
 import SingleStorage from '../../database/singleStorage';
 
 
 const HomeStack = createStackNavigator();
 const AlumnoStack = createStackNavigator();
+const DescargasStack = createStackNavigator();
+const DepositosBancariosStack = createStackNavigator();
+const CargasStack = createStackNavigator();
+
 const NotificationStack = createStackNavigator();
 
 const Tab = createMaterialBottomTabNavigator();
@@ -69,7 +74,7 @@ const MainTabScreen2 = () => {
     />
     <Tab.Screen
       name="Cargas"
-      component={CargasScreen}
+      component={CargasStackScreen}
       options={{
         tabBarLabel: "Cargas",
         tabBarColor: "#006460",
@@ -80,7 +85,7 @@ const MainTabScreen2 = () => {
     />
     <Tab.Screen
       name="Descargas"
-      component={DepositosScreen}
+      component={DescargasStackScreen}
       options={{
         tabBarLabel: "Descargas",
         tabBarColor: "#808684",
@@ -91,7 +96,7 @@ const MainTabScreen2 = () => {
     />
     <Tab.Screen
       name="Depositos"
-      component={DescargasScreen}
+      component={DepositosBancariosStackScreen}
       options={{
         tabBarLabel: "Depositos",
         tabBarColor: "#006460",
@@ -133,10 +138,8 @@ const HomeStackScreen = ({ navigation }) => (
       }}
     />
   </HomeStack.Navigator>
-
-
-
 );
+
 
 const NotificationStackScreen = ({navigation}) => (
   <NotificationStack.Navigator
@@ -165,6 +168,8 @@ const NotificationStackScreen = ({navigation}) => (
     />
   </NotificationStack.Navigator>
 );
+
+
 
 const AlumnoStackScreen = ({navigation}) => {
   
@@ -260,6 +265,151 @@ const AlumnoStackScreen = ({navigation}) => {
     </AlumnoStack.Navigator>
   );
 };
+
+const DepositosBancariosStackScreen = ({navigation}) => {
+  
+  return (
+    <DepositosBancariosStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#006460',
+          shadowColor: '#000', // iOS
+          elevation: 0, // Android
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}>
+        <DepositosBancariosStack.Screen
+          name="Depositos"
+          component={DepositosScreen}
+          options={{
+            headerLeft: () => (
+              <Icon.Button
+                name="ios-menu"
+                size={25}
+                backgroundColor="#006460"
+                onPress={() => navigation.openDrawer()}
+              />
+            ),
+          }}
+        />
+        <DepositosBancariosStack.Screen 
+          name="CrearPagoScreen"
+          component={CrearPagoScreen}
+          options={{
+            title: 'Procedencia',
+          }}
+        />
+        <DepositosBancariosStack.Screen 
+          name="VisualizarPagoScreen"
+          component={VisualizarPagoScreen}
+          options={{
+            title: 'Datos generales',
+          }}
+        />
+        <DepositosBancariosStack.Screen 
+          name="ventana1"
+          component={CrearPagoScreen}
+          options={{
+            title: 'Datos Familiares',
+          }}
+        />
+        <DepositosBancariosStack.Screen 
+          name="ventana2"
+          component={CrearPagoScreen}
+          options={{
+            title: 'Situación Actual',
+          }}
+        />
+        <DepositosBancariosStack.Screen 
+          name="ventana3"
+          component={CrearPagoScreen}
+          options={{
+            title: 'Calificaciones',
+          }}
+        />
+        <DepositosBancariosStack.Screen 
+          name="Ventana4"
+          component={CrearPagoScreen}
+          options={{
+            title: 'Expedientes',
+          }}
+        />
+    </DepositosBancariosStack.Navigator>
+  );
+};
+
+
+const DescargasStackScreen = ({ navigation }) => (
+  <DescargasStack.Navigator
+    screenOptions={{
+      headerStyle: {
+        backgroundColor: "#808684",
+      },
+      headerTintColor: "#fff",
+      headerTitleStyle: {
+        fontWeight: "bold",
+      },
+    }}
+  >
+    <DescargasStack.Screen
+      name="Descargas"
+      component={DescargasScreen}
+      options={{
+        title: "Descargas",
+        headerLeft: () => (
+          <Icon.Button
+            name="ios-menu"
+            size={25}
+            backgroundColor="#808684"
+            onPress={() => navigation.openDrawer()}
+          ></Icon.Button>
+        ),
+      }}
+    />
+  </DescargasStack.Navigator>
+);
+
+const CargasStackScreen = ({ navigation }) => (
+  <CargasStack.Navigator
+    screenOptions={{
+      headerStyle: {
+        backgroundColor: "#006460",
+      },
+      headerTintColor: "#fff",
+      headerTitleStyle: {
+        fontWeight: "bold",
+      },
+    }}
+  >
+    <CargasStack.Screen
+      name="Cargas"
+      component={CargasScreen}
+      options={{
+        title: "Cargas",
+        headerLeft: () => (
+          <Icon.Button
+            name="ios-menu"
+            size={25}
+            backgroundColor="#006460"
+            onPress={() => navigation.openDrawer()}
+          ></Icon.Button>
+        ),
+      }}
+    />
+  </CargasStack.Navigator>
+);
+
+
+
+
+
+
+
+
+
 
 const styles = StyleSheet.create({
   botonTabHeader:{

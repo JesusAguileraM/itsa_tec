@@ -4,6 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import RNPickerSelect from 'react-native-picker-select';
 import * as Animatable from "react-native-animatable";
 import Feather from "react-native-vector-icons/Feather";
+import {styles, styles2} from '../styles/datailsScreen';
 const InformacionEscolar = (props) => {
 
     return (
@@ -46,84 +47,77 @@ const InformacionEscolar = (props) => {
                         />
             </View>
 
+
+
+
+
             <Text style={{color:'#05375a',fontSize:18,marginLeft:10,marginTop:30,fontWeight: "bold",}}>Datos de Direccion</Text>
                 
             <View style={{marginTop:30}}>
-                <Text style={{fontSize:16}}> {props.turno ? `-- Turno ${props.turno}` : "Estado"}</Text>
-                        <RNPickerSelect
-                            useNativeAndroidPickerStyle={false}
-                            onValueChange={props.establecerTurno}
-                            items={[
-                                { label: "Matutino", value: "Matutino" },
-                                { label: "Verpertino", value: "Verpertino" },
-                            ]}
-                            placeholder={{ label: "--Seleccione un turno--", value: null }}
+                <Text style={{fontSize:16}}> 
+                        {props.estado ? props.estado : "Estado"}</Text> 
+                            <RNPickerSelect
+                                useNativeAndroidPickerStyle={false}
+                                onValueChange={props.establecerEstado}
+                                items={[
+                                    { label: "Matutino", value: "Matutino" },
+                                    { label: "Verpertino", value: "Verpertino" },
+                                ]}
+                                placeholder={{ label: "--Seleccione un Estado--", value: null }}
                         />
             </View>
 
             <View style={{marginTop:30}}>
-                <Text style={{fontSize:16}}> {props.turno ? `-- Turno ${props.turno}` : "Municipio"}</Text>
+                <Text style={{fontSize:16}}> 
+                        {props.municipio ? props.municipio : "Municipio"}</Text>
+                            <RNPickerSelect
+                                useNativeAndroidPickerStyle={false}
+                                onValueChange={props.establecerMunicipio}
+                                items={[
+                                    { label: "Matutino", value: "Matutino" },
+                                    { label: "Verpertino", value: "Verpertino" },
+                                ]}
+                                placeholder={{ label: "--Seleccione un Municipio--", value: null }}
+                        />
+            </View>
+
+
+
+            <View style={{marginTop:30}}>
+                <Text style={{fontSize:16}}> {props.poblacion ? props.poblacion: "Poblacion"}</Text>
                         <RNPickerSelect
                             useNativeAndroidPickerStyle={false}
-                            onValueChange={props.establecerTurno}
+                            onValueChange={props.establecerPoblacion}
                             items={[
                                 { label: "Matutino", value: "Matutino" },
                                 { label: "Verpertino", value: "Verpertino" },
                             ]}
-                            placeholder={{ label: "--Seleccione un turno--", value: null }}
+                            placeholder={{ label: "--Seleccione una poblacion--", value: null }}
                         />
             </View>
 
             <View style={{marginTop:30}}>
-                <Text style={{fontSize:16}}> {props.turno ? `-- Turno ${props.turno}` : "Colonia"}</Text>
+                <Text style={{fontSize:16}}> {props.colonia ? props.colonia : "Colonia"}</Text>
                         <RNPickerSelect
                             useNativeAndroidPickerStyle={false}
-                            onValueChange={props.establecerTurno}
+                            onValueChange={props.establecerColonia}
                             items={[
                                 { label: "Matutino", value: "Matutino" },
                                 { label: "Verpertino", value: "Verpertino" },
                             ]}
-                            placeholder={{ label: "--Seleccione un turno--", value: null }}
+                            placeholder={{ label: "--Seleccione una colonia--", value: null }}
                         />
             </View>
-
-            <View style={{marginTop:30}}>
-                <Text style={{fontSize:16}}> {props.turno ? `-- Turno ${props.turno}` : "Poblacion"}</Text>
-                        <RNPickerSelect
-                            useNativeAndroidPickerStyle={false}
-                            onValueChange={props.establecerTurno}
-                            items={[
-                                { label: "Matutino", value: "Matutino" },
-                                { label: "Verpertino", value: "Verpertino" },
-                            ]}
-                            placeholder={{ label: "--Seleccione un turno--", value: null }}
-                        />
-            </View>
-
+                                {/* metodos diferentes */}
             <Text style={{color:'#05375a',fontSize:16,marginLeft:10}}>Direccion</Text>
             <View style={styles2.action}>
                 <TextInput
-                placeholder="Primer Apellido"
-                style={styles2.textInput}
-                autoCapitalize="none"
-                onChangeText={props.textInputApellidoPChange}
+                    placeholder="Escribe la calle"
+                    style={styles2.textInput}
+                    autoCapitalize="none"
+                    onChangeText={props.establecerDirecion}
                 />
-                {props.data.ApellidoP_Aprobado ? (
-                <Animatable.View animation="bounceIn">
-                    <Feather name="check-circle" color="green" size={20} />
-                </Animatable.View>
-                ) : null}
-            </View>
-
-            <Text style={{color:'#05375a',fontSize:16,marginLeft:10}}>CP</Text>
-            <View style={styles2.action}>
-                <TextInput
-                placeholder="Primer Apellido"
-                style={styles2.textInput}
-                autoCapitalize="none"
-                onChangeText={props.textInputApellidoPChange}
-                />
-                {props.data.ApellidoP_Aprobado ? (
+                {props.direccion!=null ? (
                 <Animatable.View animation="bounceIn">
                     <Feather name="check-circle" color="green" size={20} />
                 </Animatable.View>
@@ -133,22 +127,39 @@ const InformacionEscolar = (props) => {
             <Text style={{color:'#05375a',fontSize:16,marginLeft:10}}>Numero de vivienda</Text>
             <View style={styles2.action}>
                 <TextInput
-                placeholder="Primer Apellido"
-                style={styles2.textInput}
-                autoCapitalize="none"
-                onChangeText={props.textInputApellidoPChange}
+                    placeholder="Escribe el numero de tu casa"
+                    style={styles2.textInput}
+                    autoCapitalize="none"
+                    onChangeText={props.establecerNumeroC}
                 />
-                {props.data.ApellidoP_Aprobado ? (
+                {props.direccion ? (
                 <Animatable.View animation="bounceIn">
                     <Feather name="check-circle" color="green" size={20} />
                 </Animatable.View>
                 ) : null}
             </View>
 
+            <Text style={{color:'#05375a',fontSize:16,marginLeft:10}}>CP</Text>
+            <View style={styles2.action}>
+                <TextInput
+                    placeholder="Escribe tu codigo postal"
+                    style={styles2.textInput}
+                    autoCapitalize="none"
+                    onChangeText={props.establecerCP}
+                />
+                {props.cp ? (
+                <Animatable.View animation="bounceIn">
+                    <Feather name="check-circle" color="green" size={20} />
+                </Animatable.View>
+                ) : null}
+            </View>
+
+            
 
 
 
-            {props.carreras!=null && props.turno!=null ? 
+
+            {props.carreras!=null && props.turno!=null && props.estado!=null && props.municipio!=null && props.poblacion!=null && props.colonia!=null && props.direccion!=null && props.numero!=null && props.cp!=null ? 
                 <View style={styles2.button}>
                     <TouchableOpacity
                         style={styles2.signIn}
@@ -217,80 +228,80 @@ const InformacionEscolar = (props) => {
 export default InformacionEscolar;
 
 
-const styles = StyleSheet.create({
-    imagenFoto: {
-        marginTop:20,
-        marginBottom: 20,
-        width: Dimensions.get("window").width/4,
-        height: Dimensions.get("window").height /4,
-        alignContent: "center",
-        justifyContent: "center",
-        backgroundColor: "#05375a",
-        borderRadius: 10,
-        elevation: 8,
-    },
-    container: {
-        flex: 1,
-    },
-    containerFoto:{
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        backgroundColor: '#fff',
-        alignItems:'center',
-        width: Dimensions.get("window").width,
+// const styles = StyleSheet.create({
+//     imagenFoto: {
+//         marginTop:20,
+//         marginBottom: 20,
+//         width: Dimensions.get("window").width/4,
+//         height: Dimensions.get("window").height /4,
+//         alignContent: "center",
+//         justifyContent: "center",
+//         backgroundColor: "#05375a",
+//         borderRadius: 10,
+//         elevation: 8,
+//     },
+//     container: {
+//         flex: 1,
+//     },
+//     containerFoto:{
+//         flexDirection: 'row',
+//         justifyContent: 'space-around',
+//         backgroundColor: '#fff',
+//         alignItems:'center',
+//         width: Dimensions.get("window").width,
         
     
-    },
-    foto:{
-        marginTop:20,
-        marginBottom: 20,
-        width: Dimensions.get("window").width/4,
-        height: Dimensions.get("window").height /4,
-        alignContent: "center",
-        justifyContent: "center",
-        backgroundColor: "#05375a",
-        borderRadius: 10,
-        marginRight: 10,
-    },
-    button: {
-        width: Dimensions.get("window").width /4,
-        height: 40,
-        backgroundColor: '#05375a',
-        alignItems: 'center',
-        justifyContent:'center',
-        margin: 20,
+//     },
+//     foto:{
+//         marginTop:20,
+//         marginBottom: 20,
+//         width: Dimensions.get("window").width/4,
+//         height: Dimensions.get("window").height /4,
+//         alignContent: "center",
+//         justifyContent: "center",
+//         backgroundColor: "#05375a",
+//         borderRadius: 10,
+//         marginRight: 10,
+//     },
+//     button: {
+//         width: Dimensions.get("window").width /4,
+//         height: 40,
+//         backgroundColor: '#05375a',
+//         alignItems: 'center',
+//         justifyContent:'center',
+//         margin: 20,
 
         
-    },
-    textC: {
-        fontSize: 14,
-        color: '#fff',
-    },
-});
+//     },
+//     textC: {
+//         fontSize: 14,
+//         color: '#fff',
+//     },
+// });
 
-const styles2 = StyleSheet.create({
-    button: {
-        alignItems: "center",
-        marginTop: 50,
-    },
-    signIn: {
-        width: "95%",
-        height: 50,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 10,
-        marginLeft:5
-    },
-    textSign: {
-        fontSize: 18,
-        fontWeight: "bold",
-    },
-    textPrivate: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        marginTop: 20,
-    },
-    color_textPrivate: {
-        color: "grey",
-    },
-});
+// const styles2 = StyleSheet.create({
+//     button: {
+//         alignItems: "center",
+//         marginTop: 50,
+//     },
+//     signIn: {
+//         width: "95%",
+//         height: 50,
+//         justifyContent: "center",
+//         alignItems: "center",
+//         borderRadius: 10,
+//         marginLeft:5
+//     },
+//     textSign: {
+//         fontSize: 18,
+//         fontWeight: "bold",
+//     },
+//     textPrivate: {
+//         flexDirection: "row",
+//         flexWrap: "wrap",
+//         marginTop: 20,
+//     },
+//     color_textPrivate: {
+//         color: "grey",
+//     },
+// });

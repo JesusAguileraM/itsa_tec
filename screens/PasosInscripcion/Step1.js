@@ -5,6 +5,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as Animatable from "react-native-animatable";
 import Feather from "react-native-vector-icons/Feather";
+import {styles, styles2} from '../styles/datailsScreen';
 
 const InformacionPersonal = (props) => {
 
@@ -85,22 +86,39 @@ const InformacionPersonal = (props) => {
                     </Animatable.View>
                     ) : null}
                 </View>
+
+                <Text style={styles2.text_footer}>Telefono 2</Text> 
+                <View style={styles2.action}>
+                    <TextInput
+                        placeholder="4531231234 nota: sin espacios"
+                        style={styles2.textInput}
+                        autoCapitalize="none"
+                        onChangeText={props.textInputTelChange2}
+                    />
+                    {props.data.Telefono_Aprobado2 ? (
+                    <Animatable.View animation="bounceIn">
+                        <Feather name="check-circle" color="green" size={20} />
+                    </Animatable.View>
+                    ) : null}
+                </View>
+
+
                 <Text style={styles2.text_footer}>Sexo</Text>
-                {props.data.sexo_Aprobado ? 
-                    <Text style={styles2.text_footer,{color:'gray',marginLeft:10}}>{props.data.sexo}</Text>
-                    :
-                    <View>
-                            <RNPickerSelect
-                                useNativeAndroidPickerStyle={true}
-                                onValueChange={props.setSexo}
-                                items={[
-                                    { label: "Hombre", value: "Hombre" },
-                                    { label: "Mujer", value: "Mujer" },
-                                ]}
-                                placeholder={{ label: "--seleccione--", value: null }}
-                            />
-                        </View> 
-                }
+                    {props.data.sexo_Aprobado ? 
+                        <Text style={styles2.text_footer,{color:'gray',marginLeft:10}}>{props.data.sexo}</Text>
+                        :
+                        <View>
+                                <RNPickerSelect
+                                    useNativeAndroidPickerStyle={true}
+                                    onValueChange={props.setSexo}
+                                    items={[
+                                        { label: "Hombre", value: "Hombre" },
+                                        { label: "Mujer", value: "Mujer" },
+                                    ]}
+                                    placeholder={{ label: "--seleccione--", value: null }}
+                                />
+                            </View> 
+                    }
 
 
                 <Text style={styles2.text_footer}>Fecha de nacimiento</Text>
@@ -120,7 +138,7 @@ const InformacionPersonal = (props) => {
                     <TouchableOpacity
                         style={styles2.signIn}
                         onPress={() => {
-                            props.procesoCompletado1();
+                            props.procesoCompletado1()
                         }}
                     >
                             <LinearGradient
@@ -162,79 +180,79 @@ const InformacionPersonal = (props) => {
 export default InformacionPersonal;
 
 
-const styles = StyleSheet.create({
-    imagenFoto: {
-        marginTop:20,
-        marginBottom: 20,
-        width: Dimensions.get("window").width/4,
-        height: Dimensions.get("window").height /4,
-        alignContent: "center",
-        justifyContent: "center",
-        backgroundColor: "#05375a",
-        borderRadius: 10,
-        elevation: 8,
-    },
-    container: {
-        flex: 1,
-    },
-    containerFoto:{
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        backgroundColor: '#fff',
-        alignItems:'center',
-        width: Dimensions.get("window").width,
+// const styles = StyleSheet.create({
+//     imagenFoto: {
+//         marginTop:20,
+//         marginBottom: 20,
+//         width: Dimensions.get("window").width/4,
+//         height: Dimensions.get("window").height /4,
+//         alignContent: "center",
+//         justifyContent: "center",
+//         backgroundColor: "#05375a",
+//         borderRadius: 10,
+//         elevation: 8,
+//     },
+//     container: {
+//         flex: 1,
+//     },
+//     containerFoto:{
+//         flexDirection: 'row',
+//         justifyContent: 'space-around',
+//         backgroundColor: '#fff',
+//         alignItems:'center',
+//         width: Dimensions.get("window").width,
     
-    },
-    foto:{
-        marginTop:20,
-        marginBottom: 20,
-        width: Dimensions.get("window").width/4,
-        height: Dimensions.get("window").height /4,
-        alignContent: "center",
-        justifyContent: "center",
-        backgroundColor: "#05375a",
-        borderRadius: 10,
-        marginRight: 10,
-    },
-    button: {
-        width: Dimensions.get("window").width /4,
-        height: 40,
-        backgroundColor: '#05375a',
-        alignItems: 'center',
-        justifyContent:'center',
-        margin: 20,
+//     },
+//     foto:{
+//         marginTop:20,
+//         marginBottom: 20,
+//         width: Dimensions.get("window").width/4,
+//         height: Dimensions.get("window").height /4,
+//         alignContent: "center",
+//         justifyContent: "center",
+//         backgroundColor: "#05375a",
+//         borderRadius: 10,
+//         marginRight: 10,
+//     },
+//     button: {
+//         width: Dimensions.get("window").width /4,
+//         height: 40,
+//         backgroundColor: '#05375a',
+//         alignItems: 'center',
+//         justifyContent:'center',
+//         margin: 20,
 
         
-    },
-    textC: {
-        fontSize: 14,
-        color: '#fff',
-    },
-});
+//     },
+//     textC: {
+//         fontSize: 14,
+//         color: '#fff',
+//     },
+// });
 
-const styles2 = StyleSheet.create({
-    button: {
-        alignItems: "center",
-        marginTop: 50,
-    },
-    signIn: {
-        width: "95%",
-        height: 50,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 10,
-        marginLeft:5
-    },
-    textSign: {
-        fontSize: 18,
-        fontWeight: "bold",
-    },
-    textPrivate: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        marginTop: 20,
-    },
-    color_textPrivate: {
-        color: "grey",
-    },
-});
+// const styles2 = StyleSheet.create({
+//     button: {
+//         alignItems: "center",
+//         marginTop: 50,
+//     },
+//     signIn: {
+//         width: "95%",
+//         height: 50,
+//         justifyContent: "center",
+//         alignItems: "center",
+//         borderRadius: 10,
+//         marginLeft:5
+//     },
+//     textSign: {
+//         fontSize: 18,
+//         fontWeight: "bold",
+//     },
+//     textPrivate: {
+//         flexDirection: "row",
+//         flexWrap: "wrap",
+//         marginTop: 20,
+//     },
+//     color_textPrivate: {
+//         color: "grey",
+//     },
+// });

@@ -30,46 +30,48 @@ const InscripcionesScreen = ({ navigation }) =>
     const [type, setType] = useState(Camera.Constants.Type.back);
     const [activarCamara, setActivarCamara] = useState(true);
     const [colorProgres,setColorProgress]=useState('#05375a')
-    const [cumpleanos,setCumpleanos]=useState('05/05/1996')
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 ////////Es toda la informacion recogida de la app (recuerda que si los agarras sin completar el formulario seran null)
-
+        //Paso 1 de informacion
     const [data, setData] = React.useState({
         Nombre: "",
         ApellidoP: "",
         ApellidoM: "",
         Curp: "",
         Telefono: "",
+        Telefono2: "",
         Fecha_nacimiento:"",
         sexo:"",
-        NombreAprobado: true,
-        ApellidoP_Aprobado: true,
-        ApellidoM_Aprobado: true,
-        Curp_Aprobado: true,
-        Telefono_Aprobado: true,
-        Fecha_nacimiento_Aprobado:true,
-        sexo_Aprobado:true,
+        NombreAprobado: false,
+        ApellidoP_Aprobado: false,
+        ApellidoM_Aprobado: false,
+        Curp_Aprobado: false,
+        Telefono_Aprobado: false,
+        Telefono_Aprobado2: false,
+        Fecha_nacimiento_Aprobado:false,
+        sexo_Aprobado:false,
     });
+    const [cumpleanos,setCumpleanos]=useState('05/05/1996');
 
-    //datos del usuario
-    let dataUser=[
-        {   name: data.Nombre, 
-            last_nameP: data.ApellidoP,
-            last_nameM: data.ApellidoM,
-            student_Curp: data.Curp,
-            cell_phone: data.Telefono,
-            carrera: carreras,
-            turno: turno
-        }
-    ];
+                //paso de informacion 2
+    const [ carreras, setCarreras ] = useState(null);
+    const [ turno, setTurno ] = useState(null);
+    const [ estado, setEstado ] = useState(null);
+    const [ municipio, setMunicipio ] = useState(null);
+    const [ poblacion, setPoblacion ] = useState(null);
+    const [ colonia, setColonia ] = useState(null);
+    const [ direccion, setDireccion ] = useState(null);
+    const [ numero, setNumero ] = useState(null);
+    const [ cp, setCp ] = useState(null);
+    
 
+            // paso de informacion fotos 3,4,5
     const [acta_N_Foto, setAct_N_Foto] =useState(null);//Acta nacimiento
     const [diploma_B_Foto, setDiploma_B_Foto] =useState(null);// constancia de bachillerato
     const [curp_Foto, setCurp_Foto] =useState(null); //curp
     const [estudio_H_Foto, setEstudio_H_Foto] =useState(null);//Estudio de sangre del hospital
     const [pagoFoto, setPagoFoto] =useState(null);//Foto de recibo de pago de ficha para el tec
-    const [ carreras, setCarreras ] = useState(null);
-    const [ turno, setTurno ] = useState(null);
+
 
     // const [{datos, loading, error}, refetch] = useAxios('/users');
 
@@ -91,6 +93,7 @@ const InscripcionesScreen = ({ navigation }) =>
         setBarraProces(0.36);
     }
     const procesoCompletado2=()=>{
+        console.log(carreras, turno, estado, municipio, poblacion, colonia, direccion, numero, cp);
         setContinuar2(false);
         setContinuar3(true);
         setBarraProces(0.54);
@@ -129,133 +132,14 @@ const InscripcionesScreen = ({ navigation }) =>
         setBarraProces(0.72);
     }
 
-    const saveDataUser=async(data)=>{
-        try {
-            await AsyncStorage.setItem("DataUser", JSON.stringify(data));
-        } catch (e) {
-            console.log('Error grave: ' + e);
-        }
-        const pruebaData = await AsyncStorage.getItem("DataUser");
-        // console.log('Prueba data')
-        // console.log(pruebaData);
-    }
-
     //se encarga de ejecutar el ultimo paso de inscripcion
     const terminarProceso=()=>{//preguntarle a manuel como enviar esta funcion al componente de comprobar pago
         alert("Vamos a subir las imagenes al servidor");
         // config.BACKENDURL        
         // acta_N_Foto
-
-
-
         setContinuar5(false);
         setContinuar1(true);
         setBarraProces(0);
-        
-    }
-
-    //cuando presiono enviar
-    const enviar_navegar= async ()=>{//Ejecuta la funcion de guardar datos en el storage y navega al sig. screen
-        saveDataUser(dataUser);
-        console.log('holaaaaa')
-        const formData = new FormData();
-        const matricula = '16020419';
-        const token = await getToken();
-
-        if (acta_N_Foto != null) 
-        {
-            console.log('#################')
-            formData.append('nombre', data.Nombre);
-            formData.append('apellidoP', data.ApellidoP);
-            formData.append('apellidoM', data.ApellidoM);
-            formData.append('curp', data.Curp);
-            formData.append('telefono', data.Telefono);
-            formData.append('matricula', matricula);
-            formData.append('tokenNotifications', token.data);
-            formData.append('acta_N', acta_N_Foto);
-
-            console.log(data.Nombre);
-            // let nomb = formData.get('nombre');
-            // console.log(nomb)
-            // console.log(formData.get('matricula'))
-            // console.log(formData.get('tokenNotifications'))
-            // console.log(formData.get('acta_N'))
-
-            //Usando fetch
-
-            // let options = {
-            //     method: 'POST',
-            //     body: formData,
-            //     headers: {
-            //         'Content-Type': 'multipart/form-data; ',
-            //     },
-            // };
-
-            // let res = await fetch('url para enviar profe', {options} );
-
-            // let responseJson = await res.json();
-            // if (responseJson.status == 1) {
-            //     alert('Upload Successful');
-            // }
-
-            //Usando Odoo
-            // instanciaOdoo(matricula, token.data, formData);
-        }
-    }
-
-    const instanciaOdoo = (matricula, token, formData) => {
-        var odoo = new Odoo({
-            // url: 'https://siit.itsa.edu.mx',  //creo que es el host
-            host: 'https://siit.itsa.edu.mx',
-            // port: '80',//default 80 si no se especifica
-            db: 'itsa900',
-            username: 'xmlrpc_user',
-            password: 'Alum2021#',
-            // protocol: 'http'  //si no se especifica el default será http
-          });
-    
-          odoo.connect()
-          .then(response => { 
-              console.log('Conexión exitosa');
-              console.log(response);
-           })
-          .catch(e => { 
-              console.log('Error al conectarse al servidor');
-           });
-    
-           odoo.connect()
-           .then(response => {
-                console.log('Connected to Odoo server. user esta conectado:');
-                console.log(response);
-                var inParams = [];
-                inParams.push(formData);
-                var param = [];
-                param.push(inParams);
-    
-                var params = {
-                    model: 'itsa.escolares.alumnos',
-                    method: 'siit3_get_prealumno',
-                    args: param,
-                    kwargs: {},
-                  };//params
-    
-                odoo.rpc_call('/', params)
-                .then(response => { 
-                    console.log(response);
-                 })
-                .catch(e => { 
-                    console.log(e);
-                 })
-    
-                // odoo.execute_kw('itsa.escolares.alumnos', 'siit3_get_prealumno', params, function (err2, value2) {
-                //     if (err2) { return console.log(err2); }
-                //     console.log('Result: ', value2);
-                // });
-           })
-           .catch(e => {
-              console.log('No se pudo conectar');
-              console.log(e);
-           });
     }
 
     useEffect(() => {
@@ -328,20 +212,7 @@ const InscripcionesScreen = ({ navigation }) =>
 
     }
     
-    const handleConfirm = (date) => {
-        console.log("A date has been picked: "+date);
-        let anio=date.getFullYear();
-        let mes=date.getMonth();
-        let dia=date.getDate(); 
-        let fechaC=`${anio}/${mes}/${dia}`
-        setCumpleanos(fechaC);
-        setData({
-            ...data,
-            Fecha_nacimiento: date,
-            Fecha_nacimiento_Aprobado: true,
-        });
-        hideDatePicker();
-    };
+   
 
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -358,13 +229,74 @@ const InscripcionesScreen = ({ navigation }) =>
             sexo_Aprobado: true,
     })}
 
+    const handleConfirm = (date) => { //set cumpleanos
+        console.log("A date has been picked: "+date);
+        let anio=date.getFullYear();
+        let mes=date.getMonth();
+        let dia=date.getDate(); 
+        let fechaC=`${anio}/${mes}/${dia}`
+        setCumpleanos(fechaC);
+        setData({
+            ...data,
+            Fecha_nacimiento: date,
+            Fecha_nacimiento_Aprobado: true,
+        });
+        hideDatePicker();
+    };
+
     const establecerCarreras = (valor) => {
         setCarreras(valor)
     }
-
     const establecerTurno = (valor) => {
         setTurno(valor)
     }
+    const establecerEstado = (valor) => {
+        setEstado(valor)
+    }
+    const establecerMunicipio = (valor) => {
+        setMunicipio(valor)
+    }
+    const establecerPoblacion = (valor) => {
+        setPoblacion(valor)
+    }
+    const establecerColonia = (valor) => {
+        setColonia(valor)
+    }
+    const establecerDirecion = (value) => {
+        let val = value.toUpperCase();
+        if (val.length >= 3) {
+            for (let index = 0; index < val.length; index++) {
+                if (
+                    val.charAt(index) != "." &&
+                    val.charAt(index) != "@" &&
+                    val.charAt(index) != '"' &&
+                    val.charAt(index) != "_" &&
+                    val.charAt(index) != "&" &&
+                    val.charAt(index) != "$" &&
+                    val.charAt(index) != "!" &&
+                    val.charAt(index) != "¡" &&
+                    val.charAt(index) != "¿" &&
+                    val.charAt(index) != "?" &&
+                    val.charAt(index) != "=" &&
+                    val.charAt(index) != "+" &&
+                    val.charAt(index) != ":" &&
+                    val.charAt(index) != ";" &&
+                    val.charAt(index) != "(" &&
+                    val.charAt(index) != ")" &&
+                    val.charAt(index) != "/" &&
+                    val.charAt(index) != "*" &&
+                    val.charAt(index) != "'"
+                ) { setDireccion(val);} 
+            }
+        }
+    };
+    const establecerNumeroC = (valor) => {
+        setNumero(valor)
+    }
+    const establecerCP = (valor) => {
+        setCp(valor)
+    }
+
 
     const cambiarACamara = (value1, value2) => {
         setNo_Documento(value1); 
@@ -675,7 +607,85 @@ const InscripcionesScreen = ({ navigation }) =>
         });
         }
     };
+    const textInputTelChange2 = (numero) => {
+        let val = numero.toUpperCase();
+        if (val.length == 10) {
+        for (let index = 0; index < val.length; index++) {
+            if (
+            val.charAt(index) != " " &&
+            val.charAt(index) != "A" &&
+            val.charAt(index) != "B" &&
+            val.charAt(index) != "C" &&
+            val.charAt(index) != "D" &&
+            val.charAt(index) != "E" &&
+            val.charAt(index) != "F" &&
+            val.charAt(index) != "G" &&
+            val.charAt(index) != "H" &&
+            val.charAt(index) != "I" &&
+            val.charAt(index) != "J" &&
+            val.charAt(index) != "K" &&
+            val.charAt(index) != "L" &&
+            val.charAt(index) != "M" &&
+            val.charAt(index) != "N" &&
+            val.charAt(index) != "Ñ" &&
+            val.charAt(index) != "O" &&
+            val.charAt(index) != "P" &&
+            val.charAt(index) != "Q" &&
+            val.charAt(index) != "R" &&
+            val.charAt(index) != "S" &&
+            val.charAt(index) != "T" &&
+            val.charAt(index) != "W" &&
+            val.charAt(index) != "X" &&
+            val.charAt(index) != "Y" &&
+            val.charAt(index) != "Z" &&
+            val.charAt(index) != "," &&
+            val.charAt(index) != "." &&
+            val.charAt(index) != "@" &&
+            val.charAt(index) != '"' &&
+            val.charAt(index) != "_" &&
+            val.charAt(index) != "-" &&
+            val.charAt(index) != "&" &&
+            val.charAt(index) != "$" &&
+            val.charAt(index) != "!" &&
+            val.charAt(index) != "¡" &&
+            val.charAt(index) != "¿" &&
+            val.charAt(index) != "?" &&
+            val.charAt(index) != "=" &&
+            val.charAt(index) != "+" &&
+            val.charAt(index) != ":" &&
+            val.charAt(index) != ";" &&
+            val.charAt(index) != "(" &&
+            val.charAt(index) != ")" &&
+            val.charAt(index) != "/" &&
+            val.charAt(index) != "*" &&
+            val.charAt(index) != "'"
+            ) {
+            setData({
+                ...data,
+                Telefono2: val,
+                Telefono_Aprobado2: true,
+            });
+            
+            } else {
+            setData({
+                ...data,
+                Telefono2: val,
+                Telefono_Aprobado2: false,
+            });
+            index = val.length;
+            }
+        }
+        } else {
+        setData({
+            ...data,
+            Telefono2: val,
+            Telefono_Aprobado2: false,
+        });
+        }
+    };
 
+
+   
     return (
         <SafeAreaView style={styles.container}>
         {activarCamara === true ? (
@@ -699,17 +709,30 @@ const InscripcionesScreen = ({ navigation }) =>
                     textInputApellidoMChange={textInputApellidoMChange}
                     validarInputCurp={validarInputCurp}
                     textInputTelChange={textInputTelChange}
+                    textInputTelChange2={textInputTelChange2}
                 />
             : null }
 
             { continuar2 ?  
                 <Steps.Step2 
-                    data={data}
                     carreras={carreras}
                     turno={turno}
+                    estado={estado}
+                    municipio={municipio}
+                    poblacion={poblacion}
+                    colonia={colonia}
+                    direccion={direccion}
+                    numero={numero}
+                    cp={cp}
                     establecerCarreras={establecerCarreras}
                     establecerTurno={establecerTurno}
-                    textInputApellidoPChange={textInputApellidoPChange}
+                    establecerEstado={establecerEstado}
+                    establecerMunicipio={establecerMunicipio}
+                    establecerPoblacion={establecerPoblacion}
+                    establecerColonia={establecerColonia}
+                    establecerDirecion={establecerDirecion}
+                    establecerNumeroC={establecerNumeroC}
+                    establecerCP={establecerCP}
                     procesoCompletado2={procesoCompletado2}
                     regresar_al_P1={regresar_al_P1}
                 />

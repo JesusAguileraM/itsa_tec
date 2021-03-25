@@ -3,7 +3,7 @@ import {View, SafeAreaView, StyleSheet,ScrollView} from 'react-native';
 import {Avatar,Title,Caption,Text,DataTable,Divider} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const AlumnoScreen = ({navigation}) => {
+const CrearPagoScreen = ({navigation}) => {
 
     const [Alumno, setAlumno] = React.useState({
         NumeroControl:"15020357",
@@ -21,7 +21,6 @@ const AlumnoScreen = ({navigation}) => {
         PlanEstudios:"ISIC2010224-W",
         uri_foto:'https://maryza.gnomio.com/pluginfile.php/2/course/section/1/logoTecNM.png',
     });
-    
     return (
         <SafeAreaView style={styles.container}>
             
@@ -42,7 +41,7 @@ const AlumnoScreen = ({navigation}) => {
                     </View>
                     </View>
                 </View>
-
+                
                 <View style={{flexDirection: 'row'}}>
                     <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={false} >
                         <DataTable>
@@ -110,7 +109,7 @@ const AlumnoScreen = ({navigation}) => {
     );
 };
 
-export default AlumnoScreen;
+export default CrearPagoScreen;
 
 const styles = StyleSheet.create({
     container: {
