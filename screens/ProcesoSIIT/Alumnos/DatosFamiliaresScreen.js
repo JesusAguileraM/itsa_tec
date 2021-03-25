@@ -43,69 +43,7 @@ const DatosFamiliaresScreen = ({navigation}) => {
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Colonia del Tutor</Text></DataTable.Cell>
                                 <DataTable.Cell style={styles.containerCelda}>{Alumno.coloniaTutor}</DataTable.Cell>
                             </DataTable.Row>
-                            <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Codigo Postal</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.cp}</DataTable.Cell>
-                            </DataTable.Row>
-                            <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Ciudad del Tutor</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.ciudadTutor}</DataTable.Cell>
-                            </DataTable.Row>
-                            <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Municipio del Tutor</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.municipioTutor}</DataTable.Cell>
-                            </DataTable.Row>
-                            <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Estado del Tutor</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.estadoTutor}</DataTable.Cell>
-                            </DataTable.Row>
-
-                            <Divider/>
-                            <Divider/>
-                            <Divider/>
-                            <Divider/>
-
-                            <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Nombre del Padre</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.nombrePadre}</DataTable.Cell>
-                            </DataTable.Row>
-
-                            <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>El Padre Vive</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>
-                                    <RadioButton
-                                        value="first"
-                                        status={ Alumno.padreVivo === true ? 'checked' : 'unchecked' }
-                                        // onPress={() => setChecked('first')}
-                                      />
-                                </DataTable.Cell>
-                            </DataTable.Row>
-                            
-                            <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Telefono del Padre</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.telefonoPadre}</DataTable.Cell>
-                            </DataTable.Row>
-                            <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Nombre de la Madre</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.nombreMadre}</DataTable.Cell>
-                            </DataTable.Row>
-
-                            <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>La Madre Vive</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>
-                                    <RadioButton
-                                        value="first"
-                                        status={ Alumno.madreVivo === true ? 'checked' : 'unchecked' }
-                                        // onPress={() => setChecked('first')}
-                                      />
-                                </DataTable.Cell>
-                            </DataTable.Row>
-
-                            <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Telefono de la madre</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.telefonoMadre}</DataTable.Cell>
-                            </DataTable.Row>
-
+                                
                         </DataTable>
                     </ScrollView>
                 </View>
