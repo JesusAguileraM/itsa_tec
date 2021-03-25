@@ -44,7 +44,7 @@ const putInfoPersonal = async () => {
             headers: { 'content-type': 'application/json' },
             data: form,
             params: {
-                id: _id,
+                id:     _id,
             }
         })
         return data;
@@ -54,4 +54,19 @@ const putInfoPersonal = async () => {
     }
 }
 
-export {getUserT, postUserT};
+const getTipoPagos = async () => {
+    let data = [];
+    try{
+            data = await axios({
+            method: 'GET',
+            url: `${config.BACKENDURL}/${config.TIPOPAGOS}`,
+            headers: { 'content-type': 'application/json' },
+        })
+    }
+    catch(error){
+        console.log(error || "Error en getUserT")
+    }
+    return data;
+}
+    
+export {getUserT, postUserT, getTipoPagos};
