@@ -7,7 +7,6 @@ import { getToken } from '../notifications/hooks';
 import Odoo from 'react-native-odoo-promise-based';
 import * as crudToken from "../database/crudToken";  //Aqui esta lo del crud de token y user
 import * as api from '../auth/request';
-import axios from 'axios';
 
   //este efecto se ejecuta al montar el componente no lo olvides, todos los useEffect hacen eso
   //¿sabes que es lo interesante?

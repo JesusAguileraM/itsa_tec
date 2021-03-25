@@ -108,36 +108,36 @@ export const ObtenerInfoPersonalInscripcion=async()=>{
 
 
 
-//crud guardarInformacionPersonal
-export const GuardarInfoPersonal=async(UserObjet)=>{
+//crud guardarInformacionEscolar
+export const GuardarInformacionEscolar=async(UserObjet)=>{
     try {
-        await AsyncStorage.setItem("guardarInfoPersonal", JSON.stringify(UserObjet));
+        await AsyncStorage.setItem("guardarInformacionEscolar", JSON.stringify(UserObjet));
         console.log('Informacion personal guardado exitosamente')
     } catch (e) {
         console.log(e);
-        console.log('Hubu un error al guardar la informacion personal')
+        console.log('Hubu un error al guardar la informacion escolar')
     }
 }   
 
-export const EliminarInfoPersonal=async()=>{
+export const EliminarInformacionEscolar=async()=>{
     try {
-        await AsyncStorage.removeItem("guardarInfoPersonal");
+        await AsyncStorage.removeItem("guardarInformacionEscolar");
         console.log('Informacion personal eliminada')
     } catch (e) {
         console.log(e);
-        console.log('Hubu un error al eliminar la informacion personal')
+        console.log('Hubu un error al eliminar la informacion escolar')
     }
 }
 
-export const ObtenerInfoPersonal=async()=>{
+export const ObtenerInformacionEscolar=async()=>{
     try {
-        const UserS= await AsyncStorage.getItem('guardarInfoPersonal');
+        const UserS= await AsyncStorage.getItem('guardarInformacionEscolar');
         console.log('Informacion personal obtenida');
         const User= JSON.parse(UserS);
         return User;
     } catch (e) {
         console.log(e);
-        console.log('Hubu un error al obtener la informacion personal')
+        console.log('Hubu un error al obtener la informacion escolar')
         return null;
     }
 }
