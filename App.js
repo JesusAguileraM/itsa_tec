@@ -104,7 +104,20 @@ const App = () => {
     );
   }
 
-  // const status = AsyncStorage  
+  // return (
+  //   <PaperProvider theme={theme}>
+  //     <AuthContext.Provider value={authContext}>
+  //       <NavigationContainer >        
+  //             {true ? (
+  //               <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent {...props} />} >
+  //                 <DrawerUserLogged.Screen name="UsuarioLogueado" component={MainTabScreen} />
+  //               </DrawerUserLogged.Navigator>
+  //             ): null}
+  //       </NavigationContainer>
+  //     </AuthContext.Provider>
+  //   </PaperProvider>
+  // );
+
 
   return (
     <PaperProvider theme={theme}>
@@ -130,5 +143,7 @@ const App = () => {
     </PaperProvider>
   );
 };
+
+
 
 export default App;

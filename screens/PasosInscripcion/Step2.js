@@ -20,16 +20,13 @@ const InformacionEscolar = (props) => {
                     <RNPickerSelect
                         useNativeAndroidPickerStyle={false}
                         onValueChange={props.establecerCarreras}
-                        items={[
-                            { label: "Ing. Sistemas Computacionales", value: "IISC" },
-                            { label: "Ing. Informatica", value: "IINF" },
-                            { label: "Ing. Civil", value: "ICIV" },
-                            { label: "Ing. Gestión Empresarial", value: "IGEM" },
-                            { label: "Ing. Inovación y energ. sustentable", value: "IIAS" },
-                            { label: "Ing. Bioquimica", value: "IBQA" },
-                            { label: "Ing. Industrial", value: "IIND" },
-                            { label: "Ing. Contador Publico", value: "COPU" },
-                        ]}
+                        items={
+                            props.listaCarreras.map((carrera) => {
+                                return (
+                                    { label: carrera, value: carrera }
+                                );
+                            })
+                        }
                         placeholder={{ label: "--Seleccione una carrera--", value: null }}
                     />
                 </View> 
@@ -51,18 +48,24 @@ const InformacionEscolar = (props) => {
 
 
 
-            <Text style={{color:'#05375a',fontSize:18,marginLeft:10,marginTop:30,fontWeight: "bold",}}>Datos de Direccion</Text>
+            <Text style={{color:'#05375a',fontSize:18,marginLeft:10,marginTop:30,fontWeight: "bold",}}>Datos de Dirección</Text>
                 
             <View style={{marginTop:30}}>
                 <Text style={{fontSize:16}}> 
                         {props.estado ? props.estado : "Estado"}</Text> 
                             <RNPickerSelect
                                 useNativeAndroidPickerStyle={false}
-                                onValueChange={props.establecerEstado}
-                                items={[
-                                    { label: "Matutino", value: "Matutino" },
-                                    { label: "Verpertino", value: "Verpertino" },
-                                ]}
+                                onValueChange={(value) => {
+                                    props.establecerEstado(value);
+                                    props.getMunicipios(value);
+                                }}
+                                items={
+                                    props.listaEstados.map((estado) => {
+                                        return (
+                                            { label: estado, value: estado }
+                                        );
+                                    })
+                                }
                                 placeholder={{ label: "--Seleccione un Estado--", value: null }}
                         />
             </View>
@@ -73,17 +76,20 @@ const InformacionEscolar = (props) => {
                             <RNPickerSelect
                                 useNativeAndroidPickerStyle={false}
                                 onValueChange={props.establecerMunicipio}
-                                items={[
-                                    { label: "Matutino", value: "Matutino" },
-                                    { label: "Verpertino", value: "Verpertino" },
-                                ]}
+                                items={                                    
+                                    props.listaMunicipios.map((municipio) => {
+                                        return (
+                                            { label: municipio, value: municipio }
+                                        );
+                                    })
+                                }
                                 placeholder={{ label: "--Seleccione un Municipio--", value: null }}
                         />
             </View>
 
 
 
-            <View style={{marginTop:30}}>
+            {/* <View style={{marginTop:30}}>  //por si en algún futuro ponemos la población automática
                 <Text style={{fontSize:16}}> {props.poblacion ? props.poblacion: "Poblacion"}</Text>
                         <RNPickerSelect
                             useNativeAndroidPickerStyle={false}
@@ -94,9 +100,24 @@ const InformacionEscolar = (props) => {
                             ]}
                             placeholder={{ label: "--Seleccione una poblacion--", value: null }}
                         />
+            </View> */}
+
+            <Text style={{color:'#05375a',fontSize:16,marginLeft:10}}>Población</Text>
+            <View style={styles2.action}>
+                <TextInput
+                    placeholder="Escribe la localidad o población"
+                    style={styles2.textInput}
+                    autoCapitalize="none"
+                    onChangeText={props.establecerPoblacion}
+                />
+                {props.poblacion!=null ? (
+                <Animatable.View animation="bounceIn">
+                    <Feather name="check-circle" color="green" size={20} />
+                </Animatable.View>
+                ) : null}
             </View>
 
-            <View style={{marginTop:30}}>
+            {/* <View style={{marginTop:30}}>   //por si en algún futuro ponemos la colonia automática
                 <Text style={{fontSize:16}}> {props.colonia ? props.colonia : "Colonia"}</Text>
                         <RNPickerSelect
                             useNativeAndroidPickerStyle={false}
@@ -107,6 +128,21 @@ const InformacionEscolar = (props) => {
                             ]}
                             placeholder={{ label: "--Seleccione una colonia--", value: null }}
                         />
+            </View> */}
+
+            <Text style={{color:'#05375a',fontSize:16,marginLeft:10}}>Colonia</Text>
+            <View style={styles2.action}>
+                <TextInput
+                    placeholder="Escribe la colonia"
+                    style={styles2.textInput}
+                    autoCapitalize="none"
+                    onChangeText={props.establecerColonia}
+                />
+                {props.colonia!=null ? (
+                <Animatable.View animation="bounceIn">
+                    <Feather name="check-circle" color="green" size={20} />
+                </Animatable.View>
+                ) : null}
             </View>
                                 {/* metodos diferentes */}
             <Text style={{color:'#05375a',fontSize:16,marginLeft:10}}>Direccion</Text>
