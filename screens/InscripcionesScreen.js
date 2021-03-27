@@ -86,6 +86,12 @@ const InscripcionesScreen = ({ navigation }) =>
     const [continuar4,setContinuar4] = useState(false);
     const [continuar5,setContinuar5] = useState(false);
     const [continuar6,setContinuar6] = useState(false);
+    // const [continuar1,setContinuar1] = useState(false);
+    // const [continuar2,setContinuar2] = useState(false);
+    // const [continuar3,setContinuar3] = useState(true);
+    // const [continuar4,setContinuar4] = useState(false);
+    // const [continuar5,setContinuar5] = useState(false);
+    // const [continuar6,setContinuar6] = useState(false);
 
     const [barraProces,setBarraProces]=useState(0.18);
 
@@ -144,10 +150,17 @@ const InscripcionesScreen = ({ navigation }) =>
         setLoading(false);
         setBarraProces(0.54);
     }
-    const procesoCompletado3=()=>{
-        setContinuar3(false);
-        setContinuar4(true);
-        setBarraProces(0.72);
+    const procesoCompletado3= async ()=>{ 
+        //curpFoto  actaFoto  certificadoBach  constanciaMedica
+        console.log(acta_N_Foto)
+        console.log(diploma_B_Foto)
+        const formData = new FormData();
+        formData.append('multi-files', [acta_N_Foto, diploma_B_Foto]);
+        await api.putActaCertificado(formData);
+        
+        // setContinuar3(false);
+        // setContinuar4(true);
+        // setBarraProces(0.72);
     }
     const procesoCompletado4=()=>{
         setContinuar4(false);
@@ -157,10 +170,10 @@ const InscripcionesScreen = ({ navigation }) =>
     }
     
     const regresar_al_P1= async ()=>{ //me regresa al formulario 1  
-        console.log(carreras, turno, estado, municipio, poblacion, colonia, direccion, numero, cp);
-        // setContinuar1(true);
-        // setContinuar2(false);
-        // setBarraProces(0.18);
+        // console.log(carreras, turno, estado, municipio, poblacion, colonia, direccion, numero, cp);
+        setContinuar1(true);
+        setContinuar2(false);
+        setBarraProces(0.18);
     }
     const regresar_al_P2=()=>{//me regresa al formulario 2
         setContinuar2(true);
@@ -213,6 +226,7 @@ const InscripcionesScreen = ({ navigation }) =>
             case 1:
                 if(camRef){
                     const data2 = await camRef.current.takePictureAsync();
+                    console.log(data2)
                     await setAct_N_Foto(data2.uri);
                     break;
                 }

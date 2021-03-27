@@ -136,4 +136,25 @@ const getMunicipios = async (municipio) => {
     return data;
 }
 
-export {getUserT, postUserT, getTipoPagos, putInfoPersonal, getCarreras, getEstados, getMunicipios, putInfoEscolar};
+const putActaCertificado = async (form) => {
+    try{
+        const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
+        const { _id }= sesion[0];
+        const data = await axios({
+            method: 'PUT',
+            url: `${config.BACKENDURL}/${config.DOCUMENTOS}`,
+            headers: { 'content-type': 'content type multipart/form-data' },
+            data: form,
+            params: {
+                id: _id,
+            }
+        })
+        return data;
+    }
+    catch(error){
+        console.log('Error en putActaCertificado')
+        console.log(error || "Error en putActaCertificado")
+    }
+}
+
+export {getUserT, postUserT, getTipoPagos, putInfoPersonal, getCarreras, getEstados, getMunicipios, putInfoEscolar, putActaCertificado};
