@@ -5,69 +5,157 @@ import RNPickerSelect from 'react-native-picker-select';
 import * as Animatable from "react-native-animatable";
 import Feather from "react-native-vector-icons/Feather";
 import {styles, styles2} from '../styles/datailsScreen';
+
+
+
+
+
+
 const InformacionEscolar = (props) => {
 
     return (
-        <View><ScrollView>
-            <Text style={{color:'#05375a',fontSize:18,marginLeft:10,marginTop:20,fontWeight: "bold",}}>Datos de Carrera</Text>
-                <View style={{marginTop:10}}>
-                    <Text style={{fontSize:16}}>
-                        {props.carreras ?
+        <View>
+            <ScrollView>
+
+                    {/* <View style={stylesPrivados.contenedorForm}>
+
+                        <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+                            <View style={{width:205}}>
+                                <Text style={styles2.text_footer}>Telefono 2</Text> 
+                                <View style={styles2.action}>
+                                    <TextInput
+                                        placeholder="4531231234 nota: sin espacios"
+                                        style={styles2.textInput}
+                                        autoCapitalize="none"
+                                        onChangeText={props.textInputTelChange2}
+                                    />
+                                </View>
+                            </View>
+                            <View style={{width:100,alignItems:'flex-end'}}>
+                                {props.data.Telefono_Aprobado2 ? (
+                                <Animatable.View animation="bounceIn">
+                                    <Feather name="check-circle" color="green" size={20} />
+                                </Animatable.View>
+                                ) : null}
+                            </View>
+                        </View>
+
+                    </View> */}
+
+    
+
+
+        <Text style={{color:'#05375a',fontSize:18,marginLeft:10,marginTop:20,fontWeight: "bold",}}>Datos de Carrera</Text>
+            
+        <View style={stylesPrivados.contenedorForm}>
+            <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+                <View style={{width:180,backgroundColor:'#eee'}}>
+                    <Text style={styles2.text_footer}>Carrera</Text> 
+                    <Text style={styles2.text_footer,{color:'gray',marginLeft:10}}>
+                    {props.carreras ?
                         `-- Carrera ${props.carreras}` :
-                            "¿Que carrera le interesa?"
+                            null
                         }
                     </Text>
-                    <RNPickerSelect
-                        useNativeAndroidPickerStyle={false}
-                        onValueChange={props.establecerCarreras}
-                        items={[
-                            { label: "Ing. Sistemas Computacionales", value: "IISC" },
-                            { label: "Ing. Informatica", value: "IINF" },
-                            { label: "Ing. Civil", value: "ICIV" },
-                            { label: "Ing. Gestión Empresarial", value: "IGEM" },
-                            { label: "Ing. Inovación y energ. sustentable", value: "IIAS" },
-                            { label: "Ing. Bioquimica", value: "IBQA" },
-                            { label: "Ing. Industrial", value: "IIND" },
-                            { label: "Ing. Contador Publico", value: "COPU" },
-                        ]}
-                        placeholder={{ label: "--Seleccione una carrera--", value: null }}
-                    />
-                </View> 
-
-            <View style={{marginTop:30}}>
-                <Text style={{fontSize:16}}> {props.turno ? `-- Turno ${props.turno}` : "¿Que turno le interesa inscribirse?"}</Text>
+                </View>
+                <View  style={stylesPrivados.buttonSelect}>
+                    
                         <RNPickerSelect
-                            useNativeAndroidPickerStyle={false}
-                            onValueChange={props.establecerTurno}
-                            items={[
-                                { label: "Matutino", value: "Matutino" },
-                                { label: "Verpertino", value: "Verpertino" },
-                            ]}
-                            placeholder={{ label: "--Seleccione un turno--", value: null }}
-                        />
-            </View>
-
-
-
-
-
-            <Text style={{color:'#05375a',fontSize:18,marginLeft:10,marginTop:30,fontWeight: "bold",}}>Datos de Direccion</Text>
-                
-            <View style={{marginTop:30}}>
-                <Text style={{fontSize:16}}> 
-                        {props.estado ? props.estado : "Estado"}</Text> 
-                            <RNPickerSelect
                                 useNativeAndroidPickerStyle={false}
-                                onValueChange={props.establecerEstado}
+                                onValueChange={props.establecerCarreras}
                                 items={[
-                                    { label: "Matutino", value: "Matutino" },
-                                    { label: "Verpertino", value: "Verpertino" },
+                                    { label: "Ing. Sistemas Computacionales", value: "IISC" },
+                                    { label: "Ing. Informatica", value: "IINF" },
+                                    { label: "Ing. Civil", value: "ICIV" },
+                                    { label: "Ing. Gestión Empresarial", value: "IGEM" },
+                                    { label: "Ing. Inovación y energ. sustentable", value: "IIAS" },
+                                    { label: "Ing. Bioquimica", value: "IBQA" },
+                                    { label: "Ing. Industrial", value: "IIND" },
+                                    { label: "Ing. Contador Publico", value: "COPU" },
                                 ]}
-                                placeholder={{ label: "--Seleccione un Estado--", value: null }}
-                        />
-            </View>
+                            >
+                            <Text style={{height:40,textAlignVertical:'center',color:'#fff'}}>Seleccione</Text>
+                        </RNPickerSelect>
+                </View>
 
-            <View style={{marginTop:30}}>
+                <View style={{height:60,width:25,alignItems:'flex-end',justifyContent:'center'}}>
+                    {props.carreras !=null ? (
+                    <Animatable.View animation="bounceIn">
+                        <Feather name="check-circle" color="green" size={20} />
+                    </Animatable.View>
+                    ) : null}
+                </View>
+
+            </View>
+        </View>
+
+        <View style={stylesPrivados.contenedorForm}>
+            <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+                <View style={{width:180,backgroundColor:'#eee'}}>
+                    <Text style={styles2.text_footer}>Turno</Text> 
+                    <Text style={styles2.text_footer,{color:'gray',marginLeft:10}}>
+                        {props.turno ? `--Turno ${props.turno}` :null}
+                    </Text>
+                </View>
+                <View  style={stylesPrivados.buttonSelect}>
+                    
+                            <RNPickerSelect
+                                        useNativeAndroidPickerStyle={false}
+                                        onValueChange={props.establecerTurno}
+                                        items={[
+                                            { label: "Matutino", value: "Matutino" },
+                                            { label: "Verpertino", value: "Verpertino" },
+                                        ]}
+                            >
+                            <Text style={{height:40,textAlignVertical:'center',color:'#fff'}}>Seleccione</Text>
+                        </RNPickerSelect>
+                </View>
+
+                <View style={{height:60,width:25,alignItems:'flex-end',justifyContent:'center'}}>
+                    {props.turno !=null ? (
+                    <Animatable.View animation="bounceIn">
+                        <Feather name="check-circle" color="green" size={20} />
+                    </Animatable.View>
+                    ) : null}
+                </View>
+
+            </View>
+        </View>
+
+            
+
+
+
+
+
+                <Text style={{color:'#05375a',fontSize:18,marginLeft:10,marginTop:30,fontWeight: "bold",}}>Datos de Direccion</Text>
+                
+
+
+
+
+
+
+
+
+
+
+                
+                <View style={{marginTop:30}}>
+                    <Text style={{fontSize:16}}> 
+                            {props.estado ? props.estado : "Estado"}</Text> 
+                                <RNPickerSelect
+                                    useNativeAndroidPickerStyle={false}
+                                    onValueChange={props.establecerEstado}
+                                    items={[
+                                        { label: "Matutino", value: "Matutino" },
+                                        { label: "Verpertino", value: "Verpertino" },
+                                    ]}
+                                    placeholder={{ label: "--Seleccione un Estado--", value: null }}
+                            />
+                </View>
+
+                <View style={{marginTop:30}}>
                 <Text style={{fontSize:16}}> 
                         {props.municipio ? props.municipio : "Municipio"}</Text>
                             <RNPickerSelect
@@ -83,8 +171,8 @@ const InformacionEscolar = (props) => {
 
 
 
-            <View style={{marginTop:30}}>
-                <Text style={{fontSize:16}}> {props.poblacion ? props.poblacion: "Poblacion"}</Text>
+                <View style={{marginTop:30}}>
+                    <Text style={{fontSize:16}}> {props.poblacion ? props.poblacion: "Poblacion"}</Text>
                         <RNPickerSelect
                             useNativeAndroidPickerStyle={false}
                             onValueChange={props.establecerPoblacion}
@@ -94,10 +182,10 @@ const InformacionEscolar = (props) => {
                             ]}
                             placeholder={{ label: "--Seleccione una poblacion--", value: null }}
                         />
-            </View>
+                </View>
 
-            <View style={{marginTop:30}}>
-                <Text style={{fontSize:16}}> {props.colonia ? props.colonia : "Colonia"}</Text>
+                <View style={{marginTop:30}}>
+                    <Text style={{fontSize:16}}> {props.colonia ? props.colonia : "Colonia"}</Text>
                         <RNPickerSelect
                             useNativeAndroidPickerStyle={false}
                             onValueChange={props.establecerColonia}
@@ -107,7 +195,7 @@ const InformacionEscolar = (props) => {
                             ]}
                             placeholder={{ label: "--Seleccione una colonia--", value: null }}
                         />
-            </View>
+                </View>
                                 {/* metodos diferentes */}
             <Text style={{color:'#05375a',fontSize:16,marginLeft:10}}>Direccion</Text>
             <View style={styles2.action}>
@@ -227,81 +315,58 @@ const InformacionEscolar = (props) => {
 
 export default InformacionEscolar;
 
-
-// const styles = StyleSheet.create({
-//     imagenFoto: {
-//         marginTop:20,
-//         marginBottom: 20,
-//         width: Dimensions.get("window").width/4,
-//         height: Dimensions.get("window").height /4,
-//         alignContent: "center",
-//         justifyContent: "center",
-//         backgroundColor: "#05375a",
-//         borderRadius: 10,
-//         elevation: 8,
-//     },
-//     container: {
-//         flex: 1,
-//     },
-//     containerFoto:{
-//         flexDirection: 'row',
-//         justifyContent: 'space-around',
-//         backgroundColor: '#fff',
-//         alignItems:'center',
-//         width: Dimensions.get("window").width,
-        
-    
-//     },
-//     foto:{
-//         marginTop:20,
-//         marginBottom: 20,
-//         width: Dimensions.get("window").width/4,
-//         height: Dimensions.get("window").height /4,
-//         alignContent: "center",
-//         justifyContent: "center",
-//         backgroundColor: "#05375a",
-//         borderRadius: 10,
-//         marginRight: 10,
-//     },
-//     button: {
-//         width: Dimensions.get("window").width /4,
-//         height: 40,
-//         backgroundColor: '#05375a',
-//         alignItems: 'center',
-//         justifyContent:'center',
-//         margin: 20,
-
-        
-//     },
-//     textC: {
-//         fontSize: 14,
-//         color: '#fff',
-//     },
-// });
-
-// const styles2 = StyleSheet.create({
-//     button: {
-//         alignItems: "center",
-//         marginTop: 50,
-//     },
-//     signIn: {
-//         width: "95%",
-//         height: 50,
-//         justifyContent: "center",
-//         alignItems: "center",
-//         borderRadius: 10,
-//         marginLeft:5
-//     },
-//     textSign: {
-//         fontSize: 18,
-//         fontWeight: "bold",
-//     },
-//     textPrivate: {
-//         flexDirection: "row",
-//         flexWrap: "wrap",
-//         marginTop: 20,
-//     },
-//     color_textPrivate: {
-//         color: "grey",
-//     },
-// });
+const stylesPrivados = StyleSheet.create({
+    contenedorForm:{
+        margin:10,
+        width: Dimensions.get("window").width -30,
+        height:60,
+        borderWidth: 1,
+        borderRadius:7,
+        borderColor:'#eeeeee',
+        paddingLeft:5,
+        paddingRight:5,
+        backgroundColor:'#eeeeee',
+        shadowColor: 'rgba(0, 0, 0, 0.1)',
+        shadowOpacity: 0.8,
+        elevation: 6,
+        shadowRadius: 15 ,
+        shadowOffset : { width: 1, height: 13},
+    },
+    buttonFecha:{
+        backgroundColor:"#2096ba",
+        height:40,
+        width:120,
+        borderWidth: 1,
+        borderRadius:7,
+        borderColor:'#fff',
+        paddingLeft:5,
+        justifyContent:'center',
+        textAlignVertical:'center',
+        marginLeft:5,
+        marginTop:10,
+        shadowColor: 'rgba(0, 0, 0, 0.1)',
+        shadowOpacity: 0.8,
+        elevation: 2,
+        shadowRadius: 5 ,
+        shadowOffset : { width: 1, height: 5},
+    },
+    buttonSelect:{
+        width:140,
+        height:40,
+        marginTop:25,
+        backgroundColor:"#2096ba",
+        borderWidth: 1,
+        borderRadius:7,
+        borderColor:'#fff',
+        paddingLeft:5,
+        justifyContent:'center',
+        textAlignVertical:'center',
+        marginLeft:5,
+        marginTop:10,
+        shadowColor: 'rgba(0, 0, 0, 0.1)',
+        shadowOpacity: 0.8,
+        elevation: 2,
+        shadowRadius: 5 ,
+        shadowOffset : { width: 1, height: 5},
+    }
+});

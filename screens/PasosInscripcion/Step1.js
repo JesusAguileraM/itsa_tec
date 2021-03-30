@@ -10,128 +10,223 @@ import {styles, styles2} from '../styles/datailsScreen';
 const InformacionPersonal = (props) => {
 
     return (
-        <View>
-            <View>
-                <Text style={styles2.text_footer}>Nombre del Alumno</Text>
-                <View style={styles2.action}>
-                    <TextInput
-                        placeholder="Nombre Completo"
-                        style={styles2.textInput}
-                        autoCapitalize="none"
-                        onChangeText={props.textInputNameChange}
-                    />
-                    {props.data.NombreAprobado ? (
-                    <Animatable.View animation="bounceIn">
-                        <Feather name="check-circle" color="green" size={20} />
-                    </Animatable.View>
-                    ) : null}
+        <View >
+            <ScrollView>
+                <View style={stylesPrivados.contenedorForm}>
+                    <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+                        <View style={{width:200}}>
+                            <Text style={styles2.text_footer}>Nombre del Alumno</Text>
+                            <View style={styles2.action}>
+                                <TextInput
+                                    placeholder="Nombre Completo"
+                                    style={styles2.textInput}
+                                    autoCapitalize="none"
+                                    onChangeText={props.textInputNameChange}
+                                />
+                                
+                            </View>
+                        </View>
+                        <View style={{width:100,alignItems:'flex-end'}}>
+                            {props.data.NombreAprobado ? (
+                                <Animatable.View animation="bounceIn">
+                                    <Feather name="check-circle" color="green" size={20} />
+                                </Animatable.View>
+                                ) : null}
+                        </View>
+                    </View>
                 </View>
 
-                <Text style={styles2.text_footer}>Apellido Paterno</Text>
-                <View style={styles2.action}>
-                    <TextInput
-                    placeholder="Primer Apellido"
-                    style={styles2.textInput}
-                    autoCapitalize="none"
-                    onChangeText={props.textInputApellidoPChange}
-                    />
-                    {props.data.ApellidoP_Aprobado ? (
-                    <Animatable.View animation="bounceIn">
-                        <Feather name="check-circle" color="green" size={20} />
-                    </Animatable.View>
-                    ) : null}
+                <View style={stylesPrivados.contenedorForm}>
+                    <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+                        <View style={{width:200}}>
+                            <Text style={styles2.text_footer}>Apellido Paterno</Text>
+                            <View style={styles2.action}>
+                            <TextInput
+                                placeholder="Primer Apellido"
+                                style={styles2.textInput}
+                                autoCapitalize="none"
+                                onChangeText={props.textInputApellidoPChange}
+                            />
+                                
+                            </View>
+                        </View>
+                        <View style={{width:100,alignItems:'flex-end'}}>
+                            {props.data.ApellidoP_Aprobado ? (
+                            <Animatable.View animation="bounceIn">
+                                <Feather name="check-circle" color="green" size={20} />
+                            </Animatable.View>
+                            ) : null}
+                        </View>
+                    </View>
+
+
+
+
                 </View>
 
-                <Text style={styles2.text_footer}>Apellido Materno</Text>
-                <View style={styles2.action}>
-                    <TextInput
-                    placeholder="Segundo apellido"
-                    style={styles2.textInput}
-                    autoCapitalize="none"
-                    onChangeText={props.textInputApellidoMChange}
-                    />
-                    {props.data.ApellidoM_Aprobado ? (
-                    <Animatable.View animation="bounceIn">
-                        <Feather name="check-circle" color="green" size={20} />
-                    </Animatable.View>
-                    ) : null}
+                <View style={stylesPrivados.contenedorForm}>
+                    <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+                        <View style={{width:200}}>
+                            <Text style={styles2.text_footer}>Apellido Materno</Text>
+                            <View style={styles2.action}>
+                                <TextInput
+                                placeholder="Segundo apellido"
+                                style={styles2.textInput}
+                                autoCapitalize="none"
+                                onChangeText={props.textInputApellidoMChange}
+                            />
+                                        
+                            </View>
+                        </View>
+                        <View style={{width:100,alignItems:'flex-end'}}>
+                            {props.data.ApellidoM_Aprobado ? (
+                            <Animatable.View animation="bounceIn">
+                                <Feather name="check-circle" color="green" size={20} />
+                            </Animatable.View>
+                            ) : null}
+                        </View>
+                    </View>
+
+
+
+                </View>
+                
+                <View style={stylesPrivados.contenedorForm}>           
+                    <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+                        <View style={{width:200}}>
+                            <Text style={styles2.text_footer}>CURP</Text>
+                            <View style={styles2.action}>
+                                <TextInput
+                                    placeholder="Ejemp. PEMM780912MBCLRR00"
+                                    style={styles2.textInput}
+                                    autoCapitalize="none"
+                                    onChangeText={props.validarInputCurp}
+                                />
+                            </View>
+                        </View>
+                        <View style={{width:100,alignItems:'flex-end'}}>
+                            {props.data.Curp_Aprobado ? (
+                            <Animatable.View animation="bounceIn">
+                                <Feather name="check-circle" color="green" size={20} />
+                            </Animatable.View>
+                            ) : null}
+                        </View>
+                    </View>
+
+
+
+                </View>
+                
+                <View style={stylesPrivados.contenedorForm}>
+                    <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+                        <View style={{width:205}}>
+                        <Text style={styles2.text_footer}>Telefono</Text>
+                            <View style={styles2.action}>
+                                <TextInput
+                                placeholder="4531231234 nota: sin espacios"
+                                style={styles2.textInput}
+                                autoCapitalize="none"
+                                onChangeText={props.textInputTelChange}
+                                />
+                            </View>
+                        </View>
+                        <View style={{width:100,alignItems:'flex-end'}}>
+                            {props.data.Telefono_Aprobado ? (
+                            <Animatable.View animation="bounceIn">
+                                <Feather name="check-circle" color="green" size={20} />
+                            </Animatable.View>
+                            ) : null}
+                        </View>
+                    </View>
+                </View>
+                
+                <View style={stylesPrivados.contenedorForm}>
+
+                    <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+                        <View style={{width:205}}>
+                            <Text style={styles2.text_footer}>Telefono 2</Text> 
+                            <View style={styles2.action}>
+                                <TextInput
+                                    placeholder="4531231234 nota: sin espacios"
+                                    style={styles2.textInput}
+                                    autoCapitalize="none"
+                                    onChangeText={props.textInputTelChange2}
+                                />
+                            </View>
+                        </View>
+                        <View style={{width:100,alignItems:'flex-end'}}>
+                            {props.data.Telefono_Aprobado2 ? (
+                            <Animatable.View animation="bounceIn">
+                                <Feather name="check-circle" color="green" size={20} />
+                            </Animatable.View>
+                            ) : null}
+                        </View>
+                    </View>
+
+
                 </View>
 
-                <Text style={styles2.text_footer}>CURP</Text>
-                <View style={styles2.action}>
-                    <TextInput
-                    placeholder="Ejemp. PEMM780912MBCLRR00"
-                    style={styles2.textInput}
-                    autoCapitalize="none"
-                    onChangeText={props.validarInputCurp}
-                    />
-                    {props.data.Curp_Aprobado ? (
-                    <Animatable.View animation="bounceIn">
-                        <Feather name="check-circle" color="green" size={20} />
-                    </Animatable.View>
-                    ) : null}
-                </View>
-
-                <Text style={styles2.text_footer}>Telefono</Text>
-                <View style={styles2.action}>
-                    <TextInput
-                    placeholder="4531231234 nota: sin espacios"
-                    style={styles2.textInput}
-                    autoCapitalize="none"
-                    onChangeText={props.textInputTelChange}
-                    />
-                    {props.data.Telefono_Aprobado ? (
-                    <Animatable.View animation="bounceIn">
-                        <Feather name="check-circle" color="green" size={20} />
-                    </Animatable.View>
-                    ) : null}
-                </View>
-
-                <Text style={styles2.text_footer}>Telefono 2</Text> 
-                <View style={styles2.action}>
-                    <TextInput
-                        placeholder="4531231234 nota: sin espacios"
-                        style={styles2.textInput}
-                        autoCapitalize="none"
-                        onChangeText={props.textInputTelChange2}
-                    />
-                    {props.data.Telefono_Aprobado2 ? (
-                    <Animatable.View animation="bounceIn">
-                        <Feather name="check-circle" color="green" size={20} />
-                    </Animatable.View>
-                    ) : null}
-                </View>
-
-
-                <Text style={styles2.text_footer}>Sexo</Text>
-                    {props.data.sexo_Aprobado ? 
-                        <Text style={styles2.text_footer,{color:'gray',marginLeft:10}}>{props.data.sexo}</Text>
-                        :
-                        <View>
+                <View style={stylesPrivados.contenedorForm}>
+                    <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+                        <View style={{width:180,backgroundColor:'#eee'}}>
+                            <Text style={styles2.text_footer}>Sexo</Text> 
+                            <Text style={styles2.text_footer,{color:'gray',marginLeft:10}}>{props.data.sexo}</Text>
+                        </View>
+                        <View  style={stylesPrivados.buttonSelect}>
+                            
                                 <RNPickerSelect
-                                    useNativeAndroidPickerStyle={true}
+                                    useNativeAndroidPickerStyle={false}
                                     onValueChange={props.setSexo}
                                     items={[
                                         { label: "Hombre", value: "Hombre" },
                                         { label: "Mujer", value: "Mujer" },
                                     ]}
-                                    placeholder={{ label: "--seleccione--", value: null }}
-                                />
-                            </View> 
-                    }
+                                    placeholder={{ label: "seleccione", value:null }}
+
+                                >
+                                    <Text style={{height:40,textAlignVertical:'center',color:'#fff'}}>Seleccione sexo</Text>
+                                </RNPickerSelect>
+                        </View>
+
+                        <View style={{height:60,width:25,alignItems:'flex-end',justifyContent:'center'}}>
+                            {props.data.sexo !=null ? (
+                            <Animatable.View animation="bounceIn">
+                                <Feather name="check-circle" color="green" size={20} />
+                            </Animatable.View>
+                            ) : null}
+                        </View>
+
+                    </View>
 
 
-                <Text style={styles2.text_footer}>Fecha de nacimiento</Text>
-                <View style={{width:200,height:10,marginBottom:60}}>
+                </View>
 
-                    {props.data.Fecha_nacimiento_Aprobado ? <Text style={{color:'grey',margin:5,marginLeft:10}}>{props.cumpleanos}</Text>:<Text style={{color:'grey',margin:5,marginLeft:10}}>1990/01/01</Text>}
-                    <Button title="Selecciona tu fecha de nacimiento" onPress={props.showDatePicker} style={{backgroundColor:"#05375a"}} />
+
+                <View style={[stylesPrivados.contenedorForm,{flexDirection: "row",justifyContent:'space-between'}]}>
+                    <View style={{width:180,backgroundColor:'#eee'}}>      
+                        <Text style={styles2.text_footer}>Fecha de nacimiento</Text> 
+                        {props.data.Fecha_nacimiento_Aprobado ? <Text style={{color:'grey',margin:5,marginLeft:10,width:150}}>{props.cumpleanos}</Text>:<Text style={{color:'grey',margin:5,marginLeft:10}}>1990/01/01</Text>}
+                    </View>
+                    <TouchableOpacity style={stylesPrivados.buttonFecha} onPress={props.showDatePicker}>
+                            <Text style={{color:'#fff',textAlignVertical:'center'}}>
+                                Selecciona fecha
+                            </Text>
+                    </TouchableOpacity>
+                    <View style={{height:60,width:50,alignItems:'flex-end',justifyContent:'center'}}>
+                            {props.data.Fecha_nacimiento_Aprobado == true ? (
+                            <Animatable.View animation="bounceIn">
+                                <Feather name="check-circle" color="green" size={20} />
+                            </Animatable.View>
+                            ) : null}
+                    </View>
                     <DateTimePickerModal isVisible={props.isDatePickerVisible} 
                         mode="date"
                         onConfirm={props.handleConfirm}
                         onCancel={props.hideDatePicker}
                         date={new Date('01/01/2004')}
                     />
+                        
+
                 </View>
                 {props.data.NombreAprobado===true && props.data.ApellidoP_Aprobado===true && props.data.Curp_Aprobado===true && props.data.Telefono_Aprobado===true && props.data.sexo_Aprobado && props.data.Fecha_nacimiento_Aprobado ? 
                     <View style={styles2.button}>
@@ -172,7 +267,7 @@ const InformacionPersonal = (props) => {
                     453-534-8300{" "}
                     </Text>
                 </View>
-            </View>
+            </ScrollView>
         </View>
     );
 };
@@ -180,55 +275,61 @@ const InformacionPersonal = (props) => {
 export default InformacionPersonal;
 
 
-// const styles = StyleSheet.create({
-//     imagenFoto: {
-//         marginTop:20,
-//         marginBottom: 20,
-//         width: Dimensions.get("window").width/4,
-//         height: Dimensions.get("window").height /4,
-//         alignContent: "center",
-//         justifyContent: "center",
-//         backgroundColor: "#05375a",
-//         borderRadius: 10,
-//         elevation: 8,
-//     },
-//     container: {
-//         flex: 1,
-//     },
-//     containerFoto:{
-//         flexDirection: 'row',
-//         justifyContent: 'space-around',
-//         backgroundColor: '#fff',
-//         alignItems:'center',
-//         width: Dimensions.get("window").width,
-    
-//     },
-//     foto:{
-//         marginTop:20,
-//         marginBottom: 20,
-//         width: Dimensions.get("window").width/4,
-//         height: Dimensions.get("window").height /4,
-//         alignContent: "center",
-//         justifyContent: "center",
-//         backgroundColor: "#05375a",
-//         borderRadius: 10,
-//         marginRight: 10,
-//     },
-//     button: {
-//         width: Dimensions.get("window").width /4,
-//         height: 40,
-//         backgroundColor: '#05375a',
-//         alignItems: 'center',
-//         justifyContent:'center',
-//         margin: 20,
-
-        
-//     },
-//     textC: {
-//         fontSize: 14,
-//         color: '#fff',
-//     },
-// });
+const stylesPrivados = StyleSheet.create({
+    contenedorForm:{
+        margin:10,
+        width: Dimensions.get("window").width -30,
+        height:60,
+        borderWidth: 1,
+        borderRadius:7,
+        borderColor:'#eeeeee',
+        paddingLeft:5,
+        paddingRight:5,
+        backgroundColor:'#eeeeee',
+        shadowColor: 'rgba(0, 0, 0, 0.1)',
+        shadowOpacity: 0.8,
+        elevation: 6,
+        shadowRadius: 15 ,
+        shadowOffset : { width: 1, height: 13},
+    },
+    buttonFecha:{
+        backgroundColor:"#2096ba",
+        height:40,
+        width:120,
+        borderWidth: 1,
+        borderRadius:7,
+        borderColor:'#fff',
+        paddingLeft:5,
+        justifyContent:'center',
+        textAlignVertical:'center',
+        marginLeft:5,
+        marginTop:10,
+        shadowColor: 'rgba(0, 0, 0, 0.1)',
+        shadowOpacity: 0.8,
+        elevation: 2,
+        shadowRadius: 5 ,
+        shadowOffset : { width: 1, height: 5},
+    },
+    buttonSelect:{
+        width:140,
+        height:40,
+        marginTop:25,
+        backgroundColor:"#2096ba",
+        borderWidth: 1,
+        borderRadius:7,
+        borderColor:'#fff',
+        paddingLeft:5,
+        justifyContent:'center',
+        textAlignVertical:'center',
+        marginLeft:5,
+        marginTop:10,
+        shadowColor: 'rgba(0, 0, 0, 0.1)',
+        shadowOpacity: 0.8,
+        elevation: 2,
+        shadowRadius: 5 ,
+        shadowOffset : { width: 1, height: 5},
+    }
+});
 
 // const styles2 = StyleSheet.create({
 //     button: {
