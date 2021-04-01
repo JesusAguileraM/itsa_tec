@@ -12,9 +12,8 @@ import Feather from "react-native-vector-icons/Feather";
 //Styles
 import {styles, styles2} from './styles/datailsScreen';
 //api permissions
-import * as config from '../auth/config';
-import Axios from 'axios';
-
+import * as api from '../auth/request';
+import Splash from "../components/Splash";
 
 // const axios = Axios.create({
 //     baseURL: config.BACKENDURL,
@@ -31,6 +30,7 @@ const InscripcionesScreen = ({ navigation }) =>
     const [activarCamara, setActivarCamara] = useState(true);
     const [colorProgres,setColorProgress]=useState('#05375a')
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [loading, setLoading] = useState(false); 
 ////////Es toda la informacion recogida de la app (recuerda que si los agarras sin completar el formulario seran null)
         //Paso 1 de informacion
     const [data, setData] = React.useState({
@@ -52,6 +52,8 @@ const InscripcionesScreen = ({ navigation }) =>
         sexo_Aprobado:false,
     });
     const [cumpleanos,setCumpleanos]=useState('05/05/1996');
+    const [fechaNacimiento,setFechaNacimiento]=useState(null);
+    
 
                 //paso de informacion 2
     const [ carreras, setCarreras ] = useState(null);
@@ -84,24 +86,81 @@ const InscripcionesScreen = ({ navigation }) =>
     const [continuar4,setContinuar4] = useState(false);
     const [continuar5,setContinuar5] = useState(false);
     const [continuar6,setContinuar6] = useState(false);
+    // const [continuar1,setContinuar1] = useState(false);
+    // const [continuar2,setContinuar2] = useState(false);
+    // const [continuar3,setContinuar3] = useState(true);
+    // const [continuar4,setContinuar4] = useState(false);
+    // const [continuar5,setContinuar5] = useState(false);
+    // const [continuar6,setContinuar6] = useState(false);
 
     const [barraProces,setBarraProces]=useState(0.18);
 
-    const procesoCompletado1=()=>{
+    //Data de las opciones
+    const [listaCarreras, setListaCarreras] = useState([]);
+    const [listaEstados, setListaEstados] = useState([]);
+    const [listaMunicipios, setListaMunicipios] = useState([]);
+
+
+    const procesoCompletado1= async () =>{
+        setLoading(true);
+
+        const obj = { //arreglamos los datos para enviarlos al servidor
+            "nombre": data.Nombre,
+            "apellidoPaterno": data.ApellidoP,
+            "apellidoMaterno": data.ApellidoM,
+            "curp": data.Curp,
+            "telefono1": data.Telefono,
+            "telefono2": data.Telefono2,
+            "sexo": data.sexo,
+            "fechaNacimiento": fechaNacimiento,
+        }
+
+        await api.putInfoPersonal(obj);//subimos la información del paso 1
+        const carreras = await api.getCarreras();//obtenemos las carreras para el paso 2
+        const listaCarreras = carreras.data.data.map((doc) => {
+            return doc.carrera;
+        })
+        const estados = await api.getEstados();//obtenemos los estados
+        
+        setListaCarreras(listaCarreras);
+        setListaEstados(estados.data.response.estado);
         setContinuar1(false);
         setContinuar2(true);
         setBarraProces(0.36);
+        setLoading(false);
     }
-    const procesoCompletado2=()=>{
-        console.log(carreras, turno, estado, municipio, poblacion, colonia, direccion, numero, cp);
+    const procesoCompletado2= async ()=>{
+        setLoading(true);
+        const obj = { 
+            "carrera": carreras,
+            "turno": turno,
+            "estado": estado,
+            "municipio": municipio,
+            "poblacion": poblacion,
+            "colonia": colonia,
+            "direccion": direccion,
+            "numero": numero,
+            "cp": cp
+        }
+
+        await api.putInfoEscolar(obj);//enviamos la información escolar al servidor
+
         setContinuar2(false);
         setContinuar3(true);
+        setLoading(false);
         setBarraProces(0.54);
     }
-    const procesoCompletado3=()=>{
-        setContinuar3(false);
-        setContinuar4(true);
-        setBarraProces(0.72);
+    const procesoCompletado3= async ()=>{ 
+        //curpFoto  actaFoto  certificadoBach  constanciaMedica
+        console.log(acta_N_Foto)
+        console.log(diploma_B_Foto)
+        const formData = new FormData();
+        formData.append('multi-files', [acta_N_Foto, diploma_B_Foto]);
+        await api.putActaCertificado(formData);
+        
+        // setContinuar3(false);
+        // setContinuar4(true);
+        // setBarraProces(0.72);
     }
     const procesoCompletado4=()=>{
         setContinuar4(false);
@@ -110,7 +169,8 @@ const InscripcionesScreen = ({ navigation }) =>
         setBarraProces(1);
     }
     
-    const regresar_al_P1=()=>{ //me regresa al formulario 1
+    const regresar_al_P1= async ()=>{ //me regresa al formulario 1  
+        // console.log(carreras, turno, estado, municipio, poblacion, colonia, direccion, numero, cp);
         setContinuar1(true);
         setContinuar2(false);
         setBarraProces(0.18);
@@ -156,11 +216,17 @@ const InscripcionesScreen = ({ navigation }) =>
         return <Text>No access to camera</Text>;
     }
 
+    const getMunicipios = async (estado) => {
+        const municipios = await api.getMunicipios(estado);
+        setListaMunicipios(municipios.data.response.municipios);
+    }
+
     const tomarFoto = async(DocumentoFoto) => {
         switch (DocumentoFoto) {
             case 1:
                 if(camRef){
                     const data2 = await camRef.current.takePictureAsync();
+                    console.log(data2)
                     await setAct_N_Foto(data2.uri);
                     break;
                 }
@@ -236,6 +302,7 @@ const InscripcionesScreen = ({ navigation }) =>
         let dia=date.getDate(); 
         let fechaC=`${anio}/${mes}/${dia}`
         setCumpleanos(fechaC);
+        setFechaNacimiento(date);//lo agrego porque necesito el objeto Date
         setData({
             ...data,
             Fecha_nacimiento: date,
@@ -684,7 +751,13 @@ const InscripcionesScreen = ({ navigation }) =>
         }
     };
 
-
+    if(loading){
+        return (
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <Splash/>
+        </View>
+        );
+    }
    
     return (
         <SafeAreaView style={styles.container}>
@@ -724,6 +797,10 @@ const InscripcionesScreen = ({ navigation }) =>
                     direccion={direccion}
                     numero={numero}
                     cp={cp}
+                    listaCarreras={listaCarreras}
+                    listaEstados={listaEstados}
+                    listaMunicipios={listaMunicipios}
+                    getMunicipios={getMunicipios}
                     establecerCarreras={establecerCarreras}
                     establecerTurno={establecerTurno}
                     establecerEstado={establecerEstado}

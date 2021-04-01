@@ -104,31 +104,46 @@ const App = () => {
     );
   }
 
-  // const status = AsyncStorage  
-
   return (
     <PaperProvider theme={theme}>
       <AuthContext.Provider value={authContext}>
         <NavigationContainer >        
-              {isStatus === 'alumnoincripcion' ? (
+              {true ? (
                 <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent {...props} />} >
                   <DrawerUserLogged.Screen name="UsuarioLogueado" component={MainTabScreen} />
-                </DrawerUserLogged.Navigator>
-              ): null}
-              {isStatus === 'alumno' ? (
-                <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent2 {...props} />} >
-                  <DrawerUserLogged.Screen name="UsuarioInscripto" component={MainTabScreen2} />
-                </DrawerUserLogged.Navigator>
-              ): null}
-              {(isStatus === 'noalumno' || isStatus==='docente')? (
-                <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent3 {...props} />} >
-                  <DrawerUserLogged.Screen name="Visitante" component={MainTabScreen3} />
                 </DrawerUserLogged.Navigator>
               ): null}
         </NavigationContainer>
       </AuthContext.Provider>
     </PaperProvider>
   );
+
+
+  // return (
+  //   <PaperProvider theme={theme}>
+  //     <AuthContext.Provider value={authContext}>
+  //       <NavigationContainer >        
+  //             {isStatus === 'alumnoincripcion' ? (
+  //               <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent {...props} />} >
+  //                 <DrawerUserLogged.Screen name="UsuarioLogueado" component={MainTabScreen} />
+  //               </DrawerUserLogged.Navigator>
+  //             ): null}
+  //             {isStatus === 'alumno' ? (
+  //               <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent2 {...props} />} >
+  //                 <DrawerUserLogged.Screen name="UsuarioInscripto" component={MainTabScreen2} />
+  //               </DrawerUserLogged.Navigator>
+  //             ): null}
+  //             {(isStatus === 'noalumno' || isStatus==='docente')? (
+  //               <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent3 {...props} />} >
+  //                 <DrawerUserLogged.Screen name="Visitante" component={MainTabScreen3} />
+  //               </DrawerUserLogged.Navigator>
+  //             ): null}
+  //       </NavigationContainer>
+  //     </AuthContext.Provider>
+  //   </PaperProvider>
+  // );
 };
+
+
 
 export default App;

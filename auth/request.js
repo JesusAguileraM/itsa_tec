@@ -34,10 +34,10 @@ const getUserT = async () => {
     return data;
 }
 
-const putInfoPersonal = async () => {
+const putInfoPersonal = async (form) => {
     try{
-        const sesion = await crudToken.ObtenerInformacionEscolar(); //sesion{data, status, message}
-        const _id = sesion.data._id;
+        const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
+        const { _id }= sesion[0];
         const data = await axios({
             method: 'PUT',
             url: `${config.BACKENDURL}/${config.TEMPORARYUSERS}`,
@@ -50,8 +50,111 @@ const putInfoPersonal = async () => {
         return data;
     }
     catch(error){
+        console.log('Error en putInfoPersonal')
         console.log(error || "Error en postUserT")
     }
 }
 
-export {getUserT, postUserT};
+const putInfoEscolar = async (form) => {
+    try{
+        const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
+        const { _id }= sesion[0];
+        const data = await axios({
+            method: 'PUT',
+            url: `${config.BACKENDURL}/${config.TEMPORARYUSERS}`,
+            headers: { 'content-type': 'application/json' },
+            data: form,
+            params: {
+                id: _id,
+            }
+        })
+        return data;
+    }
+    catch(error){
+        console.log('Error en putInfoEscolar')
+        console.log(error || "Error en putInfoEscolar")
+    }
+}
+
+const getTipoPagos = async () => {
+    let data = [];
+    try{
+            data = await axios({
+            method: 'GET',
+            url: `${config.BACKENDURL}/${config.TIPOPAGOS}`,
+            headers: { 'content-type': 'application/json' },
+        })
+    }
+    catch(error){
+        console.log(error || "Error en getTipoPagos")
+    }
+    return data;
+}
+
+const getCarreras = async () => {
+    let data = [];
+    try{
+            data = await axios({
+            method: 'GET',
+            url: `${config.BACKENDURL}/${config.CARRERAS}`,
+            headers: { 'content-type': 'application/json' },
+        })
+    }
+    catch(error){
+        console.log(error || "Error en getCarreras")
+    }
+    return data;
+}
+
+const getEstados = async () => {
+    let data = [];
+    try{
+            data = await axios({
+            method: 'GET',
+            url: `${config.ESTADOS}?${config.TOKEN}`,
+            headers: { 'content-type': 'application/json' },
+        })
+    }
+    catch(error){
+        console.log(error || "Error en getEstados")
+    }
+    return data;
+}
+ 
+const getMunicipios = async (municipio) => {
+    let data = [];
+    try{
+            data = await axios({
+            method: 'GET',
+            url: `${config.MUNICIPIOS}/${municipio}?${config.TOKEN}`,
+            headers: { 'content-type': 'application/json' },
+        })
+    }
+    catch(error){
+        console.log(error || "Error en getMunicipios")
+    }
+    return data;
+}
+
+const putActaCertificado = async (form) => {
+    try{
+        const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
+        const { _id }= sesion[0];
+        const data = await axios({
+            method: 'PUT',
+            url: `${config.BACKENDURL}/${config.DOCUMENTOS}`,
+            headers: { 'content-type': 'content type multipart/form-data' },
+            data: form,
+            params: {
+                id: _id,
+            }
+        })
+        return data;
+    }
+    catch(error){
+        console.log('Error en putActaCertificado')
+        console.log(error || "Error en putActaCertificado")
+    }
+}
+
+export {getUserT, postUserT, getTipoPagos, putInfoPersonal, getCarreras, getEstados, getMunicipios, putInfoEscolar, putActaCertificado};

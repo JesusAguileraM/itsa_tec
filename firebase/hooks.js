@@ -113,7 +113,7 @@ const useGoogleLogin = async (expoPushToken)=>  {
                 // console.log('Obtenemos el temporaryUser creado')
                 const user = await api.postUserT(obj);  //devuelve algo como  user{data{data, status, message}}  
                 // console.log('Guardamos localmente el temporaryuser como InfoPersonalInscripcion')
-                await crudToken.GuardarInfoPersonalInscripcion(user.data);
+                await crudToken.GuardarInfoPersonalInscripcion(user.data.data);
                 await crudToken.GuardarIsStatus(user.data.status);
                 // console.log(user.data); //guardar en la base de datos informacionPersonalInscripciones
                 //user.data.status es para el control de switch
