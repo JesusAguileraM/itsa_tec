@@ -768,7 +768,7 @@ const InscripcionesScreen = ({ navigation }) =>
             <ScrollView>
             <ProgressBar progress={barraProces} color={colorProgres} />
             
-            { continuar1 ?  
+            { continuar1==false ?  
                 <Steps.Step1 procesoCompletado1={procesoCompletado1}
                     cumpleanos={cumpleanos}
                     isDatePickerVisible={isDatePickerVisible}
@@ -786,7 +786,7 @@ const InscripcionesScreen = ({ navigation }) =>
                 />
             : null }
 
-            { continuar2 ?  
+            { continuar2 ==false?  
                 <Steps.Step2 
                     carreras={carreras}
                     turno={turno}
