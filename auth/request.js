@@ -136,7 +136,7 @@ const getMunicipios = async (municipio) => {
     return data;
 }
 
-const putActaCertificado = async (form) => {
+const putActaCertificadoCurpConstancia = async (form) => {
     try{
         const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
         const { _id }= sesion[0];
@@ -157,4 +157,25 @@ const putActaCertificado = async (form) => {
     }
 }
 
-export {getUserT, postUserT, getTipoPagos, putInfoPersonal, getCarreras, getEstados, getMunicipios, putInfoEscolar, putActaCertificado};
+const putDepositoBancario = async (form) => {
+    try{
+        const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
+        const { _id }= sesion[0];
+        const data = await axios({
+            method: 'PUT',
+            url: `${config.BACKENDURL}/${config.DEPOSITOS}`,
+            headers: { 'content-type': 'multipart/form-data' },
+            data: form,
+            params: {
+                id: _id,
+            }
+        })
+        return data;
+    }
+    catch(error){
+        console.log('Error en putActaCertificado')
+        console.log(error || "Error en putActaCertificado")
+    }
+}
+
+export {getUserT, postUserT, getTipoPagos, putInfoPersonal, getCarreras, getEstados, getMunicipios, putInfoEscolar, putActaCertificadoCurpConstancia, putDepositoBancario};

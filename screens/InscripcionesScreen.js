@@ -88,9 +88,9 @@ const InscripcionesScreen = ({ navigation }) =>
     // const [continuar6,setContinuar6] = useState(false);
     const [continuar1,setContinuar1] = useState(false);
     const [continuar2,setContinuar2] = useState(false);
-    const [continuar3,setContinuar3] = useState(true);
+    const [continuar3,setContinuar3] = useState(false);
     const [continuar4,setContinuar4] = useState(false);
-    const [continuar5,setContinuar5] = useState(false);
+    const [continuar5,setContinuar5] = useState(true);
     const [continuar6,setContinuar6] = useState(false);
 
     const [barraProces,setBarraProces]=useState(0.18);
@@ -152,22 +152,41 @@ const InscripcionesScreen = ({ navigation }) =>
     }
     const procesoCompletado3= async ()=>{ 
         //curpFoto  actaFoto  certificadoBach  constanciaMedica
+        setLoading(true);
         const formData = new FormData();
         formData.append('multi-files', acta_N_Foto);
         formData.append('multi-files', diploma_B_Foto);
-        await api.putActaCertificado(formData);
-        
-        // setContinuar3(false);
-        // setContinuar4(true);
-        // setBarraProces(0.72);
+        await api.putActaCertificadoCurpConstancia(formData);
+        setContinuar3(false);
+        setContinuar4(true);
+        setLoading(false);
+        setBarraProces(0.72);
     }
-    const procesoCompletado4=()=>{
-        setContinuar4(false);
+    const procesoCompletado4= async ()=>{
+        setLoading(true);
+        const formData = new FormData();
+        formData.append('multi-files', curp_Foto);
+        formData.append('multi-files', estudio_H_Foto);
+        await api.putActaCertificadoCurpConstancia(formData);
+        setContinuar4(false);   
         setContinuar5(true);
         setColorProgress('#00bb2d');
+        setLoading(false);
         setBarraProces(1);
     }
     
+    //se encarga de ejecutar el ultimo paso de inscripcion
+    const terminarProceso= async ()=>{//preguntarle a manuel como enviar esta funcion al componente de comprobar pago
+        setLoading(true);
+        const formData = new FormData();
+        formData.append('multi-files', pagoFoto);
+        await api.putDepositoBancario(formData);
+        setContinuar5(false);
+        setContinuar1(true);
+        setLoading(false);
+        setBarraProces(0);
+    }
+
     const regresar_al_P1= async ()=>{ //me regresa al formulario 1  
         // console.log(carreras, turno, estado, municipio, poblacion, colonia, direccion, numero, cp);
         setContinuar1(true);
@@ -189,16 +208,6 @@ const InscripcionesScreen = ({ navigation }) =>
         setContinuar5(false);
         setColorProgress('#05375a');
         setBarraProces(0.72);
-    }
-
-    //se encarga de ejecutar el ultimo paso de inscripcion
-    const terminarProceso=()=>{//preguntarle a manuel como enviar esta funcion al componente de comprobar pago
-        alert("Vamos a subir las imagenes al servidor");
-        // config.BACKENDURL        
-        // acta_N_Foto
-        setContinuar5(false);
-        setContinuar1(true);
-        setBarraProces(0);
     }
 
     useEffect(() => {
@@ -284,9 +293,7 @@ const InscripcionesScreen = ({ navigation }) =>
         await tomarFoto(fotoSeleccionada);
         await setActivarCamara(true);
 
-    }
-    
-   
+    }   
 
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -371,7 +378,6 @@ const InscripcionesScreen = ({ navigation }) =>
     const establecerCP = (valor) => {
         setCp(valor)
     }
-
 
     const cambiarACamara = (value1, value2) => {
         setNo_Documento(value1); 
@@ -847,6 +853,7 @@ const InscripcionesScreen = ({ navigation }) =>
                 <Steps.Step5 
                     comprobantePagoFoto={pagoFoto}
                     cambiarACamara={cambiarACamara}
+                    regresar_al_P4={regresar_al_P4}
                     terminarProceso={terminarProceso}
                 />
             : null }
