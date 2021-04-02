@@ -80,18 +80,18 @@ const InscripcionesScreen = ({ navigation }) =>
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const [no_Documento, setNo_Documento] = useState(1);//Para saber que documento hago referencia
-    const [continuar1,setContinuar1] = useState(true);
-    const [continuar2,setContinuar2] = useState(false);
-    const [continuar3,setContinuar3] = useState(false);
-    const [continuar4,setContinuar4] = useState(false);
-    const [continuar5,setContinuar5] = useState(false);
-    const [continuar6,setContinuar6] = useState(false);
-    // const [continuar1,setContinuar1] = useState(false);
+    // const [continuar1,setContinuar1] = useState(true);
     // const [continuar2,setContinuar2] = useState(false);
-    // const [continuar3,setContinuar3] = useState(true);
+    // const [continuar3,setContinuar3] = useState(false);
     // const [continuar4,setContinuar4] = useState(false);
     // const [continuar5,setContinuar5] = useState(false);
     // const [continuar6,setContinuar6] = useState(false);
+    const [continuar1,setContinuar1] = useState(false);
+    const [continuar2,setContinuar2] = useState(false);
+    const [continuar3,setContinuar3] = useState(true);
+    const [continuar4,setContinuar4] = useState(false);
+    const [continuar5,setContinuar5] = useState(false);
+    const [continuar6,setContinuar6] = useState(false);
 
     const [barraProces,setBarraProces]=useState(0.18);
 
@@ -152,10 +152,9 @@ const InscripcionesScreen = ({ navigation }) =>
     }
     const procesoCompletado3= async ()=>{ 
         //curpFoto  actaFoto  certificadoBach  constanciaMedica
-        console.log(acta_N_Foto)
-        console.log(diploma_B_Foto)
         const formData = new FormData();
-        formData.append('multi-files', [acta_N_Foto, diploma_B_Foto]);
+        formData.append('multi-files', acta_N_Foto);
+        formData.append('multi-files', diploma_B_Foto);
         await api.putActaCertificado(formData);
         
         // setContinuar3(false);
@@ -226,32 +225,41 @@ const InscripcionesScreen = ({ navigation }) =>
             case 1:
                 if(camRef){
                     const data2 = await camRef.current.takePictureAsync();
-                    console.log(data2)
-                    await setAct_N_Foto(data2.uri);
+                    data2.name = 'acta.jpg';
+                    data2.type = 'image/jpg'
+                    await setAct_N_Foto(data2);
                     break;
                 }
             case 2:
                 if(camRef){
                     const data2 = await camRef.current.takePictureAsync();
-                    await setDiploma_B_Foto(data2.uri);
+                    data2.name = 'certificado.jpg';
+                    data2.type = 'image/jpg'
+                    await setDiploma_B_Foto(data2);
                     break;
                 }
             case 3:
                 if(camRef){
                     const data2 = await camRef.current.takePictureAsync();
-                    await setCurp_Foto(data2.uri);
+                    data2.name = 'curp.jpg';
+                    data2.type = 'image/jpg'
+                    await setCurp_Foto(data2);
                     break;
                 }
             case 4:
                 if(camRef){
                     const data2 = await camRef.current.takePictureAsync();
-                    await setEstudio_H_Foto(data2.uri);
+                    data2.name = 'constancia.jpg';
+                    data2.type = 'image/jpg'
+                    await setEstudio_H_Foto(data2);
                     break;
                 }
             case 5:
                 if(camRef){
                     const data2 = await camRef.current.takePictureAsync();
-                    await setPagoFoto(data2.uri);
+                    data2.name = 'pagoInscripciones.jpg';
+                    data2.type = 'image/jpg'
+                    await setPagoFoto(data2);
                     break;
                 }
         }

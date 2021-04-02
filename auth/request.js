@@ -143,7 +143,7 @@ const putActaCertificado = async (form) => {
         const data = await axios({
             method: 'PUT',
             url: `${config.BACKENDURL}/${config.DOCUMENTOS}`,
-            headers: { 'content-type': 'content type multipart/form-data' },
+            headers: { 'content-type': 'multipart/form-data' },
             data: form,
             params: {
                 id: _id,

@@ -102,7 +102,7 @@ const ComprobarPago = (props) => {
                 <View style={styles.containerFoto}>
                     <Surface>
                         <TouchableOpacity style={styles.imagenFoto} onPress={() => { }}>
-                            <Image style={styles.foto} source={{ uri:props.comprobantePagoFoto }} />
+                            <Image style={styles.foto} source={{ uri:props.comprobantePagoFoto ? props.comprobantePagoFoto.uri : null }} />
                         </TouchableOpacity>
                     </Surface>
                     <View style={{}}>
