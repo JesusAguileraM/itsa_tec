@@ -24,7 +24,7 @@ const getUserT = async () => {
     try{
             data = await axios({
             method: 'GET',
-            url: `${config.PRUEBAS}/${config.TEMPORARYUSERS}`,
+            url: `${config.BACKENDURL}/${config.TEMPORARYUSERS}`,
             headers: { 'content-type': 'application/json' },
         })
     }
@@ -152,12 +152,12 @@ const putActaCertificadoCurpConstancia = async (form) => {
         return data;
     }
     catch(error){
-        console.log('Error en putActaCertificado')
+        console.log('Error en putActaCertificadoCurpConstancia')
         console.log(error || "Error en putActaCertificado")
     }
 }
 
-const putDepositoBancario = async (form) => {
+const putFichaAportacionDepositoBancario = async (form) => {
     try{
         const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
         const { _id }= sesion[0];
@@ -168,14 +168,44 @@ const putDepositoBancario = async (form) => {
             data: form,
             params: {
                 id: _id,
+                procesado: true,
             }
         })
         return data;
     }
     catch(error){
-        console.log('Error en putActaCertificado')
+        console.log('Error en putFichaAportacionDepositoBancario')
         console.log(error || "Error en putActaCertificado")
     }
 }
 
-export {getUserT, postUserT, getTipoPagos, putInfoPersonal, getCarreras, getEstados, getMunicipios, putInfoEscolar, putActaCertificadoCurpConstancia, putDepositoBancario};
+const getDepositosAvailables = async () => {
+    try{
+        const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
+        const { _id }= sesion[0];
+        const data = await axios({
+            method: 'GET',
+            url: `${config.BACKENDURL}/${config.DEPOSITOS}/${_id}`,
+            headers: { 'content-type': 'application/json' },
+        })
+        return data;
+    }
+    catch(error){
+        console.log('Error en getDepositosAvailables')
+        console.log(error || "Error en getUserT")
+    }
+}
+
+export {
+    getUserT, 
+    postUserT, 
+    getTipoPagos, 
+    putInfoPersonal, 
+    getCarreras, 
+    getEstados, 
+    getMunicipios, 
+    putInfoEscolar, 
+    putActaCertificadoCurpConstancia, 
+    putFichaAportacionDepositoBancario, 
+    getDepositosAvailables
+};

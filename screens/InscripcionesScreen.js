@@ -72,26 +72,26 @@ const InscripcionesScreen = ({ navigation }) =>
     const [diploma_B_Foto, setDiploma_B_Foto] =useState(null);// constancia de bachillerato
     const [curp_Foto, setCurp_Foto] =useState(null); //curp
     const [estudio_H_Foto, setEstudio_H_Foto] =useState(null);//Estudio de sangre del hospital
-    const [pagoFoto, setPagoFoto] =useState(null);//Foto de recibo de pago de ficha para el tec
-
+    const [pagoFichaFoto, setPagoFichaFoto] =useState(null);//Foto de recibo de pago de ficha para el tec
+    const [pagoAportacionFoto, setPagoAportacionFoto] =useState(null);
 
     // const [{datos, loading, error}, refetch] = useAxios('/users');
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const [no_Documento, setNo_Documento] = useState(1);//Para saber que documento hago referencia
-    // const [continuar1,setContinuar1] = useState(true);
-    // const [continuar2,setContinuar2] = useState(false);
-    // const [continuar3,setContinuar3] = useState(false);
-    // const [continuar4,setContinuar4] = useState(false);
-    // const [continuar5,setContinuar5] = useState(false);
-    // const [continuar6,setContinuar6] = useState(false);
-    const [continuar1,setContinuar1] = useState(false);
+    const [continuar1,setContinuar1] = useState(true);
     const [continuar2,setContinuar2] = useState(false);
     const [continuar3,setContinuar3] = useState(false);
     const [continuar4,setContinuar4] = useState(false);
-    const [continuar5,setContinuar5] = useState(true);
+    const [continuar5,setContinuar5] = useState(false);
     const [continuar6,setContinuar6] = useState(false);
+    // const [continuar1,setContinuar1] = useState(false);
+    // const [continuar2,setContinuar2] = useState(false);
+    // const [continuar3,setContinuar3] = useState(false);
+    // const [continuar4,setContinuar4] = useState(true);
+    // const [continuar5,setContinuar5] = useState(false);
+    // const [continuar6,setContinuar6] = useState(false);
 
     const [barraProces,setBarraProces]=useState(0.18);
 
@@ -99,6 +99,7 @@ const InscripcionesScreen = ({ navigation }) =>
     const [listaCarreras, setListaCarreras] = useState([]);
     const [listaEstados, setListaEstados] = useState([]);
     const [listaMunicipios, setListaMunicipios] = useState([]);
+    const [depositos, setDepositos] = useState([]);
 
 
     const procesoCompletado1= async () =>{
@@ -168,6 +169,12 @@ const InscripcionesScreen = ({ navigation }) =>
         formData.append('multi-files', curp_Foto);
         formData.append('multi-files', estudio_H_Foto);
         await api.putActaCertificadoCurpConstancia(formData);
+        //nos traemos los pagos bancario para mandarlos al paso 5
+        const listaDepositos = await api.getDepositosAvailables();
+        //Cuando lista depositos sea null debemos impedir que continue o lanzar
+        //una vista indicando que la información está siendo evaluada
+        // console.log(listaDepositos.data.data)
+        setDepositos(listaDepositos.data.data);
         setContinuar4(false);   
         setContinuar5(true);
         setColorProgress('#00bb2d');
@@ -179,10 +186,11 @@ const InscripcionesScreen = ({ navigation }) =>
     const terminarProceso= async ()=>{//preguntarle a manuel como enviar esta funcion al componente de comprobar pago
         setLoading(true);
         const formData = new FormData();
-        formData.append('multi-files', pagoFoto);
-        await api.putDepositoBancario(formData);
-        setContinuar5(false);
-        setContinuar1(true);
+        formData.append('multi-files', pagoFichaFoto);
+        formData.append('multi-files', pagoAportacionFoto);
+        await api.putFichaAportacionDepositoBancario(formData);
+        // setContinuar5(false);
+        // setContinuar1(true);
         setLoading(false);
         setBarraProces(0);
     }
@@ -266,9 +274,17 @@ const InscripcionesScreen = ({ navigation }) =>
             case 5:
                 if(camRef){
                     const data2 = await camRef.current.takePictureAsync();
-                    data2.name = 'pagoInscripciones.jpg';
+                    data2.name = 'fichaInscripcion.jpg';
                     data2.type = 'image/jpg'
-                    await setPagoFoto(data2);
+                    await setPagoFichaFoto(data2);
+                    break;
+                }
+            case 6:
+                if(camRef){
+                    const data2 = await camRef.current.takePictureAsync();
+                    data2.name = 'aportacion.jpg';
+                    data2.type = 'image/jpg'
+                    await setPagoAportacionFoto(data2);
                     break;
                 }
         }
@@ -276,14 +292,14 @@ const InscripcionesScreen = ({ navigation }) =>
 
     const tomarFoto_Salir=async(Numero)=>{
 
-        if(Numero < 5){ 
+        if(Numero < 6){ 
             await tomarFoto(Numero);
             await setActivarCamara(true);
             setNo_Documento(no_Documento+1);
             
         }
         else{
-            setNo_Documento(no_Documento-4);
+            setNo_Documento(no_Documento-5);
             await tomarFoto(no_Documento);
             await setActivarCamara(true);
         }
@@ -780,83 +796,85 @@ const InscripcionesScreen = ({ navigation }) =>
             <Text style={{fontSize:20, color:"#05375a",marginBottom:10,marginTop:10}}>Proceso de Inscripcion</Text>
 
             <ScrollView>
-            <ProgressBar progress={barraProces} color={colorProgres} />
-            
-            { continuar1 ?  
-                <Steps.Step1 procesoCompletado1={procesoCompletado1}
-                    cumpleanos={cumpleanos}
-                    isDatePickerVisible={isDatePickerVisible}
-                    setSexo={setSexo} 
-                    data={data} 
-                    showDatePicker={showDatePicker}
-                    handleConfirm={handleConfirm} 
-                    hideDatePicker={hideDatePicker}
-                    textInputNameChange ={textInputNameChange}
-                    textInputApellidoPChange={textInputApellidoPChange}
-                    textInputApellidoMChange={textInputApellidoMChange}
-                    validarInputCurp={validarInputCurp}
-                    textInputTelChange={textInputTelChange}
-                    textInputTelChange2={textInputTelChange2}
-                />
-            : null }
+                <ProgressBar progress={barraProces} color={colorProgres} />
+                
+                { continuar1 ?  
+                    <Steps.Step1 procesoCompletado1={procesoCompletado1}
+                        cumpleanos={cumpleanos}
+                        isDatePickerVisible={isDatePickerVisible}
+                        setSexo={setSexo} 
+                        data={data} 
+                        showDatePicker={showDatePicker}
+                        handleConfirm={handleConfirm} 
+                        hideDatePicker={hideDatePicker}
+                        textInputNameChange ={textInputNameChange}
+                        textInputApellidoPChange={textInputApellidoPChange}
+                        textInputApellidoMChange={textInputApellidoMChange}
+                        validarInputCurp={validarInputCurp}
+                        textInputTelChange={textInputTelChange}
+                        textInputTelChange2={textInputTelChange2}
+                    />
+                : null }
 
-            { continuar2 ?  
-                <Steps.Step2 
-                    carreras={carreras}
-                    turno={turno}
-                    estado={estado}
-                    municipio={municipio}
-                    poblacion={poblacion}
-                    colonia={colonia}
-                    direccion={direccion}
-                    numero={numero}
-                    cp={cp}
-                    listaCarreras={listaCarreras}
-                    listaEstados={listaEstados}
-                    listaMunicipios={listaMunicipios}
-                    getMunicipios={getMunicipios}
-                    establecerCarreras={establecerCarreras}
-                    establecerTurno={establecerTurno}
-                    establecerEstado={establecerEstado}
-                    establecerMunicipio={establecerMunicipio}
-                    establecerPoblacion={establecerPoblacion}
-                    establecerColonia={establecerColonia}
-                    establecerDirecion={establecerDirecion}
-                    establecerNumeroC={establecerNumeroC}
-                    establecerCP={establecerCP}
-                    procesoCompletado2={procesoCompletado2}
-                    regresar_al_P1={regresar_al_P1}
-                />
-            : null }
+                { continuar2 ?  
+                    <Steps.Step2 
+                        carreras={carreras}
+                        turno={turno}
+                        estado={estado}
+                        municipio={municipio}
+                        poblacion={poblacion}
+                        colonia={colonia}
+                        direccion={direccion}
+                        numero={numero}
+                        cp={cp}
+                        listaCarreras={listaCarreras}
+                        listaEstados={listaEstados}
+                        listaMunicipios={listaMunicipios}
+                        getMunicipios={getMunicipios}
+                        establecerCarreras={establecerCarreras}
+                        establecerTurno={establecerTurno}
+                        establecerEstado={establecerEstado}
+                        establecerMunicipio={establecerMunicipio}
+                        establecerPoblacion={establecerPoblacion}
+                        establecerColonia={establecerColonia}
+                        establecerDirecion={establecerDirecion}
+                        establecerNumeroC={establecerNumeroC}
+                        establecerCP={establecerCP}
+                        procesoCompletado2={procesoCompletado2}
+                        regresar_al_P1={regresar_al_P1}
+                    />
+                : null }
 
-            { continuar3 ?  
-                <Steps.Step3 
-                    acta_N_Foto={acta_N_Foto}
-                    diploma_B_Foto={diploma_B_Foto}
-                    procesoCompletado3={procesoCompletado3}
-                    cambiarACamara={cambiarACamara}
-                    regresar_al_P2={regresar_al_P2}
-                />
-            : null }
+                { continuar3 ?  
+                    <Steps.Step3 
+                        acta_N_Foto={acta_N_Foto}
+                        diploma_B_Foto={diploma_B_Foto}
+                        procesoCompletado3={procesoCompletado3}
+                        cambiarACamara={cambiarACamara}
+                        regresar_al_P2={regresar_al_P2}
+                    />
+                : null }
 
-            { continuar4 ?  
-                <Steps.Step4 
-                    curp_Foto={curp_Foto}
-                    estudio_H_Foto={estudio_H_Foto}
-                    cambiarACamara={cambiarACamara}
-                    regresar_al_P3={regresar_al_P3}
-                    procesoCompletado4={procesoCompletado4}
-                />
-            : null }
+                { continuar4 ?  
+                    <Steps.Step4 
+                        curp_Foto={curp_Foto}
+                        estudio_H_Foto={estudio_H_Foto}
+                        cambiarACamara={cambiarACamara}
+                        regresar_al_P3={regresar_al_P3}
+                        procesoCompletado4={procesoCompletado4}
+                    />
+                : null }
 
-            { continuar5 ?  
-                <Steps.Step5 
-                    comprobantePagoFoto={pagoFoto}
-                    cambiarACamara={cambiarACamara}
-                    regresar_al_P4={regresar_al_P4}
-                    terminarProceso={terminarProceso}
-                />
-            : null }
+                { continuar5 ?  
+                    <Steps.Step5 
+                        comprobantePagoFichaFoto={pagoFichaFoto}
+                        comprobantePagoAportacionFoto={pagoAportacionFoto}
+                        depositos={depositos}
+                        cambiarACamara={cambiarACamara}
+                        regresar_al_P4={regresar_al_P4}
+                        terminarProceso={terminarProceso}
+                    />
+                : null }
             
             </ScrollView>
         </View>
