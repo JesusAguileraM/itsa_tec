@@ -164,7 +164,7 @@ const InscripcionesScreen = ({ navigation }) =>
         setBarraProces(0.72);
     }
     const procesoCompletado4= async ()=>{
-        setLoading(true);
+        // setLoading(true);
         const formData = new FormData();
         formData.append('multi-files', curp_Foto);
         formData.append('multi-files', estudio_H_Foto);
@@ -173,13 +173,16 @@ const InscripcionesScreen = ({ navigation }) =>
         const listaDepositos = await api.getDepositosAvailables();
         //Cuando lista depositos sea null debemos impedir que continue o lanzar
         //una vista indicando que la información está siendo evaluada
-        // console.log(listaDepositos.data.data)
-        setDepositos(listaDepositos.data.data);
-        setContinuar4(false);   
-        setContinuar5(true);
-        setColorProgress('#00bb2d');
+        if(listaDepositos.data.status !== 'notfound'){
+            setDepositos(listaDepositos.data.data);
+            setContinuar4(false);   
+            setContinuar5(true);
+            setColorProgress('#00bb2d');
+            setBarraProces(1);
+        } else {
+            alert('No puedes continuar ya que los datos no han sido validados');
+        }
         setLoading(false);
-        setBarraProces(1);
     }
     
     //se encarga de ejecutar el ultimo paso de inscripcion
