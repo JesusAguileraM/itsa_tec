@@ -299,42 +299,14 @@ const DepositosBancariosStackScreen = ({navigation}) => {
           name="CrearPagoScreen"
           component={CrearPagoScreen}
           options={{
-            title: 'Procedencia',
+            title: 'Nuevo Pago',
           }}
         />
         <DepositosBancariosStack.Screen 
           name="VisualizarPagoScreen"
           component={VisualizarPagoScreen}
           options={{
-            title: 'Datos generales',
-          }}
-        />
-        <DepositosBancariosStack.Screen 
-          name="ventana1"
-          component={CrearPagoScreen}
-          options={{
-            title: 'Datos Familiares',
-          }}
-        />
-        <DepositosBancariosStack.Screen 
-          name="ventana2"
-          component={CrearPagoScreen}
-          options={{
-            title: 'Situación Actual',
-          }}
-        />
-        <DepositosBancariosStack.Screen 
-          name="ventana3"
-          component={CrearPagoScreen}
-          options={{
-            title: 'Calificaciones',
-          }}
-        />
-        <DepositosBancariosStack.Screen 
-          name="Ventana4"
-          component={CrearPagoScreen}
-          options={{
-            title: 'Expedientes',
+            title: 'Datos del pago referido',
           }}
         />
     </DepositosBancariosStack.Navigator>

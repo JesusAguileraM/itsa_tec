@@ -1,25 +1,81 @@
     import React,{useState, useEffect} from 'react';
-    import {View, SafeAreaView, StyleSheet,ScrollView,TouchableOpacity,Alert} from 'react-native';
+    import {View, SafeAreaView, StyleSheet,ScrollView,TouchableOpacity,Alert,FlatList,StatusBar} from 'react-native';
     import {Avatar,Title,Caption,Text,DataTable,Divider,RadioButton } from 'react-native-paper';
     import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
     
     const DescargasScreen = ({navigation}) => {
-    
-        const funcionDescargarArchivo =()=>{
-            Alert.alert(
-                "Archivo descargando...",
-                "Es archivo es un pdf",
-                [
-                    {
-                        text: "Aceptar",
+
+        const [selectedId, setSelectedId] = useState(null);
+
+
+        const lista=[
+            {   id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+                nombreArchivo:"Manual SIIT del alumno",
+                descripcion:"Archivo PDF del manual del SIIT para el alumno",
+                nombreDocumentoPdf:"Descargar SIIT_MANUAL_ALU_REV1.PDF"
+            },
+            {   id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+                nombreArchivo:"Manual SIIT del alumno",
+                descripcion:"Archivo PDF del manual del SIIT para el alumno",
+                nombreDocumentoPdf:"Descargar SIIT_MANUAL_ALU_REV1.PDF"
+            },
+            {   id: "58694a0f-3da1-471f-bd96-145571e29d72",
+                nombreArchivo:"Manual SIIT del alumno",
+                descripcion:"Archivo PDF del manual del SIIT para el alumno",
+                nombreDocumentoPdf:"Descargar SIIT_MANUAL_ALU_REV1.PDF"
+            },
+            {   id: "58694a0f-3da1-471f-bd96-145571e29d12",
+                nombreArchivo:"4",
+                descripcion:"Archivo 4",
+                nombreDocumentoPdf:"Descargar SIIT_MANUAL_ALU_REV1.PDF"
+            },
+            
+        ];
+
+        const funcionDescargarArchivo =(id)=>{
+            setSelectedId(id)
+            // Alert.alert(
+            //     "Archivo descargando...",
+            //     "Es archivo es un pdf",
+            //     [
+            //         {
+            //             text: "Aceptar",
                         
-                    },
-                ],
-            );
+            //         },
+            //     ],
+            // );
         }
     
+        const Item = ({ item, onPress, backgroundColor, textColor }) => (
+        
+            <TouchableOpacity onPress={onPress}>
+                <DataTable.Row style={[backgroundColor]}>
+                    <DataTable.Cell style={[styles.containerCeldaTitulo2,backgroundColor]}><Text>{item.nombreArchivo}</Text></DataTable.Cell>
+                    <DataTable.Cell style={[styles.containerCeldaTitulo,backgroundColor]}><Text>{item.descripcion}</Text></DataTable.Cell>
+                    <DataTable.Cell style={[styles.containerCeldaTitulo,backgroundColor]}><Text style={{color:'#7c7bad'}}>{item.nombreDocumentoPdf}</Text></DataTable.Cell>
+                </DataTable.Row>   
+            </TouchableOpacity>
+        );
+
+
+        const renderItem = ({ item }) => {
+            const backgroundColor = item.id === selectedId ? "#eee" : "#fff";
+            const color = item.id === selectedId ? 'white' : 'black';
+        
+            return (
+                <Item
+                    item={item}
+                    onPress={() => funcionDescargarArchivo(item.id)}
+                    backgroundColor={{ backgroundColor }}
+                    textColor={{ color }}
+                />
+            );
+        };
+
+
         return (
             <SafeAreaView style={styles.container}>
+                <Text style={{fontSize:20,margin:10,fontWeight:'bold'}}>Descarga de documentos</Text>
                 <ScrollView>                
                     <View style={{flexDirection: 'row',marginTop:10}}>
                         <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={false} >
@@ -31,34 +87,17 @@
                                     <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:14}}>Archivo en Binario</Text></DataTable.Title>
                                 </DataTable.Header>
 
-                                <TouchableOpacity onPress={funcionDescargarArchivo}>
-                                    <DataTable.Row>
-                                        <DataTable.Cell style={styles.containerCeldaTitulo2}><Text>Manual SIIT del alumno</Text></DataTable.Cell>
-                                        <DataTable.Cell style={styles.containerCeldaTitulo}><Text>Archivo PDF del manual del SIIT para el alumno</Text></DataTable.Cell>
-                                        <DataTable.Cell style={styles.containerCeldaTitulo}><Text>Descargar "SIIT_MANUAL_ALU_REV1.pdf" -1694 kB-)</Text></DataTable.Cell>
-                                    </DataTable.Row>   
-                                </TouchableOpacity>
-
-                                <TouchableOpacity onPress={funcionDescargarArchivo}>
-                                    <DataTable.Row >
-                                        <DataTable.Cell style={styles.containerCeldaTitulo2}><Text>Contrato con el alumno</Text></DataTable.Cell>
-                                        <DataTable.Cell style={styles.containerCeldaTitulo}><Text>Contrato que el alumno deberá firmar antes de ingresar al ITSA</Text></DataTable.Cell>
-                                        <DataTable.Cell style={styles.containerCeldaTitulo}><Text>Descargar "CONTRATO_CON_ALUMNO.pdf" -104 kB-</Text></DataTable.Cell>
-                                    </DataTable.Row>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity onPress={funcionDescargarArchivo}>
-                                    <DataTable.Row >
-                                        <DataTable.Cell style={styles.containerCeldaTitulo2}><Text>Manual SIIT del alumno</Text></DataTable.Cell>
-                                        <DataTable.Cell style={styles.containerCeldaTitulo}><Text>Archivo en formato pdf, que contiene las instrucciones básicas de acceso y manejo de la información del alumno</Text></DataTable.Cell>
-                                        <DataTable.Cell style={styles.containerCeldaTitulo}><Text></Text></DataTable.Cell>
-                                    </DataTable.Row>
-                                </TouchableOpacity>
-                                    
+                                <FlatList
+                                    data={lista}
+                                    renderItem={renderItem}
+                                    keyExtractor={(item) => item.id}
+                                    extraData={selectedId}
+                                />
                             </DataTable>
                         </ScrollView>
                     </View>
                 </ScrollView>
+
             </SafeAreaView>
         );
     };

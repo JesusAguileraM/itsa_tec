@@ -109,9 +109,9 @@ const App = () => {
       <AuthContext.Provider value={authContext}>
         <NavigationContainer >        
               {true ? (
-                <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent {...props} />} >
-                  <DrawerUserLogged.Screen name="UsuarioLogueado" component={MainTabScreen} />
-                </DrawerUserLogged.Navigator>
+                  <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent2 {...props} />} >
+                  <DrawerUserLogged.Screen name="UsuarioInscripto" component={MainTabScreen2} />
+                  </DrawerUserLogged.Navigator>
               ): null}
         </NavigationContainer>
       </AuthContext.Provider>

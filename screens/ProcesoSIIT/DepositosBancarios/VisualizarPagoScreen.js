@@ -35,7 +35,7 @@ const VisualizarPagoScreen = ({navigation}) => {
                     />
                 
                     <View style={{marginLeft: 50,marginTop:25}}>
-                        <Title style={styles.titulo}>Numero de Control:</Title>
+                        <Title style={styles.titulo}>Numero de Control amka:</Title>
                         <Title style={styles.titulo}>{Alumno.NumeroControl}</Title>
                         <Caption>Referencia a ficha</Caption>
                     </View>

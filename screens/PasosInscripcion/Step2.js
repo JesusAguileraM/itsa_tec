@@ -39,8 +39,8 @@ const InformacionEscolar = (props) => {
                                 })
                             }
                         >
-                                    <Text style={{height:40,textAlignVertical:'center',color:'#fff'}}>Seleccione</Text>
-                                </RNPickerSelect>
+                            <Text style={{height:40,textAlignVertical:'center',color:'#fff'}}>Seleccione</Text>
+                        </RNPickerSelect>
                         </View>
 
                         <View style={{height:60,width:25,alignItems:'flex-end',justifyContent:'center'}}>
@@ -453,29 +453,3 @@ const stylesPrivados = StyleSheet.create({
     }
 });
 
-// const styles2 = StyleSheet.create({
-//     button: {
-//         alignItems: "center",
-//         marginTop: 50,
-//     },
-//     signIn: {
-//         width: "95%",
-//         height: 50,
-//         justifyContent: "center",
-//         alignItems: "center",
-//         borderRadius: 10,
-//         marginLeft:5
-//     },
-//     textSign: {
-//         fontSize: 18,
-//         fontWeight: "bold",
-//     },
-//     textPrivate: {
-//         flexDirection: "row",
-//         flexWrap: "wrap",
-//         marginTop: 20,
-//     },
-//     color_textPrivate: {
-//         color: "grey",
-//     },
-// });
