@@ -16,7 +16,7 @@ const ConstanciaMedicaCURP = (props) => {
                     >
                         <Image 
                         style={styles.foto}
-                        source={{uri:props.curp_Foto}}
+                        source={{uri:props.curp_Foto ? props.curp_Foto.uri : null}}
                     />
                     </TouchableOpacity>
                 </Surface>
@@ -59,7 +59,7 @@ const ConstanciaMedicaCURP = (props) => {
                     >
                         <Image 
                         style={styles.foto}
-                        source={{uri:props.estudio_H_Foto}}  
+                        source={{uri:props.estudio_H_Foto ? props.estudio_H_Foto.uri : null}}  
                     />
                     </TouchableOpacity>
                 </Surface>

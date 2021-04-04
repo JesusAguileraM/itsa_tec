@@ -1,29 +1,137 @@
 import React, { useState, useEffect, useRef } from "react";
-import {View,Text,Button,StyleSheet,Dimensions,TouchableOpacity,SafeAreaView,ScrollView,Image,StatusBar,TextInput,Platform,} from "react-native";
+import {View,Text,Button,StyleSheet,Dimensions,TouchableOpacity,SafeAreaView,ScrollView,Image, FlatList, StatusBar,TextInput,Platform,} from "react-native";
 import {Divider,Surface,Portal,Dialog,Paragraph,DataTable,Avatar,Title,Caption,} from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+const Item = (props) => (
+    <View>
+        <View style={{flex:0.8}}>
+            <ScrollView style={{backgroundColor:'#fff'}}>                
+                <View style={{flexDirection: 'row', backgroundColor:'#fff'}}>
+                    <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={false} >
+                        <DataTable>
+                            <DataTable.Header>
+                                <DataTable.Title>Depósito bancario {props.index + 1}</DataTable.Title>
+                            </DataTable.Header>
 
+                            <DataTable.Row >
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Fecha</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{props.fecha}</DataTable.Cell>
+                            </DataTable.Row>
+                            <DataTable.Row >
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Nombre de alumno</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{props.usuario}</DataTable.Cell>
+                            </DataTable.Row>
+                            <DataTable.Row >
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Referencia Bancaria</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{props.referenciaBancaria}</DataTable.Cell>
+                            </DataTable.Row>
+                        </DataTable>
+                        <Divider/>
+                    </ScrollView>
+                </View>
+            </ScrollView>
+        </View>
+        
+        <View style={{flex:0.8,marginTop:10}}>
+            <ScrollView style={{backgroundColor:'#fff'}}>                
+                <View style={{flexDirection: 'row', backgroundColor:'#fff'}}>
+                    <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={false} >
+                        <DataTable>
+                            <DataTable.Header>
+                                <DataTable.Title style={styles.containerCeldaTitulo2}>#</DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTituloEspecial}>DESCRIPCIÓN</DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo2}>CANTIDAD</DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo2}>COSTO</DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo2}>IMPORTE</DataTable.Title>
+                            </DataTable.Header>
 
+                            <DataTable.Row >
+                                <DataTable.Cell style={styles.containerCelda2}>1</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaEspecial}> {props.concepto} </DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda2}>{props.cantidad}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda2}>{props.costo}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda2}>{props.importe}</DataTable.Cell>
+                            </DataTable.Row>
+                        </DataTable>
+                        <Divider/>
+                    </ScrollView>
+                </View>
+            </ScrollView>
+        </View>
 
+        <View style={{alignItems: "center"}}>
+            <Text style={{fontSize: 18,color: "#05375a",marginBottom: 10,marginTop: 10,fontWeight:'bold'}}>
+                Pago de ficha
+            </Text>
+            <View style={styles.containerFoto}>
+                <Surface>
+                    <TouchableOpacity style={styles.imagenFoto} onPress={() => { }}>
+                        <Image style={styles.foto} 
+                            source={{ 
+                                uri: (props.index === 0) 
+                                    ? 
+                                        props.comprobantePagoFichaFoto ? 
+                                        props.comprobantePagoFichaFoto.uri : null 
+                                    : 
+                                        props.comprobantePagoAportacionFoto ? 
+                                        props.comprobantePagoAportacionFoto.uri : null
+                            }}    
+                        />
+                    </TouchableOpacity>
+                </Surface>
+                <View style={{}}>
+                    <SafeAreaView style={{ width: Dimensions.get("window").width / 2 }}>
+                        <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                            Rebibo de Pago del banco
+                        </Text>
+                        <Divider />
+                        <Divider />
+                        <Text>
+                            - Asegurate que este iluminado la zona donde se tomara la foto.
+                        </Text>
+                        <Text>- Asegurarse sea legible.</Text>
+                    </SafeAreaView>
+                    <TouchableOpacity style={styles.button} onPress={() => {props.cambiarACamara((props.index+5), false)}}>
+                    <View style={{ justifyContent: "center" }}>
+                        <Text style={styles.textC}>Tomar foto</Text>
+                    </View>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </View>
+    </View>
+);
 
 const ComprobarPago = (props) => {
     
-    const [visible, setVisible] = useState(false);
-    const showDialog = () => setVisible(true);
-    const hideDialog = () => { 
-        setVisible(false);
-        props.terminarProceso();
-    };
+    // const [visible, setVisible] = useState(false);
+    // const showDialog = async () => {
+    //     await props.terminarProceso();
+    //     setVisible(true)
+    // };
+    // const hideDialog = () => { 
+    //     setVisible(false);
+    // };
 
-    useEffect(() => {
+    const finalizarProcesoInscripcion = async () => {
+        await props.terminarProceso();
+        alert('Proceso terminado con exito')
+    }
 
-    }, []);
+    const renderItem = (data) => {
+        // console.log(data)
+        return <Item 
+            {...data.item} 
+            {...props} 
+            index={data.index}
+        />
+    }
 
-
+    // style={{ marginTop: 20, alignItems: "flex-start" }}
     return (
-        <View style={{ marginTop: 20, alignItems: "flex-start" }}>
+        <SafeAreaView >
             <View style={styles.userInfoSection}>
                 <Image style={{width:50,height:20,resizeMode:'contain'}}source={{ uri:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/BBVA_2019.svg/1280px-BBVA_2019.svg.png" }} />     
                 <View style={{alignItems:'flex-start' ,flexDirection: 'row', marginTop: 18}}>    
@@ -39,95 +147,19 @@ const ComprobarPago = (props) => {
                 </View>
             </View>
 
+            <ScrollView horizontal={true}>
+                <FlatList
+                    data={props.depositos}
+                    renderItem={renderItem}
+                    keyExtractor={data => data._id}
+                />
+            </ScrollView>                    
 
-
-            <View style={{flex:0.8}}>
-                <ScrollView style={{backgroundColor:'#fff'}}>                
-                    <View style={{flexDirection: 'row', backgroundColor:'#fff'}}>
-                        <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={false} >
-                            <DataTable>
-                                <DataTable.Header>
-                                    <DataTable.Title>FICHA DE DEPOSITO</DataTable.Title>
-                                </DataTable.Header>
-
-                                <DataTable.Row >
-                                    <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Fecha</Text></DataTable.Cell>
-                                    <DataTable.Cell style={styles.containerCelda}>05/05/1996</DataTable.Cell>
-                                </DataTable.Row>
-                                <DataTable.Row >
-                                    <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Nombre de alumno</Text></DataTable.Cell>
-                                    <DataTable.Cell style={styles.containerCelda}>Jesus Alejandro Aguilera Magana</DataTable.Cell>
-                                </DataTable.Row>
-                                <DataTable.Row >
-                                    <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Referencia Bancaria</Text></DataTable.Cell>
-                                    <DataTable.Cell style={styles.containerCelda}>A15020357F210193830649279</DataTable.Cell>
-                                </DataTable.Row>
-                            </DataTable>
-                            <Divider/>
-                        </ScrollView>
-                    </View>
-                </ScrollView>
-            </View>
-            <View style={{flex:0.8,marginTop:10}}>
-                <ScrollView style={{backgroundColor:'#fff'}}>                
-                    <View style={{flexDirection: 'row', backgroundColor:'#fff'}}>
-                        <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={false} >
-                            <DataTable>
-                                <DataTable.Header>
-                                    <DataTable.Title style={styles.containerCeldaTitulo2}>#</DataTable.Title>
-                                    <DataTable.Title style={styles.containerCeldaTituloEspecial}>DESCRIPCIÓN</DataTable.Title>
-                                    <DataTable.Title style={styles.containerCeldaTitulo2}>CANTIDAD</DataTable.Title>
-                                    <DataTable.Title style={styles.containerCeldaTitulo2}>COSTO</DataTable.Title>
-                                    <DataTable.Title style={styles.containerCeldaTitulo2}>IMPORTE</DataTable.Title>
-                                </DataTable.Header>
-
-                                <DataTable.Row >
-                                    <DataTable.Cell style={styles.containerCelda2}>1</DataTable.Cell>
-                                    <DataTable.Cell style={styles.containerCeldaEspecial}>  Ficha de pago </DataTable.Cell>
-                                    <DataTable.Cell style={styles.containerCelda2}>1</DataTable.Cell>
-                                    <DataTable.Cell style={styles.containerCelda2}>920.00</DataTable.Cell>
-                                    <DataTable.Cell style={styles.containerCelda2}>920.00</DataTable.Cell>
-                                </DataTable.Row>
-                            </DataTable>
-                            <Divider/>
-                        </ScrollView>
-                    </View>
-                </ScrollView>
-            </View>
-
-            <View style={{alignItems: "center"}}>
-                <Text style={{fontSize: 18,color: "#05375a",marginBottom: 10,marginTop: 10,fontWeight:'bold'}}>
-                    Pago de ficha
-                </Text>
-                <View style={styles.containerFoto}>
-                    <Surface>
-                        <TouchableOpacity style={styles.imagenFoto} onPress={() => { }}>
-                            <Image style={styles.foto} source={{ uri:props.comprobantePagoFoto }} />
-                        </TouchableOpacity>
-                    </Surface>
-                    <View style={{}}>
-                        <SafeAreaView style={{ width: Dimensions.get("window").width / 2 }}>
-                            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-                                Rebibo de Pago del banco
-                            </Text>
-                            <Divider />
-                            <Divider />
-                            <Text>
-                                - Asegurate que este iluminado la zona donde se tomara la foto.
-                            </Text>
-                            <Text>- Asegurarse sea legible.</Text>
-                        </SafeAreaView>
-                        <TouchableOpacity style={styles.button} onPress={() => {props.cambiarACamara(5, false)}}>
-                        <View style={{ justifyContent: "center" }}>
-                            <Text style={styles.textC}>Tomar foto</Text>
-                        </View>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+            <View >
                 <View style={styles2.button}>
                     <TouchableOpacity
                     style={styles2.signIn}
-                    onPress={() => {showDialog();}}>
+                    onPress={finalizarProcesoInscripcion}>
                     <LinearGradient
                     colors={["#05375a", "#2096BA"]}
                     style={styles2.signIn}
@@ -159,23 +191,25 @@ const ComprobarPago = (props) => {
                         453-534-8300{" "}
                     </Text>
                 </View>
+                {/* <Portal>
+                    <Dialog visible={visible} onDismiss={hideDialog}>
+                        <Dialog.Title>! Has completado el registro ¡</Dialog.Title>
+                        <Dialog.Content>
+                            <Paragraph>
+                                Revisa tú correo, dentro de las siguiente 24 horas te
+                                enviaremos una cuenta institucional para que puedas iniciar
+                                sesión.
+                            </Paragraph>
+                        </Dialog.Content>
+                        <Dialog.Actions>
+                            <Button mode="text" color="#2096BA" onPress={hideDialog} title='Aceptar'></Button>
+                        </Dialog.Actions>
+                    </Dialog>
+                </Portal> */}
             </View>
-            <Portal>
-                <Dialog visible={visible} onDismiss={hideDialog}>
-                    <Dialog.Title>! Has completado el registro ¡</Dialog.Title>
-                    <Dialog.Content>
-                        <Paragraph>
-                            Revisa tú correo, dentro de las siguiente 24 horas te
-                            enviaremos una cuenta institucional para que puedas iniciar
-                            sesión.
-                        </Paragraph>
-                    </Dialog.Content>
-                    <Dialog.Actions>
-                        <Button mode="text" color="#2096BA" onPress={hideDialog} title='Aceptar'></Button>
-                    </Dialog.Actions>
-                </Dialog>
-            </Portal>
-        </View>
+
+            
+        </SafeAreaView> 
     );
 };
 
@@ -282,6 +316,7 @@ const styles = StyleSheet.create({
 
 const styles2 = StyleSheet.create({
     button: {
+        justifyContent: "center",
         alignItems: "center",
         marginTop: 50,
     },
@@ -306,3 +341,4 @@ const styles2 = StyleSheet.create({
         color: "grey",
     },
 });
+

@@ -16,7 +16,7 @@ const ActaCertificadoBach = (props) => {
                     >
                         <Image 
                         style={styles.foto}
-                        source={{uri:props.acta_N_Foto}}
+                        source={{uri: props.acta_N_Foto ? props.acta_N_Foto.uri : null}}
                     />
                     </TouchableOpacity>
                 </Surface>
@@ -58,7 +58,7 @@ const ActaCertificadoBach = (props) => {
                     >
                         <Image 
                         style={styles.foto}
-                        source={{uri:props.diploma_B_Foto}}
+                        source={{uri:props.diploma_B_Foto ? props.diploma_B_Foto.uri : null}}
                     />
                     </TouchableOpacity>
                 </Surface>
