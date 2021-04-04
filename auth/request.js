@@ -1,7 +1,8 @@
 import * as crudToken from "../database/crudToken";
 import * as config from './config';
 import axios from 'axios';
-
+import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
 
 //User temporary
 const postUserT = async (form) => {
@@ -196,6 +197,49 @@ const getDepositosAvailables = async () => {
     }
 }
 
+const getUserDescargas = async () => {
+    try{
+        const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
+        const { _id }= sesion[0];
+        const data = await axios({
+            method: 'GET',
+            url: `${config.BACKENDURL}/${config.DESCARGAS}/${_id}`,
+            headers: { 'content-type': 'application/json' },
+        })
+        return data;
+    }
+    catch(error){
+        console.log('Error en getUserDescargas')
+        console.log(error || "Error en getUserDescargas")
+    }
+}
+
+const getArchivos = async (fileName) => {
+    try{
+        const downloadResumable = FileSystem.createDownloadResumable(
+            `${config.ARCHIVOS}/${fileName}`,
+            FileSystem.documentDirectory + fileName,
+        );
+        
+        const { uri } = await downloadResumable.downloadAsync();
+        console.log('Finished downloading to ', uri);
+     
+        const asset = await MediaLibrary.createAssetAsync(uri);
+        const album = await MediaLibrary.getAlbumAsync('Download');
+        if (album === null) {
+            await MediaLibrary.createAlbumAsync('Download', asset, false);
+        } else {
+            await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
+        }
+
+        return uri;
+    }
+    catch(error){
+        console.log('Error en getArchivos')
+        console.log(error || "Error en getArchivos")
+    }
+}
+
 export {
     getUserT, 
     postUserT, 
@@ -207,5 +251,7 @@ export {
     putInfoEscolar, 
     putActaCertificadoCurpConstancia, 
     putFichaAportacionDepositoBancario, 
-    getDepositosAvailables
+    getDepositosAvailables,
+    getUserDescargas,
+    getArchivos,
 };

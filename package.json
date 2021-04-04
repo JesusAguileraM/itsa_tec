@@ -48,7 +48,9 @@
     "react-native-share": "^5.1.1",
     "react-native-swipe-list-view": "^3.2.6",
     "react-native-vector-icons": "^8.0.0",
-    "react-native-web": "~0.13.12"
+    "react-native-web": "~0.13.12",
+    "expo-file-system": "~9.3.0",
+    "expo-media-library": "~10.0.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"
