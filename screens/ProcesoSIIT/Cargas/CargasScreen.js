@@ -114,10 +114,10 @@ import React,{useState, useEffect} from 'react';
                 <Text style={{fontSize:20,margin:10,fontWeight:'bold'}}>Cargas Académicas</Text>
                 <ScrollView>                
                     <View style={{flexDirection: 'row',marginTop:10}}>
-                        <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={false} >
+                        <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={true} >
                             <DataTable>
 
-                                <DataTable.Header>
+                                <DataTable.Header style={{backgroundColor:'#e6e6e6'}}>
                                     <DataTable.Title style={styles.containerCeldaTitulo2}><Text style={{fontWeight:'bold',fontSize:14}}>Alumno</Text></DataTable.Title>
                                     <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:14}}>Periodo</Text></DataTable.Title>
                                     <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:14}}>Carrera</Text></DataTable.Title>
@@ -156,11 +156,13 @@ import React,{useState, useEffect} from 'react';
             marginRight:20,
             justifyContent:'flex-start',
             width:80,
+            backgroundColor:'#e6e6e6'
         },
         containerCeldaTitulo2:{
             marginRight:20,
             justifyContent:'flex-start',
             width:80,
+            backgroundColor:'#e6e6e6'
         },
         containerCelda:{
             marginRight:20,

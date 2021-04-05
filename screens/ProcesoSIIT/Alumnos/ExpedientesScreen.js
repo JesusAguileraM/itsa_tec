@@ -23,11 +23,11 @@ const ExpedientesScreen = ({navigation}) => {
         <SafeAreaView style={styles.container}>
             <ScrollView>                
                 <View style={{flexDirection: 'row'}}>
-                    <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={false} >
+                    <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={true} >
                         <DataTable>
-                            <DataTable.Header>
-                                <DataTable.Title>Expediente del Alumno</DataTable.Title>
-                                <DataTable.Title>Liberado</DataTable.Title>
+                            <DataTable.Header style={{backgroundColor:'#e6e6e6'}}>
+                                <DataTable.Title style={{backgroundColor:'#e6e6e6'}}><Text style={{color:'#000'}}>Expediente del Alumno</Text> </DataTable.Title>
+                                <DataTable.Title style={{backgroundColor:'#e6e6e6'}}><Text style={{color:'#000'}}>Liberado</Text>  </DataTable.Title>
                             </DataTable.Header>
 
                             <DataTable.Row >

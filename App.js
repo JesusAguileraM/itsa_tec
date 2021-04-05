@@ -104,7 +104,7 @@ const App = () => {
     );
   }
 
-  // return (
+  //return (
   //   <PaperProvider theme={theme}>
   //     <AuthContext.Provider value={authContext}>
   //       <NavigationContainer >        
