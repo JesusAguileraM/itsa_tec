@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/Ionicons";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -8,21 +8,17 @@ import {Avatar,Title,Caption,Surface} from 'react-native-paper';
 import NotificationScreen from  "../NotificationScreen";
 import HomeScreen from "../HomeScreen";
 import AlumnoScreen from '../ProcesoSIIT/Alumnos/AlumnoScreen';
-    import Procedencia from '../ProcesoSIIT/Alumnos/ProcedenciaScreen';
-    import DatosGenerales from '../ProcesoSIIT/Alumnos/DatosGeneralesScreen';
-    import DatosFamiliares from '../ProcesoSIIT/Alumnos/DatosFamiliaresScreen';
-    import SituacionActual from '../ProcesoSIIT/Alumnos/SituacionActualScreen';
-    import Calificaciones from '../ProcesoSIIT/Alumnos/CalificacionesScreen';
-    import Expedientes from '../ProcesoSIIT/Alumnos/ExpedientesScreen';
+import Procedencia from '../ProcesoSIIT/Alumnos/ProcedenciaScreen';
+import DatosGenerales from '../ProcesoSIIT/Alumnos/DatosGeneralesScreen';
+import DatosFamiliares from '../ProcesoSIIT/Alumnos/DatosFamiliaresScreen';
+import SituacionActual from '../ProcesoSIIT/Alumnos/SituacionActualScreen';
+import Calificaciones from '../ProcesoSIIT/Alumnos/CalificacionesScreen';
+import Expedientes from '../ProcesoSIIT/Alumnos/ExpedientesScreen';
 import CargasScreen from '../ProcesoSIIT/Cargas/CargasScreen';
 import DescargasScreen from '../ProcesoSIIT/Descargas/DescargasScreen';
 import DepositosScreen from '../ProcesoSIIT/DepositosBancarios/DepositosScreen';
-    import VisualizarPagoScreen from '../ProcesoSIIT/DepositosBancarios/VisualizarPagoScreen';
-    import CrearPagoScreen from '../ProcesoSIIT/DepositosBancarios/CrearPagoScreen';
-
-    
-import SingleStorage from '../../database/singleStorage';
-
+import VisualizarPagoScreen from '../ProcesoSIIT/DepositosBancarios/VisualizarPagoScreen';
+import CrearPagoScreen from '../ProcesoSIIT/DepositosBancarios/CrearPagoScreen';
 
 const HomeStack = createStackNavigator();
 const AlumnoStack = createStackNavigator();
@@ -140,7 +136,6 @@ const HomeStackScreen = ({ navigation }) => (
   </HomeStack.Navigator>
 );
 
-
 const NotificationStackScreen = ({navigation}) => (
   <NotificationStack.Navigator
     screenOptions={{
@@ -168,8 +163,6 @@ const NotificationStackScreen = ({navigation}) => (
     />
   </NotificationStack.Navigator>
 );
-
-
 
 const AlumnoStackScreen = ({navigation}) => {
   
@@ -312,7 +305,6 @@ const DepositosBancariosStackScreen = ({navigation}) => {
     </DepositosBancariosStack.Navigator>
   );
 };
-
 
 const DescargasStackScreen = ({ navigation }) => (
   <DescargasStack.Navigator

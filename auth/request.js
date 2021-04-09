@@ -186,7 +186,7 @@ const getDepositosAvailables = async () => {
         const { _id }= sesion[0];
         const data = await axios({
             method: 'GET',
-            url: `${config.BACKENDURL}/${config.DEPOSITOS}/${_id}`,
+            url: `${config.BACKENDURL}/${config.DEPOSITOSNOPROCESADOS}/${_id}`,
             headers: { 'content-type': 'application/json' },
         })
         return data;
@@ -214,6 +214,9 @@ const getUserDescargas = async () => {
     }
 }
 
+//no lo usamos pero por si lo requieres, no nos funciona porque el equipo de expo
+// aun no lo arregla para poder guardar achivos que no sean imagenes en el almacenamiento local
+// este solo funciona para archivos multimedia.
 const getArchivos = async (fileName) => {
     try{
         const downloadResumable = FileSystem.createDownloadResumable(
@@ -237,6 +240,23 @@ const getArchivos = async (fileName) => {
     catch(error){
         console.log('Error en getArchivos')
         console.log(error || "Error en getArchivos")
+    }
+}
+
+const getUser = async () => {
+    try{
+        const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
+        const { _id }= sesion[0];
+        const data = await axios({
+            method: 'GET',
+            url: `${config.BACKENDURL}/${config.USERS}/${_id}`,
+            headers: { 'content-type': 'application/json' },
+        })
+        return data;
+    }
+    catch(error){
+        console.log('Error en getDepositosAvailables')
+        console.log(error || "Error en getUserT")
     }
 }
 

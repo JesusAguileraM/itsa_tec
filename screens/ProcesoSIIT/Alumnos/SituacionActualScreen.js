@@ -2,23 +2,18 @@ import React,{useState, useEffect} from 'react';
 import {View, SafeAreaView, StyleSheet,ScrollView} from 'react-native';
 import {Avatar,Title,Caption,Text,DataTable,Divider,RadioButton } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as crudToken from '../../../database/crudToken';
 
 const SituacionActualScreen = ({navigation}) => {
 
-      const [Alumno, setAlumno] = React.useState({
-        semestre:12,
-        grupo: "A",
-        cargaMaxima: 0,
-        creditosAprobados:250,
-        promedioReprobadas:88.13,
-        motivoBaja:"Indefinido",
-        turno:"Matutino",
-        cargaMinima:0,
-        periodosMax: 0,
-        promedioNoReprob:88.13,
-        Inscrito:true,
-        fechaBaja:"",
-    });
+    const [alumno, setAlumno] = useState([]);
+    
+    useEffect(() => {
+        (async () => {
+            const data = await crudToken.ObtenerInfoPersonalInscripcion();
+            setAlumno(data[0].situacionActual);
+        })()
+    }, []);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -32,27 +27,27 @@ const SituacionActualScreen = ({navigation}) => {
 
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Semestre</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.semestre}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.semestre}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Grupo</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.grupo}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.grupo}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Carga Maxima</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.cargaMaxima}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.cargaMaxima}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Creditos aprobados</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.creditosAprobados}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.creditosAprobados}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Promedio con reprobadas</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.promedioReprobadas}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.promedioConReprobadas}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Motivo de Baja</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.motivoBaja}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{(alumno.motivoBaja) ? alumno.motivoBaja : "Aún sin baja"}</DataTable.Cell>
                             </DataTable.Row>
 
                             <Divider/>
@@ -62,21 +57,21 @@ const SituacionActualScreen = ({navigation}) => {
 
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Turno</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.turno}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.turno}</DataTable.Cell>
                             </DataTable.Row>
 
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Carga Minima</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.cargaMinima}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.cargaMinima}</DataTable.Cell>
                             </DataTable.Row>
                             
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Periodos Maximos</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.periodosMax}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.periodosMaximos}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Promedio sin reprobadas</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.promedioNoReprob}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.promedioSinReprobadas}</DataTable.Cell>
                             </DataTable.Row>
 
                             <DataTable.Row >
@@ -84,7 +79,7 @@ const SituacionActualScreen = ({navigation}) => {
                                 <DataTable.Cell style={styles.containerCelda}>
                                     <RadioButton
                                         value="first"
-                                        status={ Alumno.Inscrito === true ? 'checked' : 'unchecked' }
+                                        status={ alumno.inscrito === true ? 'checked' : 'unchecked' }
                                         // onPress={() => setChecked('first')}
                                       />
                                 </DataTable.Cell>
@@ -92,7 +87,7 @@ const SituacionActualScreen = ({navigation}) => {
 
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Fecha de baja definitiva</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.telefonoMadre}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{(alumno.fechaBajaDefinitiva) ? alumno.fechaBajaDefinitiva : "Aún no"}</DataTable.Cell>
                             </DataTable.Row>
 
                         </DataTable>

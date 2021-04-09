@@ -100,10 +100,9 @@ const useGoogleLogin = async (expoPushToken)=>  {
             await Firebase.auth()
             .signInWithCredential(credential) //Login to Firebase
             .then( async sesion => {
-                // console.log('Guardamos token')
                 await crudToken.useGuardarToken(token);
                 const profile = sesion.additionalUserInfo.profile;
-                // console.log('Guardamos seGuardarSesion')
+                // Este profile lo guadamos para usarlo en la app la foto y el nombre de usuario
                 await crudToken.useGuardarSesion(profile);
                 const obj = { 
                     "usuario": profile.name,

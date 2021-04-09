@@ -2,15 +2,20 @@ import React,{useState, useEffect} from 'react';
 import {View, SafeAreaView, StyleSheet,ScrollView} from 'react-native';
 import {Avatar,Title,Caption,Text,DataTable,Divider} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as crudToken from '../../../database/crudToken';
 
 const ProcedenciaScreen = ({navigation}) => {
 
-    const [Alumno, setAlumno] = React.useState({
-        bachillerato:"BACHILLERES AGUILILLA",
-        anoEngreso:"2015",
-        especialidad:"FÍSICO-MATEMÁTICAS",
-        promedio:"85,00",
-    });
+    const [alumno, setAlumno] = useState([]);
+    
+    useEffect(() => {
+        (async () => {
+            const data = await crudToken.ObtenerInfoPersonalInscripcion();
+            setAlumno(data[0].procedencia);
+        })()
+    }, []);
+
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>                
@@ -23,19 +28,19 @@ const ProcedenciaScreen = ({navigation}) => {
 
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Bachillerato</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.bachillerato}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.bachillerato}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Año de Egreso</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.anoEngreso}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.anioEgreso}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Especialidad del bachillerato</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.especialidad}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.especialidad}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Promedio</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.promedio}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.promedio}</DataTable.Cell>
                             </DataTable.Row>
                         </DataTable>
                     </ScrollView>
