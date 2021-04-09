@@ -33,51 +33,51 @@ const CalificacionesScreen = ({navigation}) => {
         <SafeAreaView style={styles.container}>
             <ScrollView>                
                 <View style={{flexDirection: 'row'}}>
-                    <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={false} >
+                    <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={true} >
                         <DataTable>
-                            <DataTable.Header>
-                                <DataTable.Title style={styles.containerCeldaTitulo}>Periodo</DataTable.Title>
-                                <DataTable.Title style={styles.containerCeldaTitulo}>Clave Mat</DataTable.Title>
-                                <DataTable.Title style={styles.containerCeldaTitulo}>Desc.Materia</DataTable.Title>
-                                <DataTable.Title style={styles.containerCeldaTitulo}>Unidades</DataTable.Title>
-                                <DataTable.Title style={styles.containerCeldaTitulo}>Estado</DataTable.Title>
-                                <DataTable.Title style={styles.containerCeldaTitulo}>Unid I</DataTable.Title>
-                                <DataTable.Title style={styles.containerCeldaTitulo}>Unid II</DataTable.Title>
-                                <DataTable.Title style={styles.containerCeldaTitulo}>Unid III</DataTable.Title>
-                                <DataTable.Title style={styles.containerCeldaTitulo}>Unid IV</DataTable.Title>
-                                <DataTable.Title style={styles.containerCeldaTitulo}>Unid V</DataTable.Title>
-                                <DataTable.Title style={styles.containerCeldaTitulo}>Unid VI</DataTable.Title>
-                                <DataTable.Title style={styles.containerCeldaTitulo}>Unid VII</DataTable.Title>
-                                <DataTable.Title style={styles.containerCeldaTitulo}>Unid VIII</DataTable.Title>
-                                <DataTable.Title style={styles.containerCeldaTitulo}>Unid IX</DataTable.Title>
-                                <DataTable.Title style={styles.containerCeldaTitulo}>Unid X</DataTable.Title>
-                                <DataTable.Title style={styles.containerCeldaTitulo}>Prom.</DataTable.Title>
-                                <DataTable.Title style={styles.containerCeldaTitulo}>Opc.</DataTable.Title>
-                                <DataTable.Title style={styles.containerCeldaTitulo}>Aprob.</DataTable.Title>
-                                <DataTable.Title style={styles.containerCeldaTitulo}>Tipo Curso</DataTable.Title>
+                            <DataTable.Header style={{backgroundColor:'#e6e6e6'}}>
+                                <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Periodo</Text></DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Clave Mat</Text></DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Desc.Materia</Text></DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Unidades</Text></DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Estado</Text></DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Unid I</Text></DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Unid II</Text></DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Unid III</Text></DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Unid IV</Text></DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Unid V</Text></DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Unid VI</Text></DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Unid VII</Text></DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Unid VIII</Text></DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Unid IX</Text></DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Unid X</Text></DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Prom.</Text></DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Opc.</Text></DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Aprob.</Text></DataTable.Title>
+                                <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Tipo Curso</Text></DataTable.Title>
 
                             </DataTable.Header>
 
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontWeight:'bold',fontSize:12}}>{Alumno.periodo}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontWeight:'bold',fontSize:12}}>{Alumno.claveMat}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontWeight:'bold',fontSize:12}}>{Alumno.descMat}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontWeight:'bold',fontSize:12}}>{Alumno.unidades}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontWeight:'bold',fontSize:12}}>{Alumno.estado}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontWeight:'bold',fontSize:12}}>{Alumno.unidad1}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontWeight:'bold',fontSize:12}}>{Alumno.unidad2}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontWeight:'bold',fontSize:12}}>{Alumno.unidad3}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontWeight:'bold',fontSize:12}}>{Alumno.unidad4}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontWeight:'bold',fontSize:12}}>{Alumno.unidad5}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontWeight:'bold',fontSize:12}}>{Alumno.unidad6}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontWeight:'bold',fontSize:12}}>{Alumno.unidad7}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontWeight:'bold',fontSize:12}}>{Alumno.unidad8}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontWeight:'bold',fontSize:12}}>{Alumno.unidad9}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontWeight:'bold',fontSize:12}}>{Alumno.unidad10}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontWeight:'bold',fontSize:12}}>{Alumno.prom}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontWeight:'bold',fontSize:12}}>{Alumno.opc}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontWeight:'bold',fontSize:12}}>{Alumno.aprob}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontWeight:'bold',fontSize:12}}>{Alumno.tipoCurso}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.periodo}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.claveMat}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.descMat}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidades}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.estado}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidad1}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidad2}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidad3}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidad4}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidad5}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidad6}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidad7}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidad8}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidad9}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidad10}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.prom}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.opc}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.aprob}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.tipoCurso}</Text></DataTable.Cell>
                             </DataTable.Row>
 
                             
@@ -101,7 +101,9 @@ const styles = StyleSheet.create({
         marginRight:5,
         justifyContent:'flex-start',
         width:70,
-        height:50
+        height:50,
+        backgroundColor:'#e6e6e6',
+        
     },
     containerCelda:{
         marginRight:5,

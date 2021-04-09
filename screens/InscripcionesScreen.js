@@ -868,6 +868,7 @@ const InscripcionesScreen = ({ navigation }) =>
                     />
                 : null }
 
+
                 { continuar5 ?  
                     <Steps.Step5 
                         comprobantePagoFichaFoto={pagoFichaFoto}

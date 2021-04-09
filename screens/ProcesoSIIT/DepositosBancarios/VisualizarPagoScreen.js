@@ -1,108 +1,109 @@
 import React,{useState, useEffect} from 'react';
-import {View, SafeAreaView, StyleSheet,ScrollView} from 'react-native';
-import {Avatar,Title,Caption,Text,DataTable,Divider} from 'react-native-paper';
+import {View, SafeAreaView, StyleSheet,ScrollView,Alert,Image} from 'react-native';
+import {Avatar,Title,Caption,Text,DataTable,Divider,Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const VisualizarPagoScreen = ({navigation}) => {
 
-    const [Alumno, setAlumno] = React.useState({
-        NumeroControl:"15020357",
-        nombre: "JESUS ALEJANDRO",
-        ApellidoPaterno: "AGUILERA",
-        apellidoMaterno: "MAGAÑA",
-        TipoAlta:"Nuevo Ingreso",
-        EstadoAlumno:"Vigente",
-        Carrera:"ING.SIST",
-        fechaNacimiento:"05/05/1996",
-        curp: "AUMJ960505HMNGGS03",
-        sexo:"Masculino",
-        AnoIngreso:"0",
-        TipoAlumno:"Regular",
-        PlanEstudios:"ISIC2010224-W",
-        uri_foto:'https://maryza.gnomio.com/pluginfile.php/2/course/section/1/logoTecNM.png',
-    });
+    const imprimir=()=>{
+        Alert.alert(
+            "Cargando pdf...",
+            "Archivo de datos del pago referido",
+            [
+                {
+                    text: "Aceptar",
+                    
+                },
+            ],
+        );
+        navigation.navigate('Depositos');
+    }
     return (
         <SafeAreaView style={styles.container}>
-            
+            <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',backgroundColor:'#fff'}}>
+                    <View><Text style={{fontSize:18,fontWeight:'bold',marginBottom:10,marginLeft:10}}>Datos de pago referido </Text></View>
+                    <View><Image style={{width:50,height:50,resizeMode:'contain',marginRight:10}}source={{ uri:"http://sic.gob.mx/images/62408" }} /></View>
+            </View>
             <ScrollView>
-                <View style={styles.userInfoSection}>
-                    <View style={{flexDirection: 'row', marginTop: 18}}>
-                    <Avatar.Image 
-                        source={{
-                            uri:Alumno.uri_foto,
-                        }}
-                        size={130}
-                    />
                 
-                    <View style={{marginLeft: 50,marginTop:25}}>
-                        <Title style={styles.titulo}>Numero de Control amka:</Title>
-                        <Title style={styles.titulo}>{Alumno.NumeroControl}</Title>
-                        <Caption>Referencia a ficha</Caption>
-                    </View>
-                    </View>
-                </View>
-                
-                <View style={{flexDirection: 'row'}}>
-                    <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={false} >
+
+                <Divider></Divider>
+                <Divider></Divider>
+                <Divider></Divider>
+                <Divider></Divider>
+            
+                <View>
+                    <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={true} >
                         <DataTable>
-                            <DataTable.Header>
-                                <DataTable.Title>Datos del Alumno</DataTable.Title>
-                            </DataTable.Header>
 
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Nombre</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.nombre}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Folio</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>0001</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Apellido Paterno</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.ApellidoPaterno}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Usuario</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>Jesus Alejandro Aguilera M</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Apellido Materno</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.apellidoMaterno}</DataTable.Cell>
+                                <DataTable.Cell style={[styles.containerCeldaTitulo,{backgroundColor:"#fff"}]}>
+                                    <View style={{alignSelf:'center',width:50,height:30,justifyContent:'center',marginLeft:10}}><Text style={{fontWeight:'bold',color:"#000"}}>Banco </Text></View>
+                                    <View><Image style={{width:50,height:30,resizeMode:'contain'}}source={{ uri:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/BBVA_2019.svg/1280px-BBVA_2019.svg.png" }} /></View>
+                                </DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text  style={{color:'#004481',fontWeight:'bold'}}>BBVA Bancomer</Text></DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Tipo de Alta</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.TipoAlta}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Periodo</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>20203-JULDIC</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Estado del Alumno</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.EstadoAlumno}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Fecha</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>08/05/2020</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Carrera</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.Carrera}</DataTable.Cell>
-                            </DataTable.Row>
-                            <Divider/>
-                            <Divider/>
-                            <Divider/>
-                            <Divider/>
-                            <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Fecha de Nacimiento</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.fechaNacimiento}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Fecha de caducidad</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>09/05/2020</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Curp</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.curp}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Referencia bancaria</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{color:'#d74c4c',fontWeight:'bold'}}>15020357202005081997</Text></DataTable.Cell>
+                            </DataTable.Row>
+                        
+                        </DataTable>
+
+                    </ScrollView>
+                    <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={true} >
+                    <DataTable style={{marginLeft:0}}>
+                            <DataTable.Row >
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Tipo de pago</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>PAGO DE RE-INSCRIPCION</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Sexo</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.sexo}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Concepto</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>APORTACIÓN PARA EL FORTALECIMIENTO INSTITUCIONAL REINGRESO</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Año de Ingreso</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.AnoIngreso}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Cantidad</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>1</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Tipo de Alumno</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.TipoAlumno}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Costo</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{`$ 920`}</DataTable.Cell>
                             </DataTable.Row>
+                            <Divider></Divider>
+                            <Divider></Divider>
+                            <Divider></Divider>
+                            <Divider></Divider>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Plan de estudios</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.PlanEstudios}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Importe</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}><Text style={{color:'#d74c4c',fontWeight:'bold'}}>{`$ 920`}</Text></DataTable.Cell>
                             </DataTable.Row>
                         </DataTable>
                     </ScrollView>
+                </View>
+                <View style={{alignItems:'center',marginTop:10}}>
+                            <Button  color="#7c7bad" style={{width:300,height:40,margin:10,marginTop:0}} mode="outlined" onPress={() => imprimir()}>
+                                Imprimir
+                            </Button>
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     },
     containerCeldaTitulo:{
         marginRight:20,
-        justifyContent:'flex-start',
+        justifyContent:'space-between',
         width:150,
     },
     containerCelda:{

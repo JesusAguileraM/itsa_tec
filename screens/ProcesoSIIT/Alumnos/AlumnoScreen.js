@@ -41,7 +41,7 @@ const AlumnoScreen = ({navigation}) => {
                 </View>
 
                 <View style={{flexDirection: 'row'}}>
-                    <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={false} >
+                    <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={true} >
                         <DataTable>
                             <DataTable.Header>
                                 <DataTable.Title>Datos del Alumno</DataTable.Title>

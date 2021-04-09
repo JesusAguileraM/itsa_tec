@@ -109,7 +109,7 @@ import React,{useState, useEffect} from 'react';
                 </View>
                 <ScrollView>                
                     <View style={{flexDirection: 'row',marginTop:10}}>
-                        <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={false} >
+                        <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={true} >
                             <DataTable>
 
                                 <DataTable.Header style={{backgroundColor:'#e6e6e6'}}>
