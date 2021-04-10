@@ -7,6 +7,7 @@ const CARRERAS = "carreras";
 const DOCUMENTOS = "documentos";
 const DESCARGAS = "descargas";
 const DEPOSITOS = "depositosbancarios";
+const CALIFICACIONES = "calificaciones";
 const DEPOSITOSNOPROCESADOS = "depositosbancarios/noprocesados";
 const DEPOSITOSNOPAGADOS = "depositosbancarios/nopagados";
 const ESTADOS = 'https://api-sepomex.hckdrk.mx/query/get_estados';
@@ -33,6 +34,7 @@ export {
     DEPOSITOS,
     DESCARGAS,
     ARCHIVOS,
+    CALIFICACIONES,
     DOCUMENTOSFOTOS,
     DEPOSITOFOTOS,
     DEPOSITOSNOPAGADOS,

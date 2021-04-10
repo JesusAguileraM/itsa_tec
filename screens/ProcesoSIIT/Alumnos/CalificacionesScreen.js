@@ -3,32 +3,44 @@ import React,{useState, useEffect} from 'react';
 import {View, SafeAreaView, StyleSheet,ScrollView} from 'react-native';
 import {Avatar,Title,Caption,Text,DataTable,Divider,RadioButton } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as api from '../../../auth/request';
+
+const Materia = (props) => {
+    return(
+        <DataTable.Row >
+            <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{props.mat.periodo}</Text></DataTable.Cell>
+            <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{props.mat.claveMateria}</Text></DataTable.Cell>
+            <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{props.mat.materia}</Text></DataTable.Cell>
+            <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{props.mat.unidades}</Text></DataTable.Cell>
+            <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{props.mat.estado}</Text></DataTable.Cell>
+            <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{props.mat.unidad1}</Text></DataTable.Cell>
+            <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{props.mat.unidad2}</Text></DataTable.Cell>
+            <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{props.mat.unidad3}</Text></DataTable.Cell>
+            <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{props.mat.unidad4}</Text></DataTable.Cell>
+            <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{props.mat.unidad5}</Text></DataTable.Cell>
+            <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{props.mat.unidad6}</Text></DataTable.Cell>
+            <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{props.mat.unidad7}</Text></DataTable.Cell>
+            <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{props.mat.unidad8}</Text></DataTable.Cell>
+            <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{props.mat.unidad9}</Text></DataTable.Cell>
+            <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{props.mat.unidad10}</Text></DataTable.Cell>
+            <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{props.mat.promedio}</Text></DataTable.Cell>
+            <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{props.mat.opc}</Text></DataTable.Cell>
+            <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{props.mat.aprobadas}</Text></DataTable.Cell>
+            <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{props.mat.tipoCurso}</Text></DataTable.Cell>
+        </DataTable.Row>
+    );
+}
 
 const CalificacionesScreen = ({navigation}) => {
 
-      const [Alumno, setAlumno] = React.useState({
-        periodo:"20161-ENEJUL",
-        claveMat: "ACF0903",
-        descMat: "ÁLGEBRA LINEAL",
-        unidades:5,
-        estado:"Grupo Cerrado",
-        unidad1:80,
-        unidad2:90,
-        unidad3:70,
-        unidad4:80,
-        unidad5:78,
-        unidad6:87,
-        unidad7:0,
-        unidad8:0,
-        unidad9:0,
-        unidad10:0,
-        prom:86,
-        opc: "1a",
-        aprob:"AC",
-        tipoCurso: "RE",
-       
-    });
-
+    const [materia, setMateria] = useState([]);
+    useEffect(() => {
+        (async() => {
+            const calif = await api.getCalificaciones();
+            setMateria(calif.data.data);
+        })();
+    }, []);
+    
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>                
@@ -56,32 +68,18 @@ const CalificacionesScreen = ({navigation}) => {
                                 <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Aprob.</Text></DataTable.Title>
                                 <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:12}}>Tipo Curso</Text></DataTable.Title>
 
-                            </DataTable.Header>
-
-                            <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.periodo}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.claveMat}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.descMat}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidades}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.estado}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidad1}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidad2}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidad3}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidad4}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidad5}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidad6}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidad7}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidad8}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidad9}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.unidad10}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.prom}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.opc}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.aprob}</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}><Text style={{fontSize:12}}>{Alumno.tipoCurso}</Text></DataTable.Cell>
-                            </DataTable.Row>
-
-                            
-
+                            </DataTable.Header>                      
+                            {
+                                materia.length > 0 
+                                ? 
+                                    materia.map((mat, index) => {
+                                        return (
+                                            <Materia key={index} mat={mat}/>
+                                        )
+                                    })
+                                :
+                                    null
+                            }
                         </DataTable>
                     </ScrollView>
                 </View>

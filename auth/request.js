@@ -243,20 +243,23 @@ const getArchivos = async (fileName) => {
     }
 }
 
-const getUser = async () => {
+const getCalificaciones = async () => {
     try{
         const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
         const { _id }= sesion[0];
         const data = await axios({
             method: 'GET',
-            url: `${config.BACKENDURL}/${config.USERS}/${_id}`,
+            url: `${config.BACKENDURL}/${config.CALIFICACIONES}`,
             headers: { 'content-type': 'application/json' },
+            params: {
+                id: _id,
+            }
         })
         return data;
     }
     catch(error){
-        console.log('Error en getDepositosAvailables')
-        console.log(error || "Error en getUserT")
+        console.log('Error en getCalificaciones')
+        console.log(error || "Error en getCalificaciones")
     }
 }
 
@@ -274,4 +277,5 @@ export {
     getDepositosAvailables,
     getUserDescargas,
     getArchivos,
+    getCalificaciones,
 };
