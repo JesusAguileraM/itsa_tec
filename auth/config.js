@@ -8,8 +8,11 @@ const DOCUMENTOS = "documentos";
 const DESCARGAS = "descargas";
 const DEPOSITOS = "depositosbancarios";
 const CALIFICACIONES = "calificaciones";
+const DEPOSITOALUMNO = "depositosbancarios/alumno";
 const DEPOSITOSNOPROCESADOS = "depositosbancarios/noprocesados";
 const DEPOSITOSNOPAGADOS = "depositosbancarios/nopagados";
+const DEPOSITOSESTADOPAGO = "depositosbancarios/estadopago";
+const DEPOSITOSPAGADO = "depositosbancarios/pagado";
 const ESTADOS = 'https://api-sepomex.hckdrk.mx/query/get_estados';
 // 'https://api-sepomex.hckdrk.mx/query/get_estados?token=2a0fe2d8-c6c1-4f22-bba7-c6838d99a60e';
 const MUNICIPIOS = 'https://api-sepomex.hckdrk.mx/query/get_municipio_por_estado';
@@ -39,4 +42,7 @@ export {
     DEPOSITOFOTOS,
     DEPOSITOSNOPAGADOS,
     DEPOSITOSNOPROCESADOS,
+    DEPOSITOSESTADOPAGO,
+    DEPOSITOSPAGADO,
+    DEPOSITOALUMNO,
 };

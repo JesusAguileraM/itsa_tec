@@ -197,6 +197,46 @@ const getDepositosAvailables = async () => {
     }
 }
 
+const putEstadoPagoDeposito = async (estadoPago) => {
+    try{
+        const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
+        const { _id }= sesion[0];
+        const data = await axios({
+            method: 'PUT',
+            url: `${config.BACKENDURL}/${config.DEPOSITOSESTADOPAGO}/${_id}`,
+            headers: { 'content-type': 'application/json' },
+            data: {
+                estadoPago: estadoPago,
+            }
+        })
+        return data;
+    }
+    catch(error){
+        console.log('Error en putEstadoPagoDeposito')
+        console.log(error || "Error en putEstadoPagoDeposito")
+    }
+}
+
+const putPagadoDeposito = async (pagado) => {
+    try{
+        const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
+        const { _id }= sesion[0];
+        const data = await axios({
+            method: 'PUT',
+            url: `${config.BACKENDURL}/${config.DEPOSITOSPAGADO }/${_id}`,
+            headers: { 'content-type': 'application/json' },
+            data: {
+                pagado: pagado,
+            }
+        })
+        return data;
+    }
+    catch(error){
+        console.log('Error en putPagadoDeposito')
+        console.log(error || "Error en putPagadoDeposito")
+    }
+}
+
 const getUserDescargas = async () => {
     try{
         const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
@@ -263,6 +303,45 @@ const getCalificaciones = async () => {
     }
 }
 
+const postDepositoBancarioAlumno = async (obj) => {
+    try{
+        const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
+        const { _id }= sesion[0];
+        let form = {
+            ...obj,
+            id_user: _id,
+        }
+        const data = await axios({
+            method: 'POST',
+            url: `${config.BACKENDURL}/${config.DEPOSITOALUMNO}`,
+            headers: { 'content-type': 'application/json' },
+            data: form,
+        })
+        return data;
+    }
+    catch(error){
+        console.log("Error en postDepositoBancario")
+        console.log(error || "Error en postDepositoBancario")
+    }
+}
+
+const getDepositoBancarioAlumnoNoPagado = async () => {
+    try{
+        const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
+        const { _id }= sesion[0];
+        const data = await axios({
+            method: 'GET',
+            url: `${config.BACKENDURL}/${config.DEPOSITOSNOPAGADOS}/${_id}`,
+            headers: { 'content-type': 'application/json' },
+        })
+        return data;
+    }
+    catch(error){
+        console.log('Error en getCalificaciones')
+        console.log(error || "Error en getCalificaciones")
+    }
+}
+
 export {
     getUserT, 
     postUserT, 
@@ -275,6 +354,10 @@ export {
     putActaCertificadoCurpConstancia, 
     putFichaAportacionDepositoBancario, 
     getDepositosAvailables,
+    getDepositoBancarioAlumnoNoPagado,
+    putEstadoPagoDeposito,
+    putPagadoDeposito,
+    postDepositoBancarioAlumno,
     getUserDescargas,
     getArchivos,
     getCalificaciones,
