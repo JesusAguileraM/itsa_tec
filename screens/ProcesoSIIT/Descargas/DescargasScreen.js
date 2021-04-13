@@ -13,17 +13,27 @@ const DescargasScreen = ({navigation}) => {
 
     useEffect(() => {
         (async() => {
-            const data = await api.getUserDescargas();
-            const desc = data.data.data.map((doc) => {
-                return {
-                    id: doc._id,
-                    nombre: doc.nombre,
-                    descripcion: doc.descripcion,
-                    fileName: doc.archivo.filename, //este se usa para buscar en el servidor el archivo
-                    originalName: doc.archivo.originalname,
+            try{
+                const data = await api.getUserDescargas();
+                if(!data){
+                    setListaDocumentos([]);
+                    return;
                 }
-            });
-            setListaDocumentos(desc);
+                    
+                const desc = data.data.data.map((doc) => {
+                    return {
+                        id: doc._id,
+                        nombre: doc.nombre,
+                        descripcion: doc.descripcion,
+                        fileName: doc.archivo.filename, //este se usa para buscar en el servidor el archivo
+                        originalName: doc.archivo.originalname,
+                    }
+                });
+                setListaDocumentos(desc);
+            }
+            catch(e){
+                console.log(e);
+            }
         })();
     }, []);
 

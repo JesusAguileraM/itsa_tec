@@ -100,10 +100,10 @@ const useGoogleLogin = async (expoPushToken)=>  {
             await Firebase.auth()
             .signInWithCredential(credential) //Login to Firebase
             .then( async sesion => {
-                // console.log('Guardamos token')
+                // console.log(sesion.credential);
                 await crudToken.useGuardarToken(token);
                 const profile = sesion.additionalUserInfo.profile;
-                // console.log('Guardamos seGuardarSesion')
+                // Este profile lo guadamos para usarlo en la app la foto y el nombre de usuario
                 await crudToken.useGuardarSesion(profile);
                 const obj = { 
                     "usuario": profile.name,
@@ -112,10 +112,9 @@ const useGoogleLogin = async (expoPushToken)=>  {
                 }
                 // console.log('Obtenemos el temporaryUser creado')
                 const user = await api.postUserT(obj);  //devuelve algo como  user{data{data, status, message}}  
-                // console.log('Guardamos localmente el temporaryuser como InfoPersonalInscripcion')
+                // console.log('Guardamos localmente el usuario como InfoPersonalInscripcion')
                 await crudToken.GuardarInfoPersonalInscripcion(user.data.data);
                 await crudToken.GuardarIsStatus(user.data.status);
-                // console.log(user.data); //guardar en la base de datos informacionPersonalInscripciones
                 //user.data.status es para el control de switch
                 
                 // Estados de las peticiones:
@@ -133,11 +132,11 @@ const useGoogleLogin = async (expoPushToken)=>  {
         } else {
             // console.log('Cancelamos iniciar sesion google')
             isLoginCancel = true; //devolvemos que no se pudo loguear
-            //CANCEL
         }
         return {isLoginCancel};
     } catch ({ message }) {
         alert('login: Error:' + message);
+        return true; //error y cancelamos el inicio de sesión
     }
 }
 

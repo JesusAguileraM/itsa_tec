@@ -2,24 +2,18 @@ import React,{useState, useEffect} from 'react';
 import {View, SafeAreaView, StyleSheet,ScrollView} from 'react-native';
 import {Avatar,Title,Caption,Text,DataTable,Divider} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as crudToken from '../../../database/crudToken';
 
 const DatosGeneralesScreen = ({navigation}) => {
-
-    const [Alumno, setAlumno] = React.useState({
-        direccion:"CALLE ALLENDE",
-        numero:"#97",
-        colonia:"CENTRO",
-        poblacion:"AGUILILLA MICH",
-        cp:"60570",
-        municipio:"AGUILILLA",
-        estado:"MICHOACAN",
-        telefono1:"4531318005",
-        telefono2:"4531698588",
-        email:"al15020357@itsa.edu.mx",
-        emailPersonal:"panchodelta1000@gmail.com",
-        fechaAlta:"19/11/2015 12:23:38"
-
-    });
+    const [alumno, setAlumno] = useState([]);
+    
+    useEffect(() => {
+        (async () => {
+            const data = await crudToken.ObtenerInfoPersonalInscripcion();
+            setAlumno(data[0].datosGenerales);
+        })()
+    }, []);
+    
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>                
@@ -32,27 +26,27 @@ const DatosGeneralesScreen = ({navigation}) => {
 
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Dirección</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.direccion}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.direccion}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Numero</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.numero}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.numero}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Colonia</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.colonia}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.colonia}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Poblacion</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.poblacion}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.poblacion}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Codigo postal</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.cp}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.cp}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Municipio</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.municipio}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.municipio}</DataTable.Cell>
                             </DataTable.Row>
                             <Divider/>
                             <Divider/>
@@ -62,27 +56,27 @@ const DatosGeneralesScreen = ({navigation}) => {
                             <Divider/>
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Estado</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.estado}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.estado}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Telefono1</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.telefono1}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.telefono1}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Telefono2</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.telefono2}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.telefono2}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Email</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.email}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.email}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Email personal</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.emailPersonal}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.emailPersonal}</DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Fecha de Alta</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.fechaAlta}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCelda}>{alumno.fechaAlta}</DataTable.Cell>
                             </DataTable.Row>
                         </DataTable>
                     </ScrollView>

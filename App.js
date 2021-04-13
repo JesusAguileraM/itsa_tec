@@ -30,34 +30,12 @@ const App = () => {
   const {isLoading, isStatus, setIsLoading, setIsStatus} = useOnAuthStateChanged();
   //Manejo de las notificaciones
   const {expoPushToken, setExpoPushToken }  = useRegisterForPushNotificationsAsync();
-  
-  const initialLoginState = {
-    isLoading: true,
-    userName: null,
-    userToken: null,
-  };
-
-  const loginReducer = (prevState, action) => {
-    switch (action.type) {
-      case "RETRIEVE_TOKEN":
-        return {
-          ...prevState,
-          userToken: false,
-          isLoading: false,
-        };
-    }
-  };
-
-  const [loginState, dispatch] = React.useReducer(
-    loginReducer,
-    initialLoginState
-  );
 
   const authContext = React.useMemo(
     () => ({
       signOutUser: async () => {
         setIsLoading(true);
-        await useGoogleSignOut(setIsStatus);
+        await useGoogleSignOut();
         setIsStatus('noalumno');
         setIsLoading(false);
         console.log('sesión cerrada')
@@ -76,25 +54,18 @@ const App = () => {
         }
         setIsLoading(false);
       },
-      setIsStatus: async (status) => { 
-        crudToken.GuardarIsStatus(status);
-      },
-      getIsStatus: async () => { 
-        crudToken.ObtenerIsStatus();
-      },
-      deleteIsStatus: async () => { 
-        crudToken.EliminarIsStatus();
-      },
+      // setIsStatus: async (status) => { 
+      //   crudToken.GuardarIsStatus(status);
+      // },
+      // getIsStatus: async () => { 
+      //   crudToken.ObtenerIsStatus();
+      // },
+      // deleteIsStatus: async () => { 
+      //   crudToken.EliminarIsStatus();
+      // },
     }),
     []
   );
-
-  useEffect(() => {
-    setTimeout(async () => {
-      const S=crudToken.useObtenerSesion();
-      dispatch({ type: "RETRIEVE_TOKEN", token: true });
-    }, 1000);
-  }, []);
 
   if (isLoading) {//le metí isLoading para la de google
     return (
@@ -127,8 +98,8 @@ const App = () => {
                 <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent {...props} />} >
                   <DrawerUserLogged.Screen name="UsuarioLogueado" component={MainTabScreen} />
                 </DrawerUserLogged.Navigator>
-              ): null}
-              {isStatus === 'alumno' ? (
+              ): null} 
+              {isStatus === 'alumno' ? ( 
                 <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent2 {...props} />} >
                   <DrawerUserLogged.Screen name="UsuarioInscripto" component={MainTabScreen2} />
                 </DrawerUserLogged.Navigator>
@@ -137,7 +108,7 @@ const App = () => {
                 <DrawerUserLogged.Navigator drawerContent={(props) => <DrawerContent3 {...props} />} >
                   <DrawerUserLogged.Screen name="Visitante" component={MainTabScreen3} />
                 </DrawerUserLogged.Navigator>
-              ): null}
+              ): null} 
         </NavigationContainer>
       </AuthContext.Provider>
     </PaperProvider>

@@ -3,9 +3,11 @@ import {View, SafeAreaView, StyleSheet,ScrollView,Alert} from 'react-native';
 import {Avatar,Title,Caption,Text,DataTable,Divider,Button} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import RNPickerSelect from 'react-native-picker-select';
+import * as api from '../../../auth/request';
+import Splash from '../../../components/Splash';
 
 const CrearPagoScreen = ({navigation}) => {
-
+    const uri_foto = 'https://maryza.gnomio.com/pluginfile.php/2/course/section/1/logoTecNM.png';
     const [Alumno, setAlumno] = React.useState({
         NumeroControl:"15020357",
         nombre: "JESUS ALEJANDRO",
@@ -20,49 +22,88 @@ const CrearPagoScreen = ({navigation}) => {
         AnoIngreso:"0",
         TipoAlumno:"Regular",
         PlanEstudios:"ISIC2010224-W",
-        uri_foto:'https://maryza.gnomio.com/pluginfile.php/2/course/section/1/logoTecNM.png',
     });
-    const descartar=()=>{
-        setTipoPago(null);
-        setConcepto(null);
-        setCantidad(null);
-        setCosto(0.00)
-        setImporte(0.00)
-        navigation.navigate('Depositos');
+    const [dataTipoPagos, setDataTipoPagos] = useState([]);
+    const [listaTipoPago, setListaTipoPago] =useState([]);
+    const [listaConcepto, setListaConcepto] =useState([]);
+    const [tipoPago,setTipoPago]=useState(null);
+    const [concepto,setConcepto]=useState(null);
+    const [cantidad,setCantidad]=useState("0");
+    const [costo,setCosto]=useState("0.00");
+    const [importe,setImporte]=useState("0.00");
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        (async() => {
+            const tipoPagos = await api.getTipoPagos();
+            let tp = Object.entries(tipoPagos.data.data[0]);
+            setDataTipoPagos(tp);
+            const tiposPagos = tp.map((lista)=> lista[0]);
+            setListaTipoPago(tiposPagos);
+        })();
+    }, []);
+
+    const getConceptos = (tipoPago) => {
+        const conceptos = dataTipoPagos.find(lista => lista[0] === tipoPago);
+        setListaConcepto(conceptos[1]);
     }
 
-    const generarReferencia=()=>{
+    const getPrecio = (concepto) => {
+        const ficha = listaConcepto.find(c => c.ficha === concepto);
+        setCosto(ficha.costo);
+        setCantidad("1");
+        let importe = (parseInt(ficha.costo) * 1).toString();
+        setImporte(importe);
+    }
 
-        if(tipoPago != null && concepto!= null && cantidad != null){
-            setTipoPago(null);
-            setConcepto(null);
-            setCantidad(null);
-            setCosto(0.00);
-            setImporte(0.00);
-            navigation.navigate('VisualizarPagoScreen');
+    const descartar=()=>{
+        navigation.goBack();
+    }
+
+    const generarReferencia= async()=>{
+        if(tipoPago != null && concepto!= null){
+            // crear el pago bancario
+            const obj = {
+                tipoPago: tipoPago,
+                concepto: concepto,
+                cantidad: cantidad, 
+                costo: costo,
+                importe: importe,
+                convenioCIE: "001770500",
+                observaciones: "No aplica",
+                estadoPago: "En proceso",
+            };
+            try {
+                setLoading(true);
+                await api.postDepositoBancarioAlumno(obj);
+                setLoading(false);
+                navigation.goBack();
+            }
+            catch(error){
+                console.error(error.message);
+                alert("Falló al crear el depósito");
+            }
         }else{
             Alert.alert(
                 "Falta un campo...",
                 "Selecciona todos los campos correspondientes para generar la referencia",
                 [
                     {
-                        text: "Aceptar",
-                        
+                        text: "Aceptar", 
                     },
                 ],
-            );
-        }
-
-
-        
+                );
+            }
     }
-    const [tipoPago,setTipoPago]=useState(null)
-    const [concepto,setConcepto]=useState(null)
-    const [cantidad,setCantidad]=useState(null)
-    const [costo,setCosto]=useState(0.00)
-    const [importe,setImporte]=useState(0.00)
-
-    
+        
+    if(loading){
+        return (
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <Splash/>
+        </View>
+        );
+    }
+        
     return (
         <SafeAreaView style={styles.container}>
             
@@ -71,7 +112,7 @@ const CrearPagoScreen = ({navigation}) => {
                     <View style={{flexDirection: 'row', marginTop: 18}}>
                         <Avatar.Image 
                             source={{
-                                uri:Alumno.uri_foto,
+                                uri:uri_foto,
                             }}
                             size={130}
                         />
@@ -92,12 +133,18 @@ const CrearPagoScreen = ({navigation}) => {
                                 <DataTable.Cell style={styles.containerCelda}>
                                     <View style={{backgroundColor:'#fff',width:150,justifyContent:'center'}}>
                                     <RNPickerSelect
-                                            onValueChange={(value) => setTipoPago(value)}
-                                            items={[
-                                                { label: 'Fichas', value: 'Fichas' },
-                                                { label: 'Inscripciones', value: 'Inscripciones' },
-                                                { label: 'Re-inscripciones', value: 'Re-inscripciones' },
-                                            ]}
+                                            onValueChange={(value) => {
+                                                setTipoPago(value);
+                                                if(value)
+                                                    getConceptos(value);
+                                            }}
+                                            items={
+                                                listaTipoPago.map((tipoPago) => {
+                                                    return (
+                                                        { label: tipoPago, value: tipoPago }
+                                                    );
+                                                })
+                                            }
                                         >
                                             <Text style={{fontWeight:'bold',fontSize:16}}>Tipo de pago</Text>
                                         </RNPickerSelect>
@@ -110,12 +157,18 @@ const CrearPagoScreen = ({navigation}) => {
                                 <DataTable.Cell style={styles.containerCelda}>
                                     <View style={{backgroundColor:'#fff',width:150,justifyContent:'center'}}>
                                     <RNPickerSelect
-                                            onValueChange={(value) => setConcepto(value)}
-                                            items={[
-                                                { label: 'Aportacion', value: 'Aportacion' },
-                                                { label: 'Evaluacion', value: 'Evaluacion' },
-                                                { label: 'Cambio Grupo', value: 'Cambio Grupo' },
-                                            ]}
+                                            onValueChange={(value) =>{ 
+                                                setConcepto(value);
+                                                if(value)
+                                                    getPrecio(value);
+                                            }}
+                                            items={
+                                                listaConcepto.map((concepto) => {
+                                                    return (
+                                                        { label: concepto.ficha, value: concepto.ficha }
+                                                    );
+                                                })
+                                            }
                                         >
                                             <Text style={{fontWeight:'bold',fontSize:16}}>Concepto</Text>
                                         </RNPickerSelect>
@@ -125,26 +178,13 @@ const CrearPagoScreen = ({navigation}) => {
                             </DataTable.Row>
 
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCelda}>
-                                    <View style={{backgroundColor:'#fff',width:150,justifyContent:'center'}}>
-                                    <RNPickerSelect
-                                            onValueChange={(value) => setCantidad(value)}
-                                            items={[
-                                                { label: '1', value: 1 },
-                                                { label: '2', value: 2 },
-                                                { label: '3', value: 3 },
-                                            ]}
-                                        >
-                                            <Text style={{fontWeight:'bold',fontSize:16}}>Cantidad</Text>
-                                        </RNPickerSelect>
-                                    </View>
-                                </DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontSize:14}}>{cantidad}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:16}}>Cantidad</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={styles.cantidad}>{`${cantidad}`}</Text></DataTable.Cell>
                             </DataTable.Row>
 
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:16}}>Costo</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCeldaTitulo}>{`$ ${costo}`}</DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text>{`$ ${costo}`}</Text></DataTable.Cell>
                             </DataTable.Row>
 
                             <Divider></Divider>
@@ -154,7 +194,7 @@ const CrearPagoScreen = ({navigation}) => {
 
                             <DataTable.Row >
                                 <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:16}}>Importe</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text>{`$ ${importe}`}</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={styles.negrita}>{`$ ${importe}`}</Text></DataTable.Cell>
                             </DataTable.Row>
                         </DataTable>
                         
@@ -162,7 +202,7 @@ const CrearPagoScreen = ({navigation}) => {
                         
                     </ScrollView>
                 </View>
-                <View style={{alignItems:'center'}}>
+                <View style={{alignItems:'center', marginTop: 60}}>
                             <Button color="#d74c4c" style={{width:250,height:40,margin:10,marginBottom:0}}   mode="contained" onPress={() => generarReferencia()} >
                                 Generar Referencia
                             </Button>
@@ -208,4 +248,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginBottom: 10,
     },
+    cantidad: {
+        color: "red",
+    },
+    negrita: {
+        fontWeight: 'bold',
+    }
 });

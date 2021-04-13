@@ -2,22 +2,64 @@ import React,{useState, useEffect} from 'react';
 import {View, SafeAreaView, StyleSheet,ScrollView} from 'react-native';
 import {Avatar,Title,Caption,Text,DataTable,Divider,RadioButton } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as crudToken from '../../../database/crudToken';
 
 const ExpedientesScreen = ({navigation}) => {
 
-      const [Alumno, setAlumno] = React.useState({
-        residenciaLiberada:false,
-        actaNacimiento:true,
-        certificadoBachiller:true,
-        copiaCurp:true,
-        acreditacionIngles:false,
-        constanciNoAdeudo:false,
-        fotografias:false,
-        servicioSocial:false,
-        recibo:false,
-        copiaIne:true,
-        vigenciaDerecho:false,
+    //el state lo debemos comenzar con el siguiente objeto ya que necesitamos un estado inicial vacío para que no nos lance una excepción de null
+    const [alumno, setAlumno] = useState({
+        residencias: {  
+            expediente: "",
+            liberado: false,
+        },        
+        acta: {  
+            expediente: "",
+            liberado: false,
+        },        
+        certificado: {  
+            expediente: "",
+            liberado: false,
+        },        
+        curp: {  
+            expediente: "",
+            liberado: false,
+        },        
+        ingles: {  
+            expediente: "",
+            liberado: false,
+        },        
+        constanciaNoAdeudo: {  
+            expediente: "",
+            liberado: false,
+        },        
+        fotografias: {  
+            expediente: "",
+            liberado: false,
+        },        
+        servicioSocial: {  
+            expediente: "",
+            liberado: false,
+        },        
+        pagoTitulacion: {  
+            expediente: "",
+            liberado: false,
+        },        
+        ine: {  
+            expediente: "",
+            liberado: false,
+        },        
+        vigenciaDerecho: {  
+            expediente: "",
+            liberado: false,
+        },  
     });
+    
+    useEffect(() => {
+        (async () => {
+            const data = await crudToken.ObtenerInfoPersonalInscripcion();
+            setAlumno(data[0].expedientes);
+        })()
+    }, []);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -31,114 +73,114 @@ const ExpedientesScreen = ({navigation}) => {
                             </DataTable.Header>
 
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>RESIDENCIA LIBERADA</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>{`${alumno.residencias.expediente}`}</Text></DataTable.Cell>
                                 <DataTable.Cell style={styles.containerCelda}>
                                     <RadioButton
                                         value="first"
-                                        status={ Alumno.residenciaLiberada === true ? 'checked' : 'unchecked' }
+                                        status={ alumno.residencias.liberado === true ? 'checked' : 'unchecked' }
                                         // onPress={() => setChecked('first')}
                                       />
                                 </DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>ACTA DE NACIMIENTO ORIGINAL</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>{`${alumno.acta.expediente}`}</Text></DataTable.Cell>
                                 <DataTable.Cell style={styles.containerCelda}>
                                     <RadioButton
                                         value="first"
-                                        status={ Alumno.actaNacimiento === true ? 'checked' : 'unchecked' }
+                                        status={ alumno.acta.liberado === true ? 'checked' : 'unchecked' }
                                         // onPress={() => setChecked('first')}
                                       />
                                 </DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>CERTIFICADO DE BACHILLERATO LEGALIZADO</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>{`${alumno.certificado.expediente}`}</Text></DataTable.Cell>
                                 <DataTable.Cell style={styles.containerCelda}>
                                     <RadioButton
                                         value="first"
-                                        status={ Alumno.certificadoBachiller === true ? 'checked' : 'unchecked' }
+                                        status={ alumno.certificado.liberado === true ? 'checked' : 'unchecked' }
                                         // onPress={() => setChecked('first')}
                                       />
                                 </DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>COPIA DE LA CURP</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>{`${alumno.curp.expediente}`}</Text></DataTable.Cell>
                                 <DataTable.Cell style={styles.containerCelda}>
                                     <RadioButton
                                         value="first"
-                                        status={ Alumno.copiaCurp === true ? 'checked' : 'unchecked' }
+                                        status={ alumno.curp.liberado === true ? 'checked' : 'unchecked' }
                                         // onPress={() => setChecked('first')}
                                       />
                                 </DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>ACREDITACIÓN DE INGLES</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>{`${alumno.ingles.expediente}`}</Text></DataTable.Cell>
                                 <DataTable.Cell style={styles.containerCelda}>
                                     <RadioButton
                                         value="first"
-                                        status={ Alumno.acreditacionIngles === true ? 'checked' : 'unchecked' }
+                                        status={ alumno.ingles.liberado === true ? 'checked' : 'unchecked' }
                                         // onPress={() => setChecked('first')}
                                       />
                                 </DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>CONSTANCIA DE NO ADEUDO</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>{`${alumno.constanciaNoAdeudo.expediente}`}</Text></DataTable.Cell>
                                 <DataTable.Cell style={styles.containerCelda}>
                                     <RadioButton
                                         value="first"
-                                        status={ Alumno.constanciNoAdeudo === true ? 'checked' : 'unchecked' }
+                                        status={ alumno.constanciaNoAdeudo.liberado === true ? 'checked' : 'unchecked' }
                                         // onPress={() => setChecked('first')}
                                       />
                                 </DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>FOTOGRAFIAS /2 T-DIPLOMA Y 8 T-CREDENCIAL OVALADA</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>{`${alumno.fotografias.expediente}`}</Text></DataTable.Cell>
                                 <DataTable.Cell style={styles.containerCelda}>
                                     <RadioButton
                                         value="first"
-                                        status={ Alumno.fotografias === true ? 'checked' : 'unchecked' }
+                                        status={ alumno.fotografias.liberado === true ? 'checked' : 'unchecked' }
                                         // onPress={() => setChecked('first')}
                                       />
                                 </DataTable.Cell>
                             </DataTable.Row>
 
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>SERVICIO SOCIAL</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>{`${alumno.servicioSocial.expediente}`}</Text></DataTable.Cell>
                                 <DataTable.Cell style={styles.containerCelda}>
                                     <RadioButton
                                         value="first"
-                                        status={ Alumno.servicioSocial === true ? 'checked' : 'unchecked' }
+                                        status={ alumno.servicioSocial.liberado === true ? 'checked' : 'unchecked' }
                                         // onPress={() => setChecked('first')}
                                       />
                                 </DataTable.Cell>
                             </DataTable.Row>
                             
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>RECIBO DE PAGO DE TITULACIÓN</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>{`${alumno.pagoTitulacion.expediente}`}</Text></DataTable.Cell>
                                 <DataTable.Cell style={styles.containerCelda}>
                                     <RadioButton
                                         value="first"
-                                        status={ Alumno.recibo === true ? 'checked' : 'unchecked' }
+                                        status={ alumno.pagoTitulacion.liberado === true ? 'checked' : 'unchecked' }
                                         // onPress={() => setChecked('first')}
                                       />
                                 </DataTable.Cell>
                             </DataTable.Row>
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>COPIA DEL INE</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>{`${alumno.ine.expediente}`}</Text></DataTable.Cell>
                                 <DataTable.Cell style={styles.containerCelda}>
                                     <RadioButton
                                         value="first"
-                                        status={ Alumno.copiaIne === true ? 'checked' : 'unchecked' }
+                                        status={ alumno.ine.liberado === true ? 'checked' : 'unchecked' }
                                         // onPress={() => setChecked('first')}
                                       />
                                 </DataTable.Cell>
                             </DataTable.Row>
 
                             <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>VIGENCIA DE DERECHO</Text></DataTable.Cell>
+                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>{`${alumno.vigenciaDerecho.expediente}`}</Text></DataTable.Cell>
                                 <DataTable.Cell style={styles.containerCelda}>
                                     <RadioButton
                                         value="first"
-                                        status={ Alumno.vigenciaDerecho === true ? 'checked' : 'unchecked' }
+                                        status={ alumno.vigenciaDerecho.liberado === true ? 'checked' : 'unchecked' }
                                         // onPress={() => setChecked('first')}
                                       />
                                 </DataTable.Cell>

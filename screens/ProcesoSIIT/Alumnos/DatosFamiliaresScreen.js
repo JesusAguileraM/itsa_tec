@@ -2,49 +2,71 @@ import React,{useState, useEffect} from 'react';
 import {View, SafeAreaView, StyleSheet,ScrollView} from 'react-native';
 import {Avatar,Title,Caption,Text,DataTable,Divider,RadioButton } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as crudToken from '../../../database/crudToken';
 
 const DatosFamiliaresScreen = ({navigation}) => {
 
-      const [Alumno, setAlumno] = React.useState({
-        nombreTutor:"J.JESUS AGUILERA GARCIA",
-        direccionTutor: "",
-        coloniaTutor: "",
-        cp: "",
-        ciudadTutor:"",
-        municipioTutor:"",
-        estadoTutor:"",
-        nombrePadre:"J. JESUS AGUILERA GARCIA",
-        padreVivo: true,
-        telefonoPadre:"Masculino",
-        nombreMadre:"Gloria Magaña Rodriguez",
-        madreVivo:true,
-        telefonoMadre:"Regular",
+    const [alumno, setAlumno] = useState({
+        padre: {
+            nombre: "",
+            vive: false,
+            celular: "",
+        },
+        madre: {
+            nombre: "",
+            vive: false,
+            celular: "",
+        },
     });
+    
+    useEffect(() => {
+        (async () => {
+            const data = await crudToken.ObtenerInfoPersonalInscripcion();
+            setAlumno(data[0].datosFamiliares.padres);
+        })()
+    }, []);
 
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>                
                 <View style={{flexDirection: 'row'}}>
-                    <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={true} >
-                        <DataTable>
-                            <DataTable.Header>
-                                <DataTable.Title>Datos del Alumno</DataTable.Title>
-                            </DataTable.Header>
+                    <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={false} >
+                        <View>
+                             <DataTable>
+                                <DataTable.Header>
+                                    <DataTable.Title>Datos de los Padres</DataTable.Title>
+                                </DataTable.Header>
 
-                            <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Nombre del Tutor</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.nombreTutor}</DataTable.Cell>
-                            </DataTable.Row>
-                            <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Dirección del Tutor</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.direccionTutor}</DataTable.Cell>
-                            </DataTable.Row>
-                            <DataTable.Row >
-                                <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Colonia del Tutor</Text></DataTable.Cell>
-                                <DataTable.Cell style={styles.containerCelda}>{Alumno.coloniaTutor}</DataTable.Cell>
-                            </DataTable.Row>
-                                
-                        </DataTable>
+                                <DataTable.Row >
+                                    <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Nombre del Padre</Text></DataTable.Cell>
+                                    <DataTable.Cell style={styles.containerCelda}>{alumno.padre.nombre}</DataTable.Cell>
+                                </DataTable.Row>
+                                <DataTable.Row >
+                                    <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Vive</Text></DataTable.Cell>
+                                    <DataTable.Cell style={styles.containerCelda}>{(alumno.padre.vive) ? "Si" : "No"}</DataTable.Cell>
+                                </DataTable.Row>
+                                <DataTable.Row >
+                                    <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Celular del Padre</Text></DataTable.Cell>
+                                    <DataTable.Cell style={styles.containerCelda}>{alumno.padre.celular}</DataTable.Cell>
+                                </DataTable.Row>
+                                    
+                            </DataTable>
+                            <DataTable>
+                                <DataTable.Row >
+                                    <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Nombre de la Madre</Text></DataTable.Cell>
+                                    <DataTable.Cell style={styles.containerCelda}>{alumno.madre.nombre}</DataTable.Cell>
+                                </DataTable.Row>
+                                <DataTable.Row >
+                                    <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Vive</Text></DataTable.Cell>
+                                    <DataTable.Cell style={styles.containerCelda}>{(alumno.madre.vive) ? "Si" : "No"}</DataTable.Cell>
+                                </DataTable.Row>
+                                <DataTable.Row >
+                                    <DataTable.Cell style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold'}}>Celular de la Madre</Text></DataTable.Cell>
+                                    <DataTable.Cell style={styles.containerCelda}>{alumno.madre.celular}</DataTable.Cell>
+                                </DataTable.Row>
+                                    
+                            </DataTable>
+                        </View>
                     </ScrollView>
                 </View>
             </ScrollView>

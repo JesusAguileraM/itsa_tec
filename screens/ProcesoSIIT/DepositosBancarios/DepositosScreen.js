@@ -2,11 +2,12 @@ import React,{useState, useEffect} from 'react';
     import {View, SafeAreaView, StyleSheet,ScrollView,TouchableOpacity,Alert,FlatList,StatusBar} from 'react-native';
     import {Avatar,Title,Caption,Text,DataTable,Divider,RadioButton,Button } from 'react-native-paper';
     import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-    
+    import * as api from '../../../auth/request';
+
     const DepositosScreen = ({navigation}) => {
 
         const [selectedId, setSelectedId] = useState(null);
-
+        const [listaPagos, setListaPagos] = useState([]);
 
         const lista=[
             {   id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28bb",
@@ -47,18 +48,22 @@ import React,{useState, useEffect} from 'react';
             
         ];
 
-        const funcionDescargarArchivo =(id)=>{
+        useEffect(() => {
+            (async() => {
+                const listaPagos = await api.getDepositoBancarioAlumnoNoPagado();
+                let lp = listaPagos.data.data;
+                setListaPagos(lp);
+            })();
+        }, []);
+
+        const reloadDepositosBancarios = async () => {
+            const listaPagos = await api.getDepositoBancarioAlumnoNoPagado();
+            let lp = listaPagos.data.data;
+            setListaPagos(lp);
+        }
+
+        const visualizarDeposito =(id)=>{
             setSelectedId(id)
-            // Alert.alert(
-            //     "Archivo descargando...",
-            //     "Es archivo es un pdf",
-            //     [
-            //         {
-            //             text: "Aceptar",
-                        
-            //         },
-            //     ],
-            // );
             navigation.navigate('VisualizarPagoScreen');
         }
     
@@ -68,26 +73,25 @@ import React,{useState, useEffect} from 'react';
                 <DataTable.Row style={[backgroundColor]}>
                     <DataTable.Cell style={[styles.containerCeldaTitulo2,backgroundColor]}><Text>{item.folioInterno}</Text></DataTable.Cell>
                     <DataTable.Cell style={[styles.containerCeldaTitulo,backgroundColor]}><Text>{item.periodo}</Text></DataTable.Cell>
-                    <DataTable.Cell style={[styles.containerCeldaTitulo,backgroundColor]}><Text>{item.clasificacion}</Text></DataTable.Cell>
-                    <DataTable.Cell style={[styles.containerCeldaTitulo2,backgroundColor]}><Text>{item.nControl}</Text></DataTable.Cell>
-                    <DataTable.Cell style={[styles.containerCeldaTitulo,backgroundColor]}><Text>{item.referenciaBanc}</Text></DataTable.Cell>
+                    <DataTable.Cell style={[styles.containerCeldaTitulo,backgroundColor]}><Text>{item.concepto}</Text></DataTable.Cell>
+                    <DataTable.Cell style={[styles.containerCeldaTitulo,backgroundColor]}><Text>{item.referenciaBancaria}</Text></DataTable.Cell>
                     <DataTable.Cell style={[styles.containerCeldaTitulo,backgroundColor]}><Text>{item.fecha}</Text></DataTable.Cell>
                     <DataTable.Cell style={[styles.containerCeldaTitulo2,backgroundColor]}><Text>{item.usuario}</Text></DataTable.Cell>
-                    <DataTable.Cell style={[styles.containerCeldaTitulo,backgroundColor]}><Text>{item.total}</Text></DataTable.Cell>
-                    <DataTable.Cell style={[styles.containerCeldaTitulo,backgroundColor]}><Text>{item.estado}</Text></DataTable.Cell>
+                    <DataTable.Cell style={[styles.containerCeldaTitulo,backgroundColor]}><Text>{item.importe}</Text></DataTable.Cell>
+                    <DataTable.Cell style={[styles.containerCeldaTitulo,backgroundColor]}><Text>{item.estadoPago}</Text></DataTable.Cell>
                 </DataTable.Row>   
             </TouchableOpacity>
         );
 
 
         const renderItem = ({ item }) => {
-            const backgroundColor = item.id === selectedId ? "#eee" : "#fff";
-            const color = item.id === selectedId ? 'white' : 'black';
+            const backgroundColor = item._id === selectedId ? "#eee" : "#fff";
+            const color = item._id === selectedId ? 'white' : 'black';
         
             return (
                 <Item
                     item={item}
-                    onPress={() => funcionDescargarArchivo(item.id)}
+                    onPress={() => visualizarDeposito(item._id)}
                     backgroundColor={{ backgroundColor }}
                     textColor={{ color }}
                 />
@@ -103,8 +107,8 @@ import React,{useState, useEffect} from 'react';
                         Crear
                     </Button>
                     <Text>o</Text>
-                    <Button color="#7c7bad" style={{width:120,height:40,margin:10}} mode="outlined" onPress={() => console.log('Pressed')}>
-                        Importar
+                    <Button color="#7c7bad" style={{width:120,height:40,margin:10}} mode="outlined" onPress={reloadDepositosBancarios}>
+                        Actualizar
                     </Button>
                 </View>
                 <ScrollView>                
@@ -116,7 +120,6 @@ import React,{useState, useEffect} from 'react';
                                     <DataTable.Title style={styles.containerCeldaTitulo2}><Text style={{fontWeight:'bold',fontSize:14}}>Folio Interno</Text></DataTable.Title>
                                     <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:14}}>Periodo</Text></DataTable.Title>
                                     <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:14}}>Clasificación</Text></DataTable.Title>
-                                    <DataTable.Title style={styles.containerCeldaTitulo2}><Text style={{fontWeight:'bold',fontSize:14}}>NControl/CURP</Text></DataTable.Title>
                                     <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:14}}>Referencia Bancaria</Text></DataTable.Title>
                                     <DataTable.Title style={styles.containerCeldaTitulo}><Text style={{fontWeight:'bold',fontSize:14}}>Fecha</Text></DataTable.Title>
                                     <DataTable.Title style={styles.containerCeldaTitulo2}><Text style={{fontWeight:'bold',fontSize:14}}>Usuario</Text></DataTable.Title>
@@ -125,9 +128,9 @@ import React,{useState, useEffect} from 'react';
                                 </DataTable.Header>
 
                                 <FlatList
-                                    data={lista}
+                                    data={listaPagos}
                                     renderItem={renderItem}
-                                    keyExtractor={(item) => item.id}
+                                    keyExtractor={(item) => item._id}
                                     extraData={selectedId}
                                 />
                             </DataTable>
