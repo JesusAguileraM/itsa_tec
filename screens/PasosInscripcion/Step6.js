@@ -1,222 +1,122 @@
 import React, { useState, useEffect, useRef } from "react";
-import {View,Text,Button,StyleSheet,Dimensions,TouchableOpacity,SafeAreaView,ScrollView,Image,StatusBar,TextInput,Platform,} from "react-native";
+import {View,Text,Button,Linking,StyleSheet,Dimensions,TouchableOpacity,SafeAreaView,ScrollView,Image,StatusBar,TextInput,Platform,} from "react-native";
 import {Divider,Surface,Portal,Dialog,Paragraph,} from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 
-const ConstanciaMedicaCURP = (props) => {
+
+const ResumenProceso = (props) => {
 
     return (
         <SafeAreaView style={{flex:1}}>
-            <View style={styles.containerFoto}>
-                <Surface>
-                    <TouchableOpacity
-                        style={styles.imagenFoto}
-                        onPress={() => {
-                            //setActivarCamara(false)
-                        }}
-                    >
+            <ScrollView>
+                <View style={{justifyContent:'center',alignItems:'center'}}>
+                    <View style={{justifyContent:'center',alignItems:'center'}}>
+                        <Image style={styles.logoTec2} source={require('../../assets/logoTec.png')} />
+                        <Text style={{color:"#000",fontSize:18,marginBottom:10,fontWeight:'bold'}}>Completado</Text>
+                        <Text style={styles.texto1} >
+                            Puede demorar unas horas la respuesta ya que la información y fotos estan siendo revisadas por el personal 
+                            del tecnologico, por lo que tendra que esperar las siguientes 24hrs hasta que regresemos una 
+                            respuesta a esta aplicación.
+                        </Text>
                         <Image 
-                        style={styles.foto}
-                        source={{uri:props.curp_Foto ? props.curp_Foto.uri : null}}
-                    />
-                    </TouchableOpacity>
-                </Surface>
-
-                <View style={{}}>
-                <SafeAreaView style={{width: Dimensions.get("window").width/2}}>
-                    <Text style={{fontSize:18,fontWeight: "bold",}}>
-                        C U R P
-                    </Text>
-                    <Divider/>
-                    <Divider/>
-                    <Text>
-                        - Asegurate que este iluminado la zona donde se tomara la foto.
-                    </Text>
-                    
-                    <Text>
-                        - Asegurarse sea legible.
-                    </Text>
-                </SafeAreaView>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => {props.cambiarACamara(3, false)}}
-                    >
-                    <View style={{justifyContent: 'center',}}>
-                        <Text  style={styles.textC} >Tomar foto</Text>
+                            style={{width:300, height:100}}
+                            source={require('../../assets/cargandoBolitas.gif')}
+                        />
                     </View>
-                </TouchableOpacity>
-
-                </View>
-
-            </View>
-            <Divider />
-            <View style={styles.containerFoto}>
-                <Surface>
-                    <TouchableOpacity
-                        style={styles.imagenFoto}
-                        onPress={() => {
-                            //setActivarCamara(false)
-                        }}
-                    >
-                        <Image 
-                        style={styles.foto}
-                        source={{uri:props.estudio_H_Foto ? props.estudio_H_Foto.uri : null}}  
-                    />
-                    </TouchableOpacity>
-                </Surface>
-
-                <View style={{}}>
-                    <SafeAreaView style={{width: Dimensions.get("window").width/2}}>
-                        <Text style={{fontSize:18,fontWeight: "bold",}}>
-                            Estudio de tipo de sangre
+                    <View style={{marginTop:20,justifyContent:'center',alignItems:'center'}}>
+                        <Text style={styles.texto2}>
+                            Cualquier duda o aclaracion puede consultar las siguientes paginas vinculadas al instituto:
                         </Text>
-                        <Divider/>
-                        <Divider/>
-                        <Text>
-                            - Asegurate que este iluminado la zona donde se tomara la foto.
-                        </Text>
-                        
-                        <Text>
-                            - Asegurarse sea legible.
-                        </Text>
-                    </SafeAreaView>
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => {props.cambiarACamara(4, false)}}
-                            >
-                            <View style={{justifyContent: 'center',}}>
-                                <Text  style={styles.textC} >Tomar foto</Text>
+                        <View style={styles.contenedor}>
+                            <View>
+                                <View style={{flexDirection:'row',alignItems:'center'}}>
+                                    <Image style={styles.logosLink} source={{ uri:"https://i0.wp.com/tecmonclova.com/sitio/wp-content/uploads/2019/08/cropped-iconoweb.png?fit=512%2C512&ssl=1" }} />
+                                    <Text style={styles.link} onPress={ ()=>{ Linking.openURL('https://www.itsa.edu.mx/')}}>
+                                        https://www.itsa.edu.mx/
+                                    </Text>
+                                </View>
+                                <View  style={{flexDirection:'row',alignItems:'center'}}>
+                                    <Image style={styles.logosLink} source={require('../../assets/logoTec.png')} />
+                                    <Text style={styles.link} onPress={ ()=>{ Linking.openURL('https://itsaextraescolares.com/')}}>
+                                        https://itsaextraescolares.com/
+                                    </Text>
+                                </View>
+                                <View  style={{flexDirection:'row',alignItems:'center'}}>
+                                    <Image style={styles.logosLink}source={{ uri:"https://uploads-ssl.webflow.com/5f86a7ed85e2e22fbfccc7b1/5fa02c958a7482068effce1c_Odoo%20Logo.png" }} />
+                                    <Text style={styles.link} onPress={ ()=>{ Linking.openURL('https://siit.itsa.edu.mx/')}}>
+                                        https://siit.itsa.edu.mx/
+                                    </Text>
+                                </View>
+                                <View  style={{flexDirection:'row',alignItems:'center'}}>
+                                    <Image style={styles.logosLink}source={{ uri:"https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/1365px-Facebook_f_logo_%282019%29.svg.png" }} />
+                                    <Text style={styles.link} onPress={ ()=>{ Linking.openURL('https://www.facebook.com/ItsaApatzingan/')}}>
+                                        www.facebook.com/ItsaApatzingan
+                                    </Text>
+                                </View>
                             </View>
-                        </TouchableOpacity>
+                            <Image style={styles.logoTec}source={{ uri:"https://img.icons8.com/carbon-copy/2x/domain.png" }} />
+                        </View>
+                    </View>
                 </View>
-
-            </View>
-            <Divider />
-            {props.estudio_H_Foto != null && props.curp_Foto != null ? 
-                <TouchableOpacity
-                        style={styles2.signIn}
-                        onPress={props.procesoCompletado4}
-                    >
-                            <LinearGradient
-                                colors={["#2096BA", "#2096BA"]}
-                                style={styles2.signIn}
-                            >
-                                <Text
-                                style={[
-                                    styles2.textSign,
-                                    {
-                                    color: "#fff",
-                                    },
-                                ]}
-                                >
-                                    Parte 4/5
-                                </Text>
-                            </LinearGradient>
-                </TouchableOpacity>
-            :null}
-                <View style={styles2.button}>
-                    <TouchableOpacity
-                        style={styles2.signIn}
-                        onPress={props.regresar_al_P3}
-                    >
-                        <LinearGradient
-                            colors={["#fff", "#fff"]}
-                            style={styles2.signIn}
-                        >
-                            <Text
-                            style={[
-                                styles2.textSign,
-                                {
-                                color: "#05375a",
-                                },
-                            ]}
-                            >
-                                Regresar
-                            </Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
-                </View>
-            </SafeAreaView>
+            </ScrollView>
+        </SafeAreaView>
     );
 };
 
-export default ConstanciaMedicaCURP;
+export default ResumenProceso;
 
 
 const styles = StyleSheet.create({
-    imagenFoto: {
-        marginTop:20,
-        marginBottom: 20,
-        width: Dimensions.get("window").width/4,
-        height: Dimensions.get("window").height /4,
-        alignContent: "center",
-        justifyContent: "center",
-        backgroundColor: "#05375a",
-        borderRadius: 10,
-        elevation: 8,
+    link:{
+        color:'#0a65b5',
+        margin:5,
     },
-    container: {
-        flex: 1,
-    },
-    containerFoto:{
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        backgroundColor: '#fff',
+    texto1:{
+        fontSize:14,
+        fontWeight:'400',
+        textAlign:'center',
+        color:'#05375a',
+        width: Dimensions.get("window").width -50,
+    }
+    ,
+    texto2:{
+        fontSize:14,
+        fontWeight:'400',
+        textAlign:'center',
+        color:'#05375a',
+        marginBottom:10,
+        width: Dimensions.get("window").width -20,
+    }
+    ,
+    contenedor:{
+        flexDirection:'row',
         alignItems:'center',
+        justifyContent:'flex-start',
+        alignContent:'flex-start',
         width: Dimensions.get("window").width,
-        
-    
-    },
-    foto:{
-        marginTop:20,
-        marginBottom: 20,
-        width: Dimensions.get("window").width/4,
-        height: Dimensions.get("window").height /4,
-        alignContent: "center",
-        justifyContent: "center",
-        backgroundColor: "#05375a",
-        borderRadius: 10,
-        marginRight: 10,
-    },
-    button: {
-        width: Dimensions.get("window").width /4,
-        height: 40,
-        backgroundColor: '#05375a',
-        alignItems: 'center',
-        justifyContent:'center',
-        margin: 20,
-
+        marginTop:10
         
     },
-    textC: {
-        fontSize: 14,
-        color: '#fff',
+    logoTec:{
+        width:100,
+        height:100,
+        resizeMode:'contain',
+        marginLeft:15,
+        
     },
+    logoTec2:{
+        width:100,
+        height:100,
+        resizeMode:'contain',
+        margin:10
+    },
+    logosLink:{
+        width:20,
+        height:20,
+        resizeMode:'contain',
+        marginRight:5,
+        
+    }
 });
 
-const styles2 = StyleSheet.create({
-    button: {
-        alignItems: "center",
-        marginTop: 50,
-    },
-    signIn: {
-        width: "95%",
-        height: 50,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 10,
-        marginLeft:5
-    },
-    textSign: {
-        fontSize: 18,
-        fontWeight: "bold",
-    },
-    textPrivate: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        marginTop: 20,
-    },
-    color_textPrivate: {
-        color: "grey",
-    },
-});
+
