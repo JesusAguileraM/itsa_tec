@@ -15,6 +15,7 @@ import SituacionActual from '../ProcesoSIIT/Alumnos/SituacionActualScreen';
 import Calificaciones from '../ProcesoSIIT/Alumnos/CalificacionesScreen';
 import Expedientes from '../ProcesoSIIT/Alumnos/ExpedientesScreen';
 import CargasScreen from '../ProcesoSIIT/Cargas/CargasScreen';
+    import VisualizarScreen from '../ProcesoSIIT/Cargas/VisualizarScreen';
 import DescargasScreen from '../ProcesoSIIT/Descargas/DescargasScreen';
 import DepositosScreen from '../ProcesoSIIT/DepositosBancarios/DepositosScreen';
 import VisualizarPagoScreen from '../ProcesoSIIT/DepositosBancarios/VisualizarPagoScreen';
@@ -363,6 +364,16 @@ const CargasStackScreen = ({ navigation }) => (
         ),
       }}
     />
+    <CargasStack.Screen 
+      name="VisualizarScreen"
+      component={VisualizarScreen}
+      options={{
+        title: 'Materias',
+      }}
+    />
+
+
+
   </CargasStack.Navigator>
 );
 

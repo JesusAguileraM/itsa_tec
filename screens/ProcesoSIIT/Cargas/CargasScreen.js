@@ -61,8 +61,9 @@ import React,{useState, useEffect} from 'react';
             
         ];
 
-        const funcionDescargarArchivo =(id)=>{
-            setSelectedId(id)
+        const funcionDescargarArchivo =async(id)=>{
+            await setSelectedId(id)
+            await navigation.navigate('VisualizarScreen',{no_carga:id});
             // Alert.alert(
             //     "Archivo descargando...",
             //     "Es archivo es un pdf",

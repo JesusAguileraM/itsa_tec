@@ -189,7 +189,7 @@ const InformacionPersonal = (props) => {
                         </View>
 
                         <View style={{height:60,width:25,alignItems:'flex-end',justifyContent:'center'}}>
-                            {props.data.sexo !=null ? (
+                            {props.data.sexo_Aprobado ==true ? (
                             <Animatable.View animation="bounceIn">
                                 <Feather name="check-circle" color="green" size={20} />
                             </Animatable.View>
