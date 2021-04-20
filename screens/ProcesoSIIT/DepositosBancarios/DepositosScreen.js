@@ -50,7 +50,7 @@ import React,{useState, useEffect} from 'react';
 
         useEffect(() => {
             (async() => {
-                const listaPagos = await api.getDepositoBancarioAlumnoNoPagado();
+                const listaPagos = await api.getDepositoBancarioAlumno();
                 if(!listaPagos)
                     return;
                 let lp = listaPagos.data.data;
@@ -59,7 +59,7 @@ import React,{useState, useEffect} from 'react';
         }, []);
 
         const reloadDepositosBancarios = async () => {
-            const listaPagos = await api.getDepositoBancarioAlumnoNoPagado();
+            const listaPagos = await api.getDepositoBancarioAlumno();
             let lp = listaPagos.data.data;
             setListaPagos(lp);
         }

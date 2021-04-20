@@ -4,25 +4,11 @@ import {Avatar,Title,Caption,Text,DataTable,Divider,Button} from 'react-native-p
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import RNPickerSelect from 'react-native-picker-select';
 import * as api from '../../../auth/request';
+import { ESTADOPAGO } from '../../../auth/config';
 import Splash from '../../../components/Splash';
 
 const CrearPagoScreen = ({navigation}) => {
     const uri_foto = 'https://maryza.gnomio.com/pluginfile.php/2/course/section/1/logoTecNM.png';
-    const [Alumno, setAlumno] = React.useState({
-        NumeroControl:"15020357",
-        nombre: "JESUS ALEJANDRO",
-        ApellidoPaterno: "AGUILERA",
-        apellidoMaterno: "MAGAÑA",
-        TipoAlta:"Nuevo Ingreso",
-        EstadoAlumno:"Vigente",
-        Carrera:"ING.SIST",
-        fechaNacimiento:"05/05/1996",
-        curp: "AUMJ960505HMNGGS03",
-        sexo:"Masculino",
-        AnoIngreso:"0",
-        TipoAlumno:"Regular",
-        PlanEstudios:"ISIC2010224-W",
-    });
     const [dataTipoPagos, setDataTipoPagos] = useState([]);
     const [listaTipoPago, setListaTipoPago] =useState([]);
     const [listaConcepto, setListaConcepto] =useState([]);
@@ -69,9 +55,6 @@ const CrearPagoScreen = ({navigation}) => {
                 cantidad: cantidad, 
                 costo: costo,
                 importe: importe,
-                convenioCIE: "001770500",
-                observaciones: "No aplica",
-                estadoPago: "En revisión",
             };
             try {
                 setLoading(true);
@@ -119,7 +102,7 @@ const CrearPagoScreen = ({navigation}) => {
                     
                         <View style={{marginLeft: 50,marginTop:25}}>
                             <Title style={styles.titulo}>Numero de Control:</Title>
-                            <Title style={styles.titulo}>{Alumno.NumeroControl}</Title>
+                            <Title style={styles.titulo}>{`Falta`}</Title>
                         </View>
                     </View>
                 </View>
