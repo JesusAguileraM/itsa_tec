@@ -51,6 +51,8 @@ import React,{useState, useEffect} from 'react';
         useEffect(() => {
             (async() => {
                 const listaPagos = await api.getDepositoBancarioAlumnoNoPagado();
+                if(!listaPagos)
+                    return;
                 let lp = listaPagos.data.data;
                 setListaPagos(lp);
             })();

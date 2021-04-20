@@ -71,7 +71,7 @@ const CrearPagoScreen = ({navigation}) => {
                 importe: importe,
                 convenioCIE: "001770500",
                 observaciones: "No aplica",
-                estadoPago: "En proceso",
+                estadoPago: "En revisión",
             };
             try {
                 setLoading(true);
