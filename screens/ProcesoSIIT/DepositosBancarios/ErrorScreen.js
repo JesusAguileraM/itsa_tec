@@ -4,7 +4,7 @@ import {Divider,Surface,Portal,Dialog,Paragraph,} from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 
 
-const procesoIncompleto = (props) => {
+const ErrorScreen = (props) => {
 
     const [comprobado, setComprobado] = React.useState({
         Form_parte1:true,
@@ -19,7 +19,7 @@ const procesoIncompleto = (props) => {
             <ScrollView>
                 <View style={{justifyContent:'center',alignItems:'center'}}>
                     <View style={{justifyContent:'center',alignItems:'center'}}>
-                        <Image style={styles.logoTec2} source={require('../../assets/alertaOnda.gif')} />
+                        <Image style={styles.logoTec2} source={require('../../../assets/alertaOnda.gif')} />
                         <Text style={{color:"#000",fontSize:18,marginBottom:10,fontWeight:'bold'}}>Hubo un error</Text>
                         <Text style={styles.texto1} >
                             Algun dato del formulario o foto no cumple con las especificaciones, vuelva a realizar
@@ -35,8 +35,8 @@ const procesoIncompleto = (props) => {
                             <View>
                                 <View style={{flexDirection:'row',alignItems:'center'}}>
                                     {comprobado.Form_parte1===true ? 
-                                        <Image style={styles.logosLink}  source={require('../../assets/correcto.gif')}/>:
-                                        <Image style={styles.logosLink}  source={require('../../assets/alertaCabeceando.gif')}/>
+                                        <Image style={styles.logosLink}  source={require('../../../assets/correcto.gif')}/>:
+                                        <Image style={styles.logosLink}  source={require('../../../assets/alertaCabeceando.gif')}/>
                                     }
 
 
@@ -46,8 +46,8 @@ const procesoIncompleto = (props) => {
                                 </View>
                                 <View  style={{flexDirection:'row',alignItems:'center'}}>
                                     {comprobado.Form_parte2===true ? 
-                                        <Image style={styles.logosLink}  source={require('../../assets/correcto.gif')}/>:
-                                        <Image style={styles.logosLink}  source={require('../../assets/alertaCabeceando.gif')}/>
+                                        <Image style={styles.logosLink}  source={require('../../../assets/correcto.gif')}/>:
+                                        <Image style={styles.logosLink}  source={require('../../../assets/alertaCabeceando.gif')}/>
                                     }
                                     <Text style={styles.link}>
                                         Formulario parte 2
@@ -55,8 +55,8 @@ const procesoIncompleto = (props) => {
                                 </View>
                                 <View  style={{flexDirection:'row',alignItems:'center'}}>
                                     {comprobado.Acta===true ? 
-                                        <Image style={styles.logosLink}  source={require('../../assets/correcto.gif')}/>:
-                                        <Image style={styles.logosLink}  source={require('../../assets/alertaCabeceando.gif')}/>
+                                        <Image style={styles.logosLink}  source={require('../../../assets/correcto.gif')}/>:
+                                        <Image style={styles.logosLink}  source={require('../../../assets/alertaCabeceando.gif')}/>
                                     }
                                     <Text style={styles.link}>
                                         Acta de nacimiento
@@ -64,8 +64,8 @@ const procesoIncompleto = (props) => {
                                 </View>
                                 <View  style={{flexDirection:'row',alignItems:'center'}}>
                                     {comprobado.certificadoBach===true ? 
-                                        <Image style={styles.logosLink}  source={require('../../assets/correcto.gif')}/>:
-                                        <Image style={styles.logosLink}  source={require('../../assets/alertaCabeceando.gif')}/>
+                                        <Image style={styles.logosLink}  source={require('../../../assets/correcto.gif')}/>:
+                                        <Image style={styles.logosLink}  source={require('../../../assets/alertaCabeceando.gif')}/>
                                     }
                                     <Text style={styles.link}>
                                         Certificado de bachillerato
@@ -73,8 +73,8 @@ const procesoIncompleto = (props) => {
                                 </View>
                                 <View  style={{flexDirection:'row',alignItems:'center'}}>
                                     {comprobado.curp===true ? 
-                                        <Image style={styles.logosLink}  source={require('../../assets/correcto.gif')}/>:
-                                        <Image style={styles.logosLink}  source={require('../../assets/alertaCabeceando.gif')}/>
+                                        <Image style={styles.logosLink}  source={require('../../../assets/correcto.gif')}/>:
+                                        <Image style={styles.logosLink}  source={require('../../../assets/alertaCabeceando.gif')}/>
                                     }
                                     <Text style={styles.link}>
                                         Curp
@@ -82,8 +82,8 @@ const procesoIncompleto = (props) => {
                                 </View>
                                 <View  style={{flexDirection:'row',alignItems:'center'}}>
                                     {comprobado.contanciaMed===true ? 
-                                        <Image style={styles.logosLink}  source={require('../../assets/correcto.gif')}/>:
-                                        <Image style={styles.logosLink}  source={require('../../assets/alertaCabeceando.gif')}/>
+                                        <Image style={styles.logosLink}  source={require('../../../assets/correcto.gif')}/>:
+                                        <Image style={styles.logosLink}  source={require('../../../assets/alertaCabeceando.gif')}/>
                                     }
                                     <Text style={styles.link}>
                                         Constancia Medica
@@ -99,7 +99,7 @@ const procesoIncompleto = (props) => {
     );
 };
 
-export default procesoIncompleto;
+export default ErrorScreen;
 
 
 const styles = StyleSheet.create({

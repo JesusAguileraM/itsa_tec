@@ -2,23 +2,21 @@ import React, { useState, useEffect, useRef } from "react";
 import {View,Text,Button,Linking,StyleSheet,Dimensions,TouchableOpacity,SafeAreaView,ScrollView,Image,StatusBar,TextInput,Platform,} from "react-native";
 
 
-const EsperandoAprobacion = (props) => {
+const FinalizadoScreen = (props) => {
 
     return (
         <SafeAreaView style={{flex:1}}>
             <ScrollView>
                 <View style={{justifyContent:'center',alignItems:'center'}}>
                     <View style={{justifyContent:'center',alignItems:'center'}}>
-                        <Image style={styles.logoTec2} source={require('../../assets/logoTec.png')} />
+                        <Image style={styles.logoTec2} source={require('../../../assets/logoTec.png')} />
                         <Text style={{color:"#000",fontSize:18,marginBottom:10,fontWeight:'bold'}}>IMPORTANTE</Text>
                         <Text style={styles.texto1} >
-                            Puede demorar unas horas la respuesta ya que la información y fotos estan siendo revisadas por el personal 
-                            del tecnologico, por lo que tendra que esperar las siguientes 24hrs hasta que regresemos una 
-                            respuesta a esta aplicación.
+                            Estamos validando sus datos para el deposito
                         </Text>
                         <Image 
                             style={{width:300, height:100}}
-                            source={require('../../assets/cargandoBolitas.gif')}
+                            source={require('../../../assets/cargandoBolitas.gif')}
                         />
                     </View>
                     <View style={{marginTop:20,justifyContent:'center',alignItems:'center'}}>
@@ -34,7 +32,7 @@ const EsperandoAprobacion = (props) => {
                                     </Text>
                                 </View>
                                 <View  style={{flexDirection:'row',alignItems:'center'}}>
-                                    <Image style={styles.logosLink} source={require('../../assets/logoTec.png')} />
+                                    <Image style={styles.logosLink} source={require('../../../assets/logoTec.png')} />
                                     <Text style={styles.link} onPress={ ()=>{ Linking.openURL('https://itsaextraescolares.com/')}}>
                                         https://itsaextraescolares.com/
                                     </Text>
@@ -61,7 +59,7 @@ const EsperandoAprobacion = (props) => {
     );
 };
 
-export default EsperandoAprobacion;
+export default FinalizadoScreen;
 
 
 const styles = StyleSheet.create({

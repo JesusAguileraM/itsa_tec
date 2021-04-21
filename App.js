@@ -29,7 +29,16 @@ const App = () => {
   //Manejo de la sesión
   const {isLoading, isStatus, setIsLoading, setIsStatus} = useOnAuthStateChanged();
   //Manejo de las notificaciones
-  const {expoPushToken, setExpoPushToken }  = useRegisterForPushNotificationsAsync();
+  const {expoPushToken, setExpoPushToken }
+    = useRegisterForPushNotificationsAsync();
+
+  useEffect(() => {
+    (async () => {
+        const user = await crudToken.ObtenerInfoPersonalInscripcion();
+        const status = await crudToken.ObtenerIsStatus();
+        setIsStatus(status)
+    })();
+  }, [])
 
   const authContext = React.useMemo(
     () => ({
