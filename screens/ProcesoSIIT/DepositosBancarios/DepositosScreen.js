@@ -9,45 +9,6 @@ import React,{useState, useEffect} from 'react';
         const [selectedId, setSelectedId] = useState(null);
         const [listaPagos, setListaPagos] = useState([]);
 
-        const lista=[
-            {   id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28bb",
-                folioInterno:"2101938",
-                periodo:"20211-ENEJUL",
-                clasificacion:"Constancias y kardex",
-                nControl:"15020357",
-                referenciaBanc:"A15020357F210193830649279",
-                fecha:"20/03/2021",
-                usuario:"JESUS ALEJANDRO AGUILERA MAGAÑA",
-                total:50,
-                estado:'cancelado'
-            }, 
-            {   
-                id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28bc",
-                folioInterno:"2101938",
-                periodo:"20211-ENEJUL",
-                clasificacion:"Constancias y kardex",
-                nControl:"15020357",
-                referenciaBanc:"A15020357F210193830649279",
-                fecha:"20/03/2021",
-                usuario:"JESUS ALEJANDRO AGUILERA MAGAÑA",
-                total:50,
-                estado:'cancelado'
-            },
-            {   
-                id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28bd",
-                folioInterno:"2101938",
-                periodo:"20211-ENEJUL",
-                clasificacion:"Constancias y kardex",
-                nControl:"15020357",
-                referenciaBanc:"A15020357F210193830649279",
-                fecha:"20/03/2021",
-                usuario:"JESUS ALEJANDRO AGUILERA MAGAÑA",
-                total:50,
-                estado:'cancelado'
-            },
-            
-        ];
-
         useEffect(() => {
             (async() => {
                 const listaPagos = await api.getDepositoBancarioAlumno();
@@ -55,6 +16,7 @@ import React,{useState, useEffect} from 'react';
                     return;
                 let lp = listaPagos.data.data;
                 setListaPagos(lp);
+                console.log(listaPagos);
             })();
         }, []);
 
@@ -66,7 +28,8 @@ import React,{useState, useEffect} from 'react';
 
         const visualizarDeposito =(id)=>{
             setSelectedId(id)
-            navigation.navigate('VisualizarPagoScreen');
+            const deposito = listaPagos.find((deposito) => deposito._id === id)
+            navigation.navigate('VisualizarPagoScreen', {deposito: deposito});
         }
     
         const Item = ({ item, onPress, backgroundColor, textColor }) => (

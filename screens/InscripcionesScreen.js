@@ -116,6 +116,8 @@ const InscripcionesScreen = ({ navigation }) =>
             "fechaNacimiento": fechaNacimiento,
         }
 
+
+
         await api.putInfoPersonal(obj);//subimos la información del paso 1
         const carreras = await api.getCarreras();//obtenemos las carreras para el paso 2
         const listaCarreras = carreras.data.data.map((doc) => {
@@ -157,6 +159,17 @@ const InscripcionesScreen = ({ navigation }) =>
         const formData = new FormData();
         formData.append('multi-files', acta_N_Foto);
         formData.append('multi-files', diploma_B_Foto);
+        
+        const obj = {
+            acta: acta_N_Foto,
+            certificadoBach: diploma_B_Foto,
+        }
+
+        const obj1 = {
+            fotos: formData,
+        }
+
+        //Manuel no olvides que tenemos que crear una instancia de Documentos para poderlos actualizar
         await api.putActaCertificadoCurpConstancia(formData);
         setContinuar3(false);
         setContinuar4(true);
@@ -164,13 +177,13 @@ const InscripcionesScreen = ({ navigation }) =>
         setBarraProces(0.72);
     }
     const procesoCompletado4= async ()=>{
-        // setLoading(true);
+        setLoading(true);
         const formData = new FormData();
         formData.append('multi-files', curp_Foto);
         formData.append('multi-files', estudio_H_Foto);
         await api.putActaCertificadoCurpConstancia(formData);
         //nos traemos los pagos bancario para mandarlos al paso 5
-        const listaDepositos = await api.getDepositosAvailables();
+        const listaDepositos = await api.getDepositoBancarioAlumno();
         //Cuando lista depositos sea null debemos impedir que continue o lanzar
         //una vista indicando que la información está siendo evaluada
         if(listaDepositos.data.status !== 'notfound'){

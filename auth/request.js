@@ -164,12 +164,12 @@ const putFichaAportacionDepositoBancario = async (form) => {
         const { _id }= sesion[0];
         const data = await axios({
             method: 'PUT',
-            url: `${config.BACKENDURL}/${config.DEPOSITOS}`,
+            url: `${config.BACKENDURL}/${config.DEPOSITOALUMNO}`,
             headers: { 'content-type': 'multipart/form-data' },
             data: form,
             params: {
                 id: _id,
-                procesado: true,
+                procesado: false,
             }
         })
         return data;
@@ -272,6 +272,7 @@ const getDepositoBancarioAlumno = async () => {
     try{
         const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
         const { _id }= sesion[0];
+        
         const data = await axios({
             method: 'GET',
             url: `${config.BACKENDURL}/${config.DEPOSITOALUMNO}/${_id}`,
