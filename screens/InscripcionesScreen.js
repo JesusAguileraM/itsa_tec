@@ -80,18 +80,18 @@ const InscripcionesScreen = ({ navigation }) =>
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const [no_Documento, setNo_Documento] = useState(1);//Para saber que documento hago referencia
-    const [continuar1,setContinuar1] = useState(true);
-    const [continuar2,setContinuar2] = useState(false);
-    const [continuar3,setContinuar3] = useState(false);
-    const [continuar4,setContinuar4] = useState(false);
-    const [continuar5,setContinuar5] = useState(false);
-    const [continuar6,setContinuar6] = useState(false);
-    // const [continuar1,setContinuar1] = useState(false);
+    // const [continuar1,setContinuar1] = useState(true);
     // const [continuar2,setContinuar2] = useState(false);
     // const [continuar3,setContinuar3] = useState(false);
-    // const [continuar4,setContinuar4] = useState(true);
+    // const [continuar4,setContinuar4] = useState(false);
     // const [continuar5,setContinuar5] = useState(false);
     // const [continuar6,setContinuar6] = useState(false);
+    const [continuar1,setContinuar1] = useState(false);
+    const [continuar2,setContinuar2] = useState(false);
+    const [continuar3,setContinuar3] = useState(false);
+    const [continuar4,setContinuar4] = useState(true);
+    const [continuar5,setContinuar5] = useState(false);
+    const [continuar6,setContinuar6] = useState(false);
 
     const [barraProces,setBarraProces]=useState(0.18);
 
