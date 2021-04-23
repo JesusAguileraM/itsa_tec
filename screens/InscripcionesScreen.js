@@ -81,26 +81,25 @@ const InscripcionesScreen = ({ navigation }) =>
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const [no_Documento, setNo_Documento] = useState(1);//Para saber que documento hago referencia
-    const [continuar1,setContinuar1] = useState(true);
+    // const [continuar1,setContinuar1] = useState(true);
+    // const [continuar2,setContinuar2] = useState(false);
+    // const [continuar3,setContinuar3] = useState(false);
+    // const [continuar4,setContinuar4] = useState(false);
+    // const [continuar5,setContinuar5] = useState(false);
+    // const [continuar6,setContinuar6] = useState(false);
+    const [continuar1,setContinuar1] = useState(false);
     const [continuar2,setContinuar2] = useState(false);
     const [continuar3,setContinuar3] = useState(false);
     const [continuar4,setContinuar4] = useState(false);
-    const [continuar5,setContinuar5] = useState(false);
+    const [continuar5,setContinuar5] = useState(true);
     const [continuar6,setContinuar6] = useState(false);
-    // const [continuar1,setContinuar1] = useState(false);
-    // const [continuar2,setContinuar2] = useState(false);
-    // const [continuar3,setContinuar3] = useState(false);
-    // const [continuar4,setContinuar4] = useState(true);
-    // const [continuar5,setContinuar5] = useState(false);
-    // const [continuar6,setContinuar6] = useState(false);
 
     const [barraProces,setBarraProces]=useState(0.18);
-
     //Data de las opciones
     const [listaCarreras, setListaCarreras] = useState([]);
     const [listaEstados, setListaEstados] = useState([]);
     const [listaMunicipios, setListaMunicipios] = useState([]);
-    const [depositos, setDepositos] = useState([]);
+    const [depositos, setDepositos] = useState(null);
 
 
     const procesoCompletado1= async () =>{
@@ -201,15 +200,16 @@ const InscripcionesScreen = ({ navigation }) =>
         const listaDepositos = await api.getDepositoBancarioAlumno();
         //Cuando lista depositos sea null debemos impedir que continue o lanzar
         //una vista indicando que la información está siendo evaluada
-        if(listaDepositos.data.status !== 'notfound'){
-            setDepositos(listaDepositos.data.data);
-            setContinuar4(false);   
-            setContinuar5(true);
-            setColorProgress('#00bb2d');
-            setBarraProces(1);
-        } else {
-            alert('No puedes continuar ya que los datos no han sido validados');
-        }
+        // ya despues puedes agregar un controlardor de pagos exclusivo para inscripciones
+        setDepositos(listaDepositos);
+        setContinuar4(false);   
+        setContinuar5(true);
+        setColorProgress('#00bb2d');
+        setBarraProces(1);
+        // if(listaDepositos){
+        // } else {
+        //     alert('No puedes continuar ya que los datos no han sido validados');
+        // }
         let D = await saveFormulario.obtenerFoto2();
         console.log('fotos 2')
         console.log(D);

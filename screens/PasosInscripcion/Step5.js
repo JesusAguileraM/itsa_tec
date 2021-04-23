@@ -3,6 +3,7 @@ import {View,Text,Button,StyleSheet,Dimensions,TouchableOpacity,SafeAreaView,Scr
 import {Divider,Surface,Portal,Dialog,Paragraph,DataTable,Avatar,Title,Caption,} from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import RevisionScreen from './RevisionScreen';
 
 const Item = (props) => (
     <View>
@@ -61,7 +62,7 @@ const Item = (props) => (
             </ScrollView>
         </View>
 
-        <View style={{alignItems: "center"}}>
+        <View style={{alignItems: "flex-start"}}>
             <Text style={{fontSize: 18,color: "#05375a",marginBottom: 10,marginTop: 10,fontWeight:'bold'}}>
                 Pago de ficha
             </Text>
@@ -81,7 +82,7 @@ const Item = (props) => (
                         />
                     </TouchableOpacity>
                 </Surface>
-                <View style={{}}>
+                <View style={{alignItems: "flex-start"}}>
                     <SafeAreaView style={{ width: Dimensions.get("window").width / 2 }}>
                         <Text style={{ fontSize: 18, fontWeight: "bold" }}>
                             Rebibo de Pago del banco
@@ -105,15 +106,6 @@ const Item = (props) => (
 );
 
 const ComprobarPago = (props) => {
-    
-    // const [visible, setVisible] = useState(false);
-    // const showDialog = async () => {
-    //     await props.terminarProceso();
-    //     setVisible(true)
-    // };
-    // const hideDialog = () => { 
-    //     setVisible(false);
-    // };
 
     const finalizarProcesoInscripcion = async () => {
         await props.terminarProceso();
@@ -121,7 +113,6 @@ const ComprobarPago = (props) => {
     }
 
     const renderItem = (data) => {
-        // console.log(data)
         return <Item 
             {...data.item} 
             {...props} 
@@ -129,9 +120,8 @@ const ComprobarPago = (props) => {
         />
     }
 
-    // style={{ marginTop: 20, alignItems: "flex-start" }}
     return (
-        <SafeAreaView >
+        <SafeAreaView  >
             <View style={styles.userInfoSection}>
                 <Image style={{width:50,height:20,resizeMode:'contain'}}source={{ uri:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/BBVA_2019.svg/1280px-BBVA_2019.svg.png" }} />     
                 <View style={{alignItems:'flex-start' ,flexDirection: 'row', marginTop: 18}}>    
@@ -148,66 +138,77 @@ const ComprobarPago = (props) => {
             </View>
 
             <ScrollView horizontal={true}>
-                <FlatList
-                    data={props.depositos}
-                    renderItem={renderItem}
-                    keyExtractor={data => data._id}
-                />
+                {
+                    (props.depositos) && (
+                        <FlatList
+                            data={props.depositos}
+                            renderItem={renderItem}
+                            keyExtractor={data => data._id}
+                        />
+                    )
+                }
             </ScrollView>                    
 
             <View >
-                <View style={styles2.button}>
-                    <TouchableOpacity
-                    style={styles2.signIn}
-                    onPress={finalizarProcesoInscripcion}>
-                    <LinearGradient
-                    colors={["#05375a", "#2096BA"]}
-                    style={styles2.signIn}
-                    >
-                    <Text
-                        style={[
-                        styles2.textSign,
-                        {
-                            color: "#fff",
-                        },
-                        ]}
-                    >
-                        -_-   Enviar Registro   -_-
-                    </Text>
-                    </LinearGradient>
-                </TouchableOpacity>
+                {
+                    (props.depositos) && (
+                        <View style={styles2.button}>
+                            <TouchableOpacity
+                                style={styles2.signIn}
+                                onPress={finalizarProcesoInscripcion}>
+                                <LinearGradient
+                                colors={["#05375a", "#2096BA"]}
+                                style={styles2.signIn}
+                                >
+                                <Text
+                                    style={[
+                                    styles2.textSign,
+                                    {
+                                        color: "#fff",
+                                    },
+                                    ]}
+                                >
+                                    Enviar comprobantes
+                                </Text>
+                                </LinearGradient>
+                            </TouchableOpacity>
+                        </View>
+                    )
+                }
+                {
+                    (!props.depositos ) && (
+                        <>
+                            <View style={{justifyContent:'center',alignItems:'center',marginBottom:40}}>
+                                <Text style={{color:"#dc3545",fontSize:18,marginBottom:10,fontWeight:'bold'}}>¡IMPORTANTE!</Text>      
+                                <Text style={styles.texto1} >
+                                    Puede demorar varios días, la informacion y fotos estan siendo revisadas por el personal 
+                                    del tecnológico, por lo que tendra que esperar hasta que los siguientes indicadores estén 
+                                    aprobados. Una vez que sea aprobada su información tendrás que continuar con el pago de tu 
+                                    ficha de inscripción y el pago de aportación para el fortalecimiento institucional.
+                                </Text>
+                            </View>  
+                            <RevisionScreen/>
+                        </>
+                        
+                    )
+                }
+                <View style={{width:'95%',marginLeft:10}}>
+                    <View style={styles2.textPrivate}>
+                        <Text style={styles2.color_textPrivate}>
+                            El proceso de inscripciones es seguro, para mas informaición consulta en:
+                        </Text>
+                        <Text style={[styles2.color_textPrivate, { fontWeight: "bold" }]}>
+                            {" "}
+                            www.itsa.edu.mx
+                        </Text>
+                        <Text style={styles2.color_textPrivate}> o llamar al teléfono</Text>
+                        <Text style={[styles2.color_textPrivate, { fontWeight: "bold" }]}>
+                            {" "}
+                            +52 453-534-8300{" "}
+                        </Text>
+                    </View>
                 </View>
-                <View style={styles2.textPrivate}>
-                    <Text style={styles2.color_textPrivate}>
-                        El proceso de inscripciones es seguro, para mas informaicon en:
-                    </Text>
-                    <Text style={[styles2.color_textPrivate, { fontWeight: "bold" }]}>
-                        {" "}
-                        www.itsa.edu.mx
-                    </Text>
-                    <Text style={styles2.color_textPrivate}> o llamar al teléfono</Text>
-                    <Text style={[styles2.color_textPrivate, { fontWeight: "bold" }]}>
-                        {" "}
-                        453-534-8300{" "}
-                    </Text>
-                </View>
-                {/* <Portal>
-                    <Dialog visible={visible} onDismiss={hideDialog}>
-                        <Dialog.Title>! Has completado el registro ¡</Dialog.Title>
-                        <Dialog.Content>
-                            <Paragraph>
-                                Revisa tú correo, dentro de las siguiente 24 horas te
-                                enviaremos una cuenta institucional para que puedas iniciar
-                                sesión.
-                            </Paragraph>
-                        </Dialog.Content>
-                        <Dialog.Actions>
-                            <Button mode="text" color="#2096BA" onPress={hideDialog} title='Aceptar'></Button>
-                        </Dialog.Actions>
-                    </Dialog>
-                </Portal> */}
             </View>
-
             
         </SafeAreaView> 
     );
@@ -312,6 +313,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginBottom: 10,
     },
+    texto1:{
+        fontSize:14,
+        fontWeight:'400',
+        textAlign:'center',
+        color:'#05375a',
+        width: Dimensions.get("window").width -50,
+    },
+
 });
 
 const styles2 = StyleSheet.create({

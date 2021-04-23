@@ -10,9 +10,9 @@ const FinalizadoScreen = (props) => {
                 <View style={{justifyContent:'center',alignItems:'center'}}>
                     <View style={{justifyContent:'center',alignItems:'center'}}>
                         <Image style={styles.logoTec2} source={require('../../../assets/logoTec.png')} />
-                        <Text style={{color:"#000",fontSize:18,marginBottom:10,fontWeight:'bold'}}>IMPORTANTE</Text>
+                        <Text style={{color:"#000",fontSize:18,marginBottom:10,fontWeight:'bold'}}>{props.deposito.estadoPago.toUpperCase()}</Text>
                         <Text style={styles.texto1} >
-                            Estamos validando sus datos para el deposito
+                            {props.deposito.observaciones}
                         </Text>
                         <Image 
                             style={{width:300, height:100}}

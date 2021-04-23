@@ -20,11 +20,9 @@ const ErrorScreen = (props) => {
                 <View style={{justifyContent:'center',alignItems:'center'}}>
                     <View style={{justifyContent:'center',alignItems:'center'}}>
                         <Image style={styles.logoTec2} source={require('../../../assets/alertaOnda.gif')} />
-                        <Text style={{color:"#000",fontSize:18,marginBottom:10,fontWeight:'bold'}}>Hubo un error</Text>
+                        <Text style={{color:"#000",fontSize:18,marginBottom:10,fontWeight:'bold'}}>{props.deposito.estadoPago.toUpperCase()}</Text>
                         <Text style={styles.texto1} >
-                            Algun dato del formulario o foto no cumple con las especificaciones, vuelva a realizar
-                            el procedimiento teniendo en cuenta que debe realizar el formulario nuevamente y asegurarse que la fotos sean
-                            visibles para que el instituto pueda reviarlas y corraborar que la información sea correcta.
+                            {props.deposito.observaciones}
                         </Text>
                     </View>
                     <View style={{marginTop:20,justifyContent:'center',alignItems:'center'}}>

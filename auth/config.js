@@ -1,5 +1,6 @@
 const BACKENDURL = "https://proagrimex.com/api/v1";
 const PRUEBAS = "http://localhost:3000/api/v1";
+
 //movil
 const USERS = "users";
 const TEMPORARYUSERS = "temporaryusers";
@@ -9,7 +10,8 @@ const DOCUMENTOS = "documentos";
 const DESCARGAS = "descargas";
 const CALIFICACIONES = "calificaciones";
 
-const DEPOSITOALUMNO = "depositosbancarios/alumno";  //crea o actualiza un deposito bancario (/:id obtiene de un alumno depositos)
+const DEPOSITOALUMNO = "depositosbancarios/alumno";  //crea, obtiene y elimina  (/:id obtiene de un alumno depositos)
+const DEPOSITOALUMNOINSCRIPCION = "depositosbancarios/alumno/inscripcion";  //actualiza un deposito bancario
 const DEPOSITOSNOPROCESADOS = "depositosbancarios/alumno/noprocesados"; //obtiene la lista de los no procesados
 const DEPOSITOSNOPAGADOS = "depositosbancarios/alumno/nopagados"; //obtiene la lista de los no pagados
 
@@ -35,6 +37,7 @@ const ESTADOPAGO = {
     rechazado: "rechazado", 
     finalizado: "finalizado", 
     cancelado: "cancelado",
+    fotoRechazada: "foto rechazada",
 };
 
 
@@ -62,4 +65,5 @@ export {
     DEPOSITOSPAGADO,
     DEPOSITOSPROCESADO,
     DEPOSITOALUMNO,
+    DEPOSITOALUMNOINSCRIPCION,
 };

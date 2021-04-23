@@ -10,6 +10,8 @@ import { ESTADOPAGO } from '../../../auth/config';
 import toFecha from '../../../util';
 import FinalizadoScreen from './FinalizadoScreen';
 import ErrorScreen from './ErrorScreen';
+import Splash from "../../../components/Splash";
+import * as api from "../../../auth/request";
 
 //import dbPagoR from '../../../database/crudDatosPagosReInscripcion';
 
@@ -21,22 +23,31 @@ const VisualizarPagoScreen = ({navigation, route}) => {
     const [type, setType] = useState(Camera.Constants.Type.back);
     const camRef = useRef(null);
     const [foto, setFoto] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     useEffect( () => {
         (async() => {
             setDeposito(route.params.deposito);
-            console.log(route.params.deposito);
-            // if(estadoPago === ESTADOPAGO.aceptado){
-            //     //Quitamos el LoadingPage y habilitamos la vista con la camara
-            // } else if(estadoPago === ESTADOPAGO.rechazado){
-            //     //Habilitamos el LandingPage de error e indicamos ese error
-            // } else if(estadoPago === ESTADOPAGO.revision){
-            //     //Habilitamos el LandingPage de revision diciendo que espere a una estadoPago
-            // } else if(estadoPago === ESTADOPAGO.cancelado){
-            //     //Habilitamos el LandingPage de cancelado una vista donde no aparece nada y diciendo que lo has cancelado
-            // } else if(estadoPago === ESTADOPAGO.finalizado){
-            //     //Habilitamos el LandingPage de Finalizado indicando que ya ha concluido el pago y fue aprobado
-            // }   
+            let estadoPago = route.params.deposito.estadoPago;
+            if(estadoPago === ESTADOPAGO.aceptado){
+                //Quitamos el LoadingPage y habilitamos la vista con la camara
+            } else if(estadoPago === ESTADOPAGO.rechazado){
+                //Habilitamos el LandingPage de error e indicamos ese error
+            } else if(estadoPago === ESTADOPAGO.revision){
+                //Habilitamos el LandingPage de revision diciendo que espere a una estadoPago
+            } else if(estadoPago === ESTADOPAGO.cancelado){
+                //Habilitamos el LandingPage de cancelado una vista donde no aparece nada y diciendo que lo has cancelado
+            } else if(estadoPago === ESTADOPAGO.finalizado){
+                //Habilitamos el LandingPage de Finalizado indicando que ya ha concluido el pago y fue aprobado
+            } else if(estadoPago === ESTADOPAGO.fotoRechazada){
+                Alert.alert(
+                    "¡Deposito rechazado!",
+                    `${route.params.deposito.observaciones}`,
+                    [
+                      { text: "OK", onPress: () => {} }
+                    ]
+                  );
+            }   
 
             const { status } = await Camera.requestPermissionsAsync();
             setHasPermission(status === 'granted');
@@ -69,26 +80,34 @@ const VisualizarPagoScreen = ({navigation, route}) => {
         // navigation.goBack();
     }
 
-    const enviarFoto=()=>{
-        
+    const enviarFoto = async (id) => {
+        if(!foto)
+            return;
+        setLoading(true);
+        const formData = new FormData();
+        formData.append('multi-files', foto);
+        await api.putDepositoBancarioAlumno(formData, id);
+        navigation.goBack();
+        setLoading(false);
     }
 
-    // const ESTADOPAGO = {
-    //     revision: "revisión", 
-    //     aceptado: "aceptado", 
-    //     rechazado: "rechazado", 
-    //     finalizado: "finalizado", 
-    //     cancelado: "cancelado",
-    // };
-    console.log(foto)
+    if(loading){
+        return (
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <Splash/>
+        </View>
+        );
+    }
+
     return (
         <>
             {
                 (deposito) && (deposito.estadoPago === ESTADOPAGO.revision ||
-                                     deposito.estadoPago === ESTADOPAGO.aceptado) && (
+                        deposito.estadoPago === ESTADOPAGO.aceptado || 
+                                deposito.estadoPago === ESTADOPAGO.fotoRechazada) && (
                     <>
                         { 
-                            (isActiveCamera) ? false : true && (
+                            (!isActiveCamera) && (
                                 <SafeAreaView style={stylesPrivados.container}>
                                     <View>
                                         <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center',backgroundColor:'#fff'}}>
@@ -182,10 +201,23 @@ const VisualizarPagoScreen = ({navigation, route}) => {
                                                 )
                                             }
                                             
-                                            {/* <View><Text style={{fontSize:18,fontWeight:'bold',marginBottom:10,marginLeft:10}}></Text></View> */}
-
+                                            {
+                                                (deposito.estadoPago === ESTADOPAGO.fotoRechazada) && (
+                                                    <View style={{justifyContent:'center',alignItems:'center',marginBottom:0}}>
+                                                        <Text style={{color:"#dc3545",fontSize:18,marginBottom:10,fontWeight:'bold'}}>IMPORTANTE</Text>      
+                                                        <Text style={stylesPrivados.texto1} >
+                                                            {`${deposito.observaciones}`}
+                                                        </Text>
+                                                        <Image 
+                                                            style={{width:60, height:60}}
+                                                            source={require('../../../assets/alertaOnda.gif')}
+                                                        />
+                                                    </View>
+                                                )
+                                            }
+                                            
                                             {(deposito.estadoPago !== ESTADOPAGO.revision) &&(
-                                                    <View style={{alignItems:'center', marginBottom:50}}>
+                                                    <View style={{alignItems:'center', marginTop:0,marginBottom:50}}>
                                                         <View style={stylesPrivados.fotoPosicion}>
                                                             <Surface style={{backgroundColor:'#fff'}}>
                                                                     <TouchableOpacity
@@ -219,7 +251,7 @@ const VisualizarPagoScreen = ({navigation, route}) => {
                                                                     Tomar foto
                                                                 </Button>
 
-                                                                <Button  color="#fff" style={{width:150,height:40,margin:10,marginTop:0,marginBottom:10, backgroundColor:"#d74c4c"}} mode="outlined" onPress={() => enviarFoto()}>
+                                                                <Button  color="#fff" style={{width:150,height:40,margin:10,marginTop:0,marginBottom:10, backgroundColor:"#d74c4c"}} mode="outlined" onPress={() => enviarFoto(deposito._id)}>
                                                                     Enviar
                                                                 </Button>
                                                                 
