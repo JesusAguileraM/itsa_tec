@@ -164,7 +164,7 @@ const putFichaAportacionDepositoBancario = async (form) => {
         const { _id }= sesion[0];
         const data = await axios({
             method: 'PUT',
-            url: `${config.BACKENDURL}/${config.DEPOSITOALUMNO}`,
+            url: `${config.BACKENDURL}/${config.DEPOSITOALUMNOINSCRIPCION}`,
             headers: { 'content-type': 'multipart/form-data' },
             data: form,
             params: {
@@ -272,17 +272,50 @@ const getDepositoBancarioAlumno = async () => {
     try{
         const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
         const { _id }= sesion[0];
-        
         const data = await axios({
             method: 'GET',
             url: `${config.BACKENDURL}/${config.DEPOSITOALUMNO}/${_id}`,
             headers: { 'content-type': 'application/json' },
         })
+        return data.data.data;
+    }
+    catch(error){
+        console.log('no hay depositos')
+        console.log(error || "Error en getDepositosAlumno")
+    }
+}
+
+const cancelarDepositoBancarioAlumno = async (id) => {
+    try{
+        const data = await axios({
+            method: 'DELETE',
+            url: `${config.BACKENDURL}/${config.DEPOSITOALUMNO}/${id}`,
+            headers: { 'content-type': 'application/json' },
+        })
         return data;
     }
     catch(error){
-        console.log('Error en getDepositosAlumno')
-        console.log(error || "Error en getDepositosAlumno")
+        console.log('Error en putEstadoPagoDeposito')
+        console.log(error || "Error en putEstadoPagoDeposito")
+    }
+}
+
+const putDepositoBancarioAlumno = async (form, id) => {
+    try{
+        const data = await axios({
+            method: 'PUT',
+            url: `${config.BACKENDURL}/${config.DEPOSITOALUMNO}`,
+            headers: { 'content-type': 'multipart/form-data' },
+            data: form,
+            params: {
+                id,
+            }
+        })
+        return data;
+    }
+    catch(error){
+        console.log('Error en putDepositoBancarioAlumno')
+        console.log(error || "Error en putDepositoBancarioAlumno")
     }
 }
 
@@ -355,6 +388,8 @@ export {
     putActaCertificadoCurpConstancia, 
     putFichaAportacionDepositoBancario, 
     getDepositoBancarioAlumno,
+    cancelarDepositoBancarioAlumno,
+    putDepositoBancarioAlumno,
     // getDepositoBancarioAlumnoNoPagado,
     // putEstadoPagoDeposito,
     // putPagadoDeposito,
