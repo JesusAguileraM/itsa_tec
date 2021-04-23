@@ -14,6 +14,7 @@ import {styles, styles2} from './styles/datailsScreen';
 //api permissions
 import * as api from '../auth/request';
 import Splash from "../components/Splash";
+import * as saveFormulario from "../database/saveFormulario"; //este almacena internamente la informacion de formularios 1 al 4
 
 // const axios = Axios.create({
 //     baseURL: config.BACKENDURL,
@@ -116,7 +117,8 @@ const InscripcionesScreen = ({ navigation }) =>
             "fechaNacimiento": fechaNacimiento,
         }
 
-
+        saveFormulario.guardarProceso1(obj); /// Guarda la información localmente
+        
 
         await api.putInfoPersonal(obj);//subimos la información del paso 1
         const carreras = await api.getCarreras();//obtenemos las carreras para el paso 2
@@ -145,7 +147,8 @@ const InscripcionesScreen = ({ navigation }) =>
             "numero": numero,
             "cp": cp
         }
-
+        saveFormulario.guardarProceso2(obj); /// Guarda la información localmente
+        
         await api.putInfoEscolar(obj);//enviamos la información escolar al servidor
 
         setContinuar2(false);
@@ -155,6 +158,7 @@ const InscripcionesScreen = ({ navigation }) =>
     }
     const procesoCompletado3= async ()=>{ 
         //curpFoto  actaFoto  certificadoBach  constanciaMedica
+        
         setLoading(true);
         const formData = new FormData();
         formData.append('multi-files', acta_N_Foto);
@@ -165,9 +169,8 @@ const InscripcionesScreen = ({ navigation }) =>
             certificadoBach: diploma_B_Foto,
         }
 
-        const obj1 = {
-            fotos: formData,
-        }
+        await saveFormulario.guardarFoto1(obj); /// Guarda la información localmente
+        
 
         //Manuel no olvides que tenemos que crear una instancia de Documentos para poderlos actualizar
         await api.putActaCertificadoCurpConstancia(formData);
@@ -175,12 +178,24 @@ const InscripcionesScreen = ({ navigation }) =>
         setContinuar4(true);
         setLoading(false);
         setBarraProces(0.72);
+        let D = await saveFormulario.obtenerFoto1();
+        console.log('fotos 1')
+        console.log(D);
     }
+
     const procesoCompletado4= async ()=>{
         setLoading(true);
         const formData = new FormData();
         formData.append('multi-files', curp_Foto);
         formData.append('multi-files', estudio_H_Foto);
+
+        const obj = {
+            curp_Foto: curp_Foto,
+            estudio_H_Foto: estudio_H_Foto,
+        }
+
+        await saveFormulario.guardarFoto2(obj); /// Guarda la información localmente
+
         await api.putActaCertificadoCurpConstancia(formData);
         //nos traemos los pagos bancario para mandarlos al paso 5
         const listaDepositos = await api.getDepositoBancarioAlumno();
@@ -195,6 +210,9 @@ const InscripcionesScreen = ({ navigation }) =>
         } else {
             alert('No puedes continuar ya que los datos no han sido validados');
         }
+        let D = await saveFormulario.obtenerFoto2();
+        console.log('fotos 2')
+        console.log(D);
         setLoading(false);
     }
     
@@ -238,8 +256,87 @@ const InscripcionesScreen = ({ navigation }) =>
         (async () => {
             const { status } = await Camera.requestPermissionsAsync();
             setHasPermission(status === 'granted');
+            let datosFormulario1 = await saveFormulario.obtenerProceso1(); //formulario 1
+            actualizarProceso1(datosFormulario1)
+            let datosFormulario2 = await saveFormulario.obtenerProceso2(); // Formulario 2
+            actualizarProceso2(datosFormulario2);
+
+            let datosFormulario3 = await saveFormulario.obtenerFoto1(); //Fotos 1
+            actualizarProceso3(datosFormulario3);
+            let datosFormulario4 = await saveFormulario.obtenerFoto2(); //Fotos 2
+            console.log(datosFormulario4);
+            actualizarProceso4(datosFormulario4);
+            
+
         })();
     }, []);
+
+    const actualizarProceso1=(datosF)=>{
+        console.log(datosF);
+        if(datosF!=null){
+            setData({
+                ...data,
+                Nombre: datosF.nombre,
+                ApellidoP: datosF.apellidoPaterno,
+                ApellidoM: datosF.apellidoMaterno,
+                Curp: datosF.curp,
+                Telefono: datosF.telefono1,
+                Telefono2: datosF.telefono2,
+                Fecha_nacimiento:datosF.fechaNacimiento,
+                sexo:datosF.sexo,
+                NombreAprobado: true,
+                ApellidoP_Aprobado: true,
+                ApellidoM_Aprobado: true,
+                Curp_Aprobado: true,
+                Telefono_Aprobado: true,
+                Telefono_Aprobado2: true,
+                Fecha_nacimiento_Aprobado:true,
+                sexo_Aprobado:true,
+            })
+        }
+        
+    }
+
+    const actualizarProceso2=(datosF)=>{
+        
+        if(datosF!=null){
+
+            setCarreras(datosF.carrera);
+            setTurno(datosF.turno);
+            setEstado(datosF.estado);
+            setMunicipio(datosF.municipio);
+            setPoblacion(datosF.poblacion);
+            setColonia(datosF.colonia);
+            setDireccion(datosF.direccion);
+            setNumero(datosF.numero);
+            setCp(datosF.cp);
+            
+            }
+            
+        }
+    const actualizarProceso3=(datosF)=>{
+    
+        if(datosF!=null){
+            setAct_N_Foto(datosF.acta.uri);
+            setDiploma_B_Foto(datosF.certificadoBach.uri);
+        }
+            
+        }
+
+    const actualizarProceso4=(datosF)=>{
+        // const obj = {
+        //     curp: curp_Foto,
+        //     estudio_H_Foto: estudio_H_Foto,
+        // }
+        if(datosF!=null){
+            setEstudio_H_Foto(datosF.estudio_H_Foto.uri);
+            setCurp_Foto(datosF.curp_Foto.uri);
+            
+        }
+        
+        }
+
+
 
     if (hasPermission === null) {
         return <View />;
@@ -418,6 +515,7 @@ const InscripcionesScreen = ({ navigation }) =>
 
     ///no mover los siguientes eventos
     const textInputNameChange = (nameUser) => {
+        
         let val = nameUser.toUpperCase();
         if (val.length >= 3) {
         for (let index = 0; index < val.length; index++) {
@@ -767,11 +865,7 @@ const InscripcionesScreen = ({ navigation }) =>
             val.charAt(index) != "+" &&
             val.charAt(index) != ":" &&
             val.charAt(index) != ";" &&
-            val.charAt(index) != "(" &&
-            val.charAt(index) != ")" &&
-            val.charAt(index) != "/" &&
-            val.charAt(index) != "*" &&
-            val.charAt(index) != "'"
+            val.charAt(index) != "(" &&val.charAt(index) != ")" &&val.charAt(index) != "/" && val.charAt(index) != "*" &&val.charAt(index) != "'"
             ) {
             setData({
                 ...data,

@@ -6,9 +6,28 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as Animatable from "react-native-animatable";
 import Feather from "react-native-vector-icons/Feather";
 import {styles, styles2} from '../styles/datailsScreen';
-
+import * as saveFormulario from "../../database/saveFormulario";
+let datosFormulario1;
 const InformacionPersonal = (props) => {
+    //let datosFormulario1=null;
+    const [actualizo,setActualizo]= useState(null);
+    useEffect(() => {
+        
+        (async () => {
+            datosFormulario1 = await saveFormulario.obtenerProceso1();
+        })();
+    });
 
+    // const obj = { //arreglamos los datos para enviarlos al servidor
+    //     "nombre": data.Nombre,
+    //     "apellidoPaterno": data.ApellidoP,
+    //     "apellidoMaterno": data.ApellidoM,
+    //     "curp": data.Curp,
+    //     "telefono1": data.Telefono,
+    //     "telefono2": data.Telefono2,
+    //     "sexo": data.sexo,
+    //     "fechaNacimiento": fechaNacimiento,
+    // }
     return (
         <View >
             <ScrollView>
@@ -17,12 +36,23 @@ const InformacionPersonal = (props) => {
                         <View style={{width:200}}>
                             <Text style={styles2.text_footer}>Nombre del Alumno</Text>
                             <View style={styles2.action}>
-                                <TextInput
-                                    placeholder="Nombre Completo"
-                                    style={styles2.textInput}
-                                    autoCapitalize="none"
-                                    onChangeText={props.textInputNameChange}
-                                />
+                                {datosFormulario1 == null ? 
+                                    <TextInput
+                                        placeholder="Nombre"
+                                        style={styles2.textInput}
+                                        autoCapitalize="none"
+                                        onChangeText={props.textInputNameChange}
+                                    />
+                                    :
+                                    <TextInput
+                                        placeholder={`${datosFormulario1.nombre}`}
+                                        style={styles2.textInput}
+                                        autoCapitalize="none"
+                                        onChangeText={props.textInputNameChange}
+                                    />
+                                
+                                }
+                                
                                 
                             </View>
                         </View>
@@ -40,15 +70,25 @@ const InformacionPersonal = (props) => {
                     <View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
                         <View style={{width:200}}>
                             <Text style={styles2.text_footer}>Apellido Paterno</Text>
-                            <View style={styles2.action}>
-                            <TextInput
-                                placeholder="Primer Apellido"
-                                style={styles2.textInput}
-                                autoCapitalize="none"
-                                onChangeText={props.textInputApellidoPChange}
-                            />
+                                <View style={styles2.action}>
                                 
-                            </View>
+                                    {datosFormulario1 == null ? 
+                                        <TextInput
+                                            placeholder="Primer Apellido"
+                                            style={styles2.textInput}
+                                            autoCapitalize="none"
+                                            onChangeText={props.textInputApellidoPChange}
+                                        />
+                                        :
+                                        <TextInput
+                                            placeholder={`${datosFormulario1.apellidoPaterno}`}
+                                            style={styles2.textInput}
+                                            autoCapitalize="none"
+                                            onChangeText={props.textInputApellidoPChange}
+                                        />
+                                    }
+                                </View>
+                                
                         </View>
                         <View style={{width:100,alignItems:'flex-end'}}>
                             {props.data.ApellidoP_Aprobado ? (
@@ -69,13 +109,22 @@ const InformacionPersonal = (props) => {
                         <View style={{width:200}}>
                             <Text style={styles2.text_footer}>Apellido Materno</Text>
                             <View style={styles2.action}>
-                                <TextInput
-                                placeholder="Segundo apellido"
-                                style={styles2.textInput}
-                                autoCapitalize="none"
-                                onChangeText={props.textInputApellidoMChange}
-                            />
-                                        
+                                
+                                {datosFormulario1 == null ? 
+                                        <TextInput
+                                            placeholder="Segundo apellido"
+                                            style={styles2.textInput}
+                                            autoCapitalize="none"
+                                            onChangeText={props.textInputApellidoMChange}
+                                        />
+                                        :
+                                        <TextInput
+                                            placeholder={`${datosFormulario1.apellidoMaterno}`}
+                                            style={styles2.textInput}
+                                            autoCapitalize="none"
+                                            onChangeText={props.textInputApellidoMChange}
+                                        />
+                                    }
                             </View>
                         </View>
                         <View style={{width:100,alignItems:'flex-end'}}>
