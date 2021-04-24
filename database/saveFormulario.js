@@ -139,3 +139,85 @@ export const obtenerFoto2=async()=>{
     }
     
 }
+
+////////////////////////////////////////////////// Fotos ficha y aportacion
+
+export const guardarDepositos= async(foto)=>{
+    try {
+            const F=JSON.stringify(foto)
+            await AsyncStorage.setItem('depositos',F);
+            
+        } catch (e) {
+            console.log(e);
+            console.log('Hubu un error al guardar la depositos')
+        }
+}
+
+export const eliminarDepositos=async()=>{
+    try {
+        await AsyncStorage.removeItem('depositos')
+    } catch (e) {
+        console.log(e);
+        console.log('Hubu un error al Eliminar la depositos')
+    }
+}
+
+export const obtenerDepositos=async()=>{
+    try {
+        const dataUT= await AsyncStorage.getItem('depositos');
+        const UToken= JSON.parse(dataUT);
+        return UToken;
+    } catch (e) {
+        console.log(e);
+        console.log('Hubu un error al obtener la depositos')
+        return null;
+    }
+    
+}
+
+////////////////////////////////////////////////// estadoInscripcion
+
+export const guardarEstadoIsc=async(obj)=>{
+    try {
+        // console.log('UserSesion guardado exitosamente')
+        await AsyncStorage.setItem("estadoIsc", JSON.stringify(obj));
+        console.log('se guardo con exito el estadoIsc');
+    } catch (e) {
+        console.log(e);
+        console.log('Hubu un error al guardar el estadoIsc')
+    }
+}   
+
+export const eliminarEstadoIsc=async()=>{
+    try {
+        await AsyncStorage.removeItem("estadoIsc");
+    } catch (e) {
+        console.log(e);
+        console.log('Hubu un error al eliminar estadoIsc')
+    }
+    
+
+}
+
+export const obtenerEstadoIsc=async()=>{
+    try {
+        
+        const UserS= await AsyncStorage.getItem('estadoIsc');
+        const User= JSON.parse(UserS);
+        return User;
+    } catch (e) {
+        console.log(e);
+        console.log('Hubu un error al guardar el estadoIsc')
+        return null;
+    }
+}
+
+
+
+export const useEliminarTodoDB_AS=async()=>{ //Elimina totalmente la base de datos (nota: solo borra cuando existan datos, sino aparecera un error)
+    try {
+            await AsyncStorage.clear();
+        } catch(e) {
+            console.log(e)
+        }
+}

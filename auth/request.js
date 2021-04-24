@@ -21,18 +21,66 @@ const postUserT = async (form) => {
 }
 
 const getUserT = async () => {
-    let data = [];
+    const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
+    const { _id }= sesion[0];
     try{
-            data = await axios({
+            const data = await axios({
             method: 'GET',
             url: `${config.BACKENDURL}/${config.TEMPORARYUSERS}`,
             headers: { 'content-type': 'application/json' },
+            params: {
+                id: _id,
+            }
         })
+        if(data)
+            return data.data.data;
+        return data;
     }
     catch(error){
         console.log(error || "Error en getUserT")
     }
-    return data;
+}
+
+const getUserTemp = async () => {
+    const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
+    const { _id }= sesion[0];
+    try{
+            const data = await axios({
+            method: 'GET',
+            url: `${config.BACKENDURL}/${config.USERTEMP}`,
+            headers: { 'content-type': 'application/json' },
+            params: {
+                id: _id,
+            }
+        })
+        if(data)
+            return data.data.data;
+        return data;
+    }
+    catch(error){
+        console.log(error || "Error en getUserTemp")
+    }
+}
+
+const getUserTempEstadoInsc = async () => {
+    const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
+    const { _id }= sesion[0];
+    try{
+            const data = await axios({
+            method: 'GET',
+            url: `${config.BACKENDURL}/${config.USERTEMPESTINSC}`,
+            headers: { 'content-type': 'application/json' },
+            params: {
+                id: _id,
+            }
+        })
+        if(data)
+            return data.data.data;
+        return data;
+    }
+    catch(error){
+        console.log(error || "Error en getUserTemp")
+    }
 }
 
 const putInfoPersonal = async (form) => {
@@ -397,4 +445,6 @@ export {
     getUserDescargas,
     getArchivos,
     getCalificaciones,
+    getUserTemp,
+    getUserTempEstadoInsc,
 };

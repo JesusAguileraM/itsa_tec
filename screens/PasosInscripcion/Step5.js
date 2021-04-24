@@ -3,7 +3,13 @@ import {View,Text,Button,StyleSheet,Dimensions,TouchableOpacity,SafeAreaView,Scr
 import {Divider,Surface,Portal,Dialog,Paragraph,DataTable,Avatar,Title,Caption,} from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import CorrecionScreen from './CorrecionScreen';
+import FinalizadaScreen from './FinalizadaScreen';
+import RechazadaScreen from './RechazadaScreen';
 import RevisionScreen from './RevisionScreen';
+// import RechazadaScreen from './RechazadaScreen';
+import {ESTADOINSC} from '../../auth/config';
+import * as api from '../../auth/request';
 
 const Item = (props) => (
     <View>
@@ -105,11 +111,32 @@ const Item = (props) => (
     </View>
 );
 
+
+
 const ComprobarPago = (props) => {
+
+    const [user, setUser] = useState(null);
+    const [depositos, setDepositos] = useState(null);
+
+
+    useEffect(() => {
+        (async() => {
+            let userT = await api.getUserT();
+            if(userT){
+                setUser(userT)
+            }
+            
+            const listaDepositos = await api.getDepositoBancarioAlumno();
+            //Cuando lista depositos sea null debemos impedir que continue o lanzar
+            //una vista indicando que la información está siendo evaluada
+            // ya despues puedes agregar un controlardor de pagos exclusivo para inscripciones
+            setDepositos(listaDepositos);
+            })();
+    }, [])
+    // console.log(user)
 
     const finalizarProcesoInscripcion = async () => {
         await props.terminarProceso();
-        alert('Proceso terminado con exito')
     }
 
     const renderItem = (data) => {
@@ -118,99 +145,173 @@ const ComprobarPago = (props) => {
             {...props} 
             index={data.index}
         />
-    }
+    } 
 
     return (
-        <SafeAreaView  >
-            <View style={styles.userInfoSection}>
-                <Image style={{width:50,height:20,resizeMode:'contain'}}source={{ uri:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/BBVA_2019.svg/1280px-BBVA_2019.svg.png" }} />     
-                <View style={{alignItems:'flex-start' ,flexDirection: 'row', marginTop: 18}}>    
-                    <Image style={{width:150,height:100,resizeMode:'contain'}}source={{ uri:"http://sic.gob.mx/images/62408" }} />
-                    <View style={{marginLeft:0,marginTop:5}}>
-                        <Title style={{fontSize:18,fontWeight:'bold',marginBottom:10}}>FICHA DE DEPOSITO:</Title>
-                        <View>
-                            <Text style={{fontSize:12,fontWeight:'bold',color:'#a12141'}}>INSTITUTO TECNOLOGICO </Text>
-                            <Text style={{fontSize:12,fontWeight:'bold',color:'#a12141'}}>SUPERIOR DE APATZINGAN</Text>
+        <>
+            {
+                (user) && (depositos) && (user.estadoInsc === ESTADOINSC.fichaAceptada || user.estadoInsc === ESTADOINSC.depositoNoAprobado) && (
+                    <SafeAreaView  >
+                    <View style={styles.userInfoSection}>
+                        <Image style={{width:50,height:20,resizeMode:'contain'}}source={{ uri:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/BBVA_2019.svg/1280px-BBVA_2019.svg.png" }} />     
+                        <View style={{alignItems:'flex-start' ,flexDirection: 'row', marginTop: 18}}>    
+                            <Image style={{width:150,height:100,resizeMode:'contain'}}source={{ uri:"http://sic.gob.mx/images/62408" }} />
+                            <View style={{marginLeft:0,marginTop:5}}>
+                                <Title style={{fontSize:18,fontWeight:'bold',marginBottom:10}}>FICHA DE DEPOSITO:</Title>
+                                <View>
+                                    <Text style={{fontSize:12,fontWeight:'bold',color:'#a12141'}}>INSTITUTO TECNOLOGICO </Text>
+                                    <Text style={{fontSize:12,fontWeight:'bold',color:'#a12141'}}>SUPERIOR DE APATZINGAN</Text>
+                                </View>
+                                <Caption>CONVENIO CIE: 001770500</Caption>
+                            </View>
                         </View>
-                        <Caption>CONVENIO CIE: 001770500</Caption>
                     </View>
-                </View>
-            </View>
 
-            <ScrollView horizontal={true}>
-                {
-                    (props.depositos) && (
-                        <FlatList
-                            data={props.depositos}
-                            renderItem={renderItem}
-                            keyExtractor={data => data._id}
-                        />
-                    )
-                }
-            </ScrollView>                    
-
-            <View >
-                {
-                    (props.depositos) && (
-                        <View style={styles2.button}>
-                            <TouchableOpacity
-                                style={styles2.signIn}
-                                onPress={finalizarProcesoInscripcion}>
-                                <LinearGradient
-                                colors={["#05375a", "#2096BA"]}
-                                style={styles2.signIn}
-                                >
-                                <Text
-                                    style={[
-                                    styles2.textSign,
-                                    {
-                                        color: "#fff",
-                                    },
-                                    ]}
-                                >
-                                    Enviar comprobantes
-                                </Text>
-                                </LinearGradient>
-                            </TouchableOpacity>
-                        </View>
-                    )
-                }
-                {
-                    (!props.depositos ) && (
-                        <>
-                            <View style={{justifyContent:'center',alignItems:'center',marginBottom:40}}>
-                                <Text style={{color:"#dc3545",fontSize:18,marginBottom:10,fontWeight:'bold'}}>¡IMPORTANTE!</Text>      
+                    {
+                        (user.estadoInsc === ESTADOINSC.depositoNoAprobado) && (
+                            <View style={{justifyContent:'center',alignItems:'center',marginBottom:0}}>
+                                <Text style={{color:"#dc3545",fontSize:18,marginBottom:10,fontWeight:'bold'}}>IMPORTANTE</Text>      
                                 <Text style={styles.texto1} >
-                                    Puede demorar varios días, la informacion y fotos estan siendo revisadas por el personal 
-                                    del tecnológico, por lo que tendra que esperar hasta que los siguientes indicadores estén 
-                                    aprobados. Una vez que sea aprobada su información tendrás que continuar con el pago de tu 
-                                    ficha de inscripción y el pago de aportación para el fortalecimiento institucional.
+                                    {`${user.observaciones}`}
                                 </Text>
-                            </View>  
-                            <RevisionScreen/>
-                        </>
-                        
-                    )
-                }
-                <View style={{width:'95%',marginLeft:10}}>
-                    <View style={styles2.textPrivate}>
-                        <Text style={styles2.color_textPrivate}>
-                            El proceso de inscripciones es seguro, para mas informaición consulta en:
-                        </Text>
-                        <Text style={[styles2.color_textPrivate, { fontWeight: "bold" }]}>
-                            {" "}
-                            www.itsa.edu.mx
-                        </Text>
-                        <Text style={styles2.color_textPrivate}> o llamar al teléfono</Text>
-                        <Text style={[styles2.color_textPrivate, { fontWeight: "bold" }]}>
-                            {" "}
-                            +52 453-534-8300{" "}
-                        </Text>
+                                <Image 
+                                    style={{width:60, height:60}}
+                                    source={require('../../assets/alertaOnda.gif')}
+                                />
+                            </View>
+                        )
+                    }
+
+                    <ScrollView horizontal={true}>
+                        {
+                            (depositos) && (
+                                <FlatList
+                                    data={depositos}
+                                    renderItem={renderItem}
+                                    keyExtractor={data => data._id}
+                                />
+                            )
+                        }
+                    </ScrollView>                    
+
+                    <View >
+                        {
+                            (depositos) && (
+                                <>
+                                    <View style={styles2.button}>
+                                        <TouchableOpacity
+                                            style={styles2.signIn}
+                                            onPress={finalizarProcesoInscripcion}>
+                                            <LinearGradient
+                                            colors={["#05375a", "#2096BA"]}
+                                            style={styles2.signIn}
+                                            >
+                                            <Text
+                                                style={[
+                                                styles2.textSign,
+                                                {
+                                                    color: "#fff",
+                                                },
+                                                ]}
+                                            >
+                                                Enviar comprobantes
+                                            </Text>
+                                            </LinearGradient>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={styles2.button}>
+                                        <TouchableOpacity
+                                            style={styles2.signIn}
+                                            onPress={props.regresar_al_P4}
+                                        >
+                                            <LinearGradient
+                                                colors={["#fff", "#fff"]}
+                                                style={styles2.signIn}
+                                            >
+                                                <Text
+                                                style={[
+                                                    styles2.textSign,
+                                                    {
+                                                    color: "#05375a",
+                                                    },
+                                                ]}
+                                                >
+                                                    Regresar
+                                                </Text>
+                                            </LinearGradient>
+                                        </TouchableOpacity>
+                                    </View>
+                                </>
+                            )
+                        }
+                        {
+                            (!depositos ) && (
+                                <>
+                                    <View style={{justifyContent:'center',alignItems:'center',marginBottom:40}}>
+                                        <Text style={{color:"#dc3545",fontSize:18,marginBottom:10,fontWeight:'bold'}}>¡IMPORTANTE!</Text>      
+                                        <Text style={styles.texto1} >
+                                            Puede demorar varios días, la informacion y fotos estan siendo revisadas por el personal 
+                                            del tecnológico, por lo que tendra que esperar hasta que los siguientes indicadores estén 
+                                            aprobados. Una vez que sea aprobada su información tendrás que continuar con el pago de tu 
+                                            ficha de inscripción y el pago de aportación para el fortalecimiento institucional.
+                                        </Text>
+                                    </View>  
+                                    <CorrecionScreen/>
+                                </>
+                                
+                            )
+                        }
+                        <View style={{width:'95%',marginLeft:10}}>
+                            <View style={styles2.textPrivate}>
+                                <Text style={styles2.color_textPrivate}>
+                                    El proceso de inscripciones es seguro, para mas informaición consulta en:
+                                </Text>
+                                <Text style={[styles2.color_textPrivate, { fontWeight: "bold" }]}>
+                                    {" "}
+                                    www.itsa.edu.mx
+                                </Text>
+                                <Text style={styles2.color_textPrivate}> o llamar al teléfono</Text>
+                                <Text style={[styles2.color_textPrivate, { fontWeight: "bold" }]}>
+                                    {" "}
+                                    +52 453-534-8300{" "}
+                                </Text>
+                            </View>
+                        </View>
                     </View>
-                </View>
-            </View>
-            
-        </SafeAreaView> 
+                    
+                </SafeAreaView>
+                ) 
+
+            }
+            {
+                (user) && (user.estadoInsc === ESTADOINSC.fichaNoAceptada) && (
+                    <>
+                        <CorrecionScreen user={user} regresar={props.regresar_al_P4}/>
+                    </>
+                )
+            }
+            {
+                (user) && (user.estadoInsc === ESTADOINSC.fichaFinalizada) && (
+                    <>
+                        <FinalizadaScreen user={user} regresar={props.regresar_al_P4}/>
+                    </>
+                )
+            }
+            {
+                (user) && (user.estadoInsc === ESTADOINSC.fichaRechazada) && (
+                    <>
+                        <RechazadaScreen user={user} regresar={props.regresar_al_P4}/>
+                    </>
+                )
+            }
+            {
+                (user) && (user.estadoInsc === ESTADOINSC.fichaRevision) && (
+                    <>
+                        <RevisionScreen user={user} regresar={props.regresar_al_P4}/>
+                    </>
+                )
+            }
+        </> 
     );
 };
 
@@ -218,6 +319,13 @@ export default ComprobarPago;
 
 
 const styles = StyleSheet.create({
+    texto1:{
+        fontSize:14,
+        fontWeight:'400',
+        textAlign:'center',
+        color:'#05375a',
+        width: Dimensions.get("window").width -50,
+    },
     imagenFoto: {
         marginTop:20,
         marginBottom: 20,

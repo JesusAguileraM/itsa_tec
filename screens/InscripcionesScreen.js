@@ -13,6 +13,7 @@ import Feather from "react-native-vector-icons/Feather";
 import {styles, styles2} from './styles/datailsScreen';
 //api permissions
 import * as api from '../auth/request';
+import { ESTADOINSC } from '../auth/config';
 import Splash from "../components/Splash";
 import * as saveFormulario from "../database/saveFormulario"; //este almacena internamente la informacion de formularios 1 al 4
 
@@ -32,6 +33,7 @@ const InscripcionesScreen = ({ navigation }) =>
     const [colorProgres,setColorProgress]=useState('#05375a')
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [loading, setLoading] = useState(false); 
+    const [estadoInsc, setEstadoInsc] = useState(false);
 ////////Es toda la informacion recogida de la app (recuerda que si los agarras sin completar el formulario seran null)
         //Paso 1 de informacion
     const [data, setData] = React.useState({
@@ -81,18 +83,18 @@ const InscripcionesScreen = ({ navigation }) =>
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const [no_Documento, setNo_Documento] = useState(1);//Para saber que documento hago referencia
-    // const [continuar1,setContinuar1] = useState(true);
+    const [continuar1,setContinuar1] = useState(false);
+    const [continuar2,setContinuar2] = useState(false);
+    const [continuar3,setContinuar3] = useState(false);
+    const [continuar4,setContinuar4] = useState(false);
+    const [continuar5,setContinuar5] = useState(false);
+    const [continuar6,setContinuar6] = useState(false);
+    // const [continuar1,setContinuar1] = useState(false);
     // const [continuar2,setContinuar2] = useState(false);
     // const [continuar3,setContinuar3] = useState(false);
     // const [continuar4,setContinuar4] = useState(false);
     // const [continuar5,setContinuar5] = useState(false);
     // const [continuar6,setContinuar6] = useState(false);
-    const [continuar1,setContinuar1] = useState(false);
-    const [continuar2,setContinuar2] = useState(false);
-    const [continuar3,setContinuar3] = useState(false);
-    const [continuar4,setContinuar4] = useState(false);
-    const [continuar5,setContinuar5] = useState(true);
-    const [continuar6,setContinuar6] = useState(false);
 
     const [barraProces,setBarraProces]=useState(0.18);
     //Data de las opciones
@@ -177,9 +179,6 @@ const InscripcionesScreen = ({ navigation }) =>
         setContinuar4(true);
         setLoading(false);
         setBarraProces(0.72);
-        let D = await saveFormulario.obtenerFoto1();
-        console.log('fotos 1')
-        console.log(D);
     }
 
     const procesoCompletado4= async ()=>{
@@ -196,33 +195,36 @@ const InscripcionesScreen = ({ navigation }) =>
         await saveFormulario.guardarFoto2(obj); /// Guarda la información localmente
 
         await api.putActaCertificadoCurpConstancia(formData);
-        //nos traemos los pagos bancario para mandarlos al paso 5
-        const listaDepositos = await api.getDepositoBancarioAlumno();
-        //Cuando lista depositos sea null debemos impedir que continue o lanzar
-        //una vista indicando que la información está siendo evaluada
-        // ya despues puedes agregar un controlardor de pagos exclusivo para inscripciones
-        setDepositos(listaDepositos);
+        const obj2 = { 
+            estadoInsc: ESTADOINSC.fichaRevision
+        }        
+        await api.putInfoEscolar(obj2);//para enviar que ya está en revision
+        
         setContinuar4(false);   
         setContinuar5(true);
         setColorProgress('#00bb2d');
         setBarraProces(1);
-        // if(listaDepositos){
-        // } else {
-        //     alert('No puedes continuar ya que los datos no han sido validados');
-        // }
-        let D = await saveFormulario.obtenerFoto2();
-        console.log('fotos 2')
-        console.log(D);
         setLoading(false);
     }
     
     //se encarga de ejecutar el ultimo paso de inscripcion
     const terminarProceso= async ()=>{//preguntarle a manuel como enviar esta funcion al componente de comprobar pago
+        if(!pagoFichaFoto || !pagoAportacionFoto)
+            return;
         setLoading(true);
         const formData = new FormData();
         formData.append('multi-files', pagoFichaFoto);
         formData.append('multi-files', pagoAportacionFoto);
+
+        const obj = {
+            pagoFichaFoto: pagoFichaFoto,
+            pagoAportacionFoto: pagoAportacionFoto,
+        }
+
+        await saveFormulario.guardarDepositos(obj);
+
         await api.putFichaAportacionDepositoBancario(formData);
+        alert('Proceso terminado con exito');
         // setContinuar5(false);
         // setContinuar1(true);
         setLoading(false);
@@ -254,6 +256,7 @@ const InscripcionesScreen = ({ navigation }) =>
 
     useEffect(() => {
         (async () => {
+            setLoading(true);
             const { status } = await Camera.requestPermissionsAsync();
             setHasPermission(status === 'granted');
             let datosFormulario1 = await saveFormulario.obtenerProceso1(); //formulario 1
@@ -264,15 +267,33 @@ const InscripcionesScreen = ({ navigation }) =>
             let datosFormulario3 = await saveFormulario.obtenerFoto1(); //Fotos 1
             actualizarProceso3(datosFormulario3);
             let datosFormulario4 = await saveFormulario.obtenerFoto2(); //Fotos 2
-            console.log(datosFormulario4);
             actualizarProceso4(datosFormulario4);
-            
+            let datosFormulario5 = await saveFormulario.obtenerDepositos(); //los dos depositos
+            actualizarProceso5(datosFormulario5);
 
+            let estadoInscripcion = await api.getUserTempEstadoInsc();
+            await saveFormulario.guardarEstadoIsc(estadoInscripcion.estadoInsc);
+            setEstadoInsc(estadoInscripcion.estadoInsc);
+
+            if(estadoInscripcion.estadoInsc === ESTADOINSC.iniciando){
+                setContinuar1(true);
+                setContinuar2(false);
+                setContinuar3(false);
+                setContinuar4(false);
+                setContinuar5(false);
+            } else {
+                setContinuar1(false);
+                setContinuar2(false);
+                setContinuar3(false);
+                setContinuar4(false);
+                setContinuar5(true);
+            }
+            setLoading(false);
         })();
     }, []);
 
     const actualizarProceso1=(datosF)=>{
-        console.log(datosF);
+        
         if(datosF!=null){
             setData({
                 ...data,
@@ -317,24 +338,36 @@ const InscripcionesScreen = ({ navigation }) =>
     const actualizarProceso3=(datosF)=>{
     
         if(datosF!=null){
-            setAct_N_Foto(datosF.acta.uri);
-            setDiploma_B_Foto(datosF.certificadoBach.uri);
+            setAct_N_Foto(datosF.acta);
+            setDiploma_B_Foto(datosF.certificadoBach);
         }
             
         }
 
     const actualizarProceso4=(datosF)=>{
+            // const obj = {
+            //     curp: curp_Foto,
+            //     estudio_H_Foto: estudio_H_Foto,
+            // }
+            if(datosF!=null){
+                setEstudio_H_Foto(datosF.estudio_H_Foto);
+                setCurp_Foto(datosF.curp_Foto);
+                
+            }
+        
+        }
+    const actualizarProceso5=(datosF)=>{
         // const obj = {
         //     curp: curp_Foto,
         //     estudio_H_Foto: estudio_H_Foto,
         // }
         if(datosF!=null){
-            setEstudio_H_Foto(datosF.estudio_H_Foto.uri);
-            setCurp_Foto(datosF.curp_Foto.uri);
+            setPagoFichaFoto(datosF.pagoFichaFoto);
+            setPagoAportacionFoto(datosF.pagoAportacionFoto);
             
         }
-        
-        }
+    
+    }
 
 
 
@@ -440,7 +473,6 @@ const InscripcionesScreen = ({ navigation }) =>
     })}
 
     const handleConfirm = (date) => { //set cumpleanos
-        console.log("A date has been picked: "+date);
         let anio=date.getFullYear();
         let mes=date.getMonth();
         let dia=date.getDate(); 
@@ -980,7 +1012,6 @@ const InscripcionesScreen = ({ navigation }) =>
                     <Steps.Step5 
                         comprobantePagoFichaFoto={pagoFichaFoto}
                         comprobantePagoAportacionFoto={pagoAportacionFoto}
-                        depositos={depositos}
                         cambiarACamara={cambiarACamara}
                         regresar_al_P4={regresar_al_P4}
                         terminarProceso={terminarProceso}

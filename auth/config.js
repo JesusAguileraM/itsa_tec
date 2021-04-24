@@ -3,7 +3,9 @@ const PRUEBAS = "http://localhost:3000/api/v1";
 
 //movil
 const USERS = "users";
-const TEMPORARYUSERS = "temporaryusers";
+const TEMPORARYUSERS = "temporaryusers"
+const USERTEMP = "temporaryusers/temp";
+const USERTEMPESTINSC = "temporaryusers/estadoInsc";
 const TIPOPAGOS = "tipopagos";
 const CARRERAS = "carreras";
 const DOCUMENTOS = "documentos";
@@ -40,10 +42,22 @@ const ESTADOPAGO = {
     fotoRechazada: "foto rechazada",
 };
 
+const ESTADOINSC = {
+    iniciando: "Iniciando",
+    fichaRevision:"En revisión",
+    fichaNoAceptada:"Ficha no aceptada", 
+    fichaAceptada:"Ficha aceptada", 
+    depositoNoAprobado:"Deposito no aprobado", 
+    fichaFinalizada:"Ficha finalizada", 
+    fichaRechazada:"Ficha rechazada"
+};
+
+
 
 export {
     BACKENDURL,
     ESTADOPAGO, 
+    ESTADOINSC,
     PRUEBAS, 
     USERS,
     TEMPORARYUSERS, 
@@ -66,4 +80,6 @@ export {
     DEPOSITOSPROCESADO,
     DEPOSITOALUMNO,
     DEPOSITOALUMNOINSCRIPCION,
+    USERTEMP,
+    USERTEMPESTINSC,
 };

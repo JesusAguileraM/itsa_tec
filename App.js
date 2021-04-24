@@ -12,10 +12,11 @@ import { DrawerContent3 } from "./screens/DraweScreen/DrawerContent3";   //inscr
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import RootStackScreen from "./screens/RootStackScreen";
 import { AuthContext } from "./components/context";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as crudToken from "./database/crudToken";  //Aqui esta lo del crud de token y user
 import { useGoogleLogin, useOnAuthStateChanged, useGoogleSignOut} from './firebase/hooks'
 import { useRegisterForPushNotificationsAsync } from './notifications/hooks';
+import * as crudToken from "./database/crudToken";  //Aqui esta lo del crud de token y user
+import * as crudForm from "./database/saveFormulario";
+import * as singleStorage from "./database/singleStorage";  
 import Splash from './components/Splash';
 
 const DrawerUserLogged = createDrawerNavigator();
@@ -46,6 +47,9 @@ const App = () => {
         setIsLoading(true);
         await useGoogleSignOut();
         setIsStatus('noalumno');
+        await crudToken.useEliminarTodoDB_AS();
+        await crudForm.useEliminarTodoDB_AS();
+        await singleStorage.useEliminarTodoDB_AS();
         setIsLoading(false);
         console.log('sesión cerrada')
       },

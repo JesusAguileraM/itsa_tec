@@ -265,7 +265,7 @@ export const ObtenerIsStatus=async()=>{
 
 
 
-const useEliminarTodoDB_AS=async()=>{ //Elimina totalmente la base de datos (nota: solo borra cuando existan datos, sino aparecera un error)
+export const useEliminarTodoDB_AS=async()=>{ //Elimina totalmente la base de datos (nota: solo borra cuando existan datos, sino aparecera un error)
     try {
             await AsyncStorage.clear();
         } catch(e) {

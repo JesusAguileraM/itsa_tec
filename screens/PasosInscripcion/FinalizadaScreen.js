@@ -2,18 +2,23 @@ import React, { useState, useEffect, useRef } from "react";
 import {View,Text,Button,Linking,StyleSheet,Dimensions,TouchableOpacity,SafeAreaView,ScrollView,Image,StatusBar,TextInput,Platform,} from "react-native";
 import {Divider,Surface,Portal,Dialog,Paragraph,} from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
-
+import * as api from '../../auth/request';
 
 const RevisionScreen = (props) => {
 
-    const [comprobado, setComprobado] = React.useState({
-        Form_parte1:true,
-        Form_parte2:true,
-        Acta:true,
-        curp:true,
-        certificadoBach:true,
-        contanciaMed:false
-    });
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+            let u = await api.getUserTemp();
+            console.log(u);
+            setUser(u);
+        })()
+    }, []);
+
+    if(!user){
+        return (<></>);
+    }
 
     // console.log(props.user.estadoInsc)
     return (
@@ -23,25 +28,63 @@ const RevisionScreen = (props) => {
                     <View style={{justifyContent:'center',alignItems:'center'}}>
                         <Image style={styles3.logoTec2} source={require('../../assets/itsaLogoSplash.png')} />
                         <Text style={{color:"#000",fontSize:18,marginBottom:10,fontWeight:'bold'}}>
-                            EN REVISIÓN
+                            {props.user.estadoInsc.toUpperCase()}
                         </Text>
                         <Text style={styles3.texto1} >
-                            {(props.user.observaciones === 'No aplica')  ? 
-                            'El personal del instituto está validando las fotos de los depositos bancarios correspondientes a la ficha de admisión y aportación institucional' :
-                             props.user.observaciones}
+                            {props.user.observaciones}
                         </Text>
-                        <Image style={styles3.logoTec3} source={require('../../assets/CargandoColores.gif')} />
+                    </View>
+                    <View style={{justifyContent:'center',alignItems:'center', marginTop:20}}>
+                        <Text style={{color:"#000",fontSize:18,marginBottom:10,fontWeight:'bold'}}>
+                            Datos:
+                        </Text>
+                        <View style={{justifyContent: 'flex-start'}}>
+                            <Text style={styles3.textoLeft} >
+                                {`Carrera: ${user.carrera}`}
+                            </Text>
+                            <Text style={styles3.textoLeft} >
+                                {`Email: ${user.email}`}
+                            </Text>
+                            <Text style={styles3.textoLeft} >
+                                {`Matricula: ${user.matricula}`}
+                            </Text>
+                            <Text style={styles3.textoLeft} >
+                                {`Turno: ${user.turno}`}
+                            </Text>
+                            <Text style={styles3.textoLeft} >
+                                {`Semestre: ${user.semestre}`}
+                            </Text>
+                        </View>
                     </View>
                 </View>
                 
+                {/* <>
+                    <View style={styles3.button}>
+                        <TouchableOpacity
+                            style={styles3.signIn}
+                            onPress={props.regresar}
+                        >
+                            <LinearGradient
+                                colors={["#fff", "#fff"]}
+                                style={styles3.signIn}
+                            >
+                                <Text
+                                style={[
+                                    styles3.textSign,
+                                    {
+                                    color: "#05375a",
+                                    },
+                                ]}
+                                >
+                                    Regresar
+                                </Text>
+                            </LinearGradient>
+                        </TouchableOpacity>
+                    </View>
+                </> */}
             </View>
          
         </>
-        // <SafeAreaView style={{flex:1}}>
-        //     <ScrollView>
-                
-        //     </ScrollView>
-        // </SafeAreaView>
     );
 };
 
@@ -67,10 +110,10 @@ const styles3 = StyleSheet.create({
         fontSize: 18,
         fontWeight: "bold",
     },
-    texto1:{
+    textoLeft:{
         fontSize:14,
-        fontWeight:'400',
-        textAlign:'center',
+        fontWeight:'500',
+        textAlign:'left',
         color:'#05375a',
         width: Dimensions.get("window").width -50,
     },
@@ -125,12 +168,6 @@ const styles3 = StyleSheet.create({
         height:200,
         resizeMode:'contain',
         margin:10
-    },
-    logoTec3:{
-        width:50,
-        height:50,
-        resizeMode:'contain',
-        margin:0
     },
     logosLink:{
         width:20,

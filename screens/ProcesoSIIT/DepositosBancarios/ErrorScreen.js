@@ -19,71 +19,71 @@ const ErrorScreen = (props) => {
             <ScrollView>
                 <View style={{justifyContent:'center',alignItems:'center'}}>
                     <View style={{justifyContent:'center',alignItems:'center'}}>
-                        <Image style={styles.logoTec2} source={require('../../../assets/alertaOnda.gif')} />
+                        <Image style={styles7.logoTec2} source={require('../../../assets/alertaOnda.gif')} />
                         <Text style={{color:"#000",fontSize:18,marginBottom:10,fontWeight:'bold'}}>{props.deposito.estadoPago.toUpperCase()}</Text>
-                        <Text style={styles.texto1} >
+                        <Text style={styles7.texto1} >
                             {props.deposito.observaciones}
                         </Text>
                     </View>
                     <View style={{marginTop:20,justifyContent:'center',alignItems:'center'}}>
-                        <Text style={styles.texto2}>
+                        <Text style={styles7.texto2}>
                             Corrabore que la información y las fotos esten bien:
                         </Text>
-                        <View style={styles.contenedor}>
+                        <View style={styles7.contenedor}>
                             <View>
                                 <View style={{flexDirection:'row',alignItems:'center'}}>
                                     {comprobado.Form_parte1===true ? 
-                                        <Image style={styles.logosLink}  source={require('../../../assets/correcto.gif')}/>:
-                                        <Image style={styles.logosLink}  source={require('../../../assets/alertaCabeceando.gif')}/>
+                                        <Image style={styles7.logosLink}  source={require('../../../assets/correcto.gif')}/>:
+                                        <Image style={styles7.logosLink}  source={require('../../../assets/alertaCabeceando.gif')}/>
                                     }
 
 
-                                    <Text style={styles.link}>
+                                    <Text style={styles7.link}>
                                         Formulario parte 1
                                     </Text>
                                 </View>
                                 <View  style={{flexDirection:'row',alignItems:'center'}}>
                                     {comprobado.Form_parte2===true ? 
-                                        <Image style={styles.logosLink}  source={require('../../../assets/correcto.gif')}/>:
-                                        <Image style={styles.logosLink}  source={require('../../../assets/alertaCabeceando.gif')}/>
+                                        <Image style={styles7.logosLink}  source={require('../../../assets/correcto.gif')}/>:
+                                        <Image style={styles7.logosLink}  source={require('../../../assets/alertaCabeceando.gif')}/>
                                     }
-                                    <Text style={styles.link}>
+                                    <Text style={styles7.link}>
                                         Formulario parte 2
                                     </Text>
                                 </View>
                                 <View  style={{flexDirection:'row',alignItems:'center'}}>
                                     {comprobado.Acta===true ? 
-                                        <Image style={styles.logosLink}  source={require('../../../assets/correcto.gif')}/>:
-                                        <Image style={styles.logosLink}  source={require('../../../assets/alertaCabeceando.gif')}/>
+                                        <Image style={styles7.logosLink}  source={require('../../../assets/correcto.gif')}/>:
+                                        <Image style={styles7.logosLink}  source={require('../../../assets/alertaCabeceando.gif')}/>
                                     }
-                                    <Text style={styles.link}>
+                                    <Text style={styles7.link}>
                                         Acta de nacimiento
                                     </Text>
                                 </View>
                                 <View  style={{flexDirection:'row',alignItems:'center'}}>
                                     {comprobado.certificadoBach===true ? 
-                                        <Image style={styles.logosLink}  source={require('../../../assets/correcto.gif')}/>:
-                                        <Image style={styles.logosLink}  source={require('../../../assets/alertaCabeceando.gif')}/>
+                                        <Image style={styles7.logosLink}  source={require('../../../assets/correcto.gif')}/>:
+                                        <Image style={styles7.logosLink}  source={require('../../../assets/alertaCabeceando.gif')}/>
                                     }
-                                    <Text style={styles.link}>
+                                    <Text style={styles7.link}>
                                         Certificado de bachillerato
                                     </Text>
                                 </View>
                                 <View  style={{flexDirection:'row',alignItems:'center'}}>
                                     {comprobado.curp===true ? 
-                                        <Image style={styles.logosLink}  source={require('../../../assets/correcto.gif')}/>:
-                                        <Image style={styles.logosLink}  source={require('../../../assets/alertaCabeceando.gif')}/>
+                                        <Image style={styles7.logosLink}  source={require('../../../assets/correcto.gif')}/>:
+                                        <Image style={styles7.logosLink}  source={require('../../../assets/alertaCabeceando.gif')}/>
                                     }
-                                    <Text style={styles.link}>
+                                    <Text style={styles7.link}>
                                         Curp
                                     </Text>
                                 </View>
                                 <View  style={{flexDirection:'row',alignItems:'center'}}>
                                     {comprobado.contanciaMed===true ? 
-                                        <Image style={styles.logosLink}  source={require('../../../assets/correcto.gif')}/>:
-                                        <Image style={styles.logosLink}  source={require('../../../assets/alertaCabeceando.gif')}/>
+                                        <Image style={styles7.logosLink}  source={require('../../../assets/correcto.gif')}/>:
+                                        <Image style={styles7.logosLink}  source={require('../../../assets/alertaCabeceando.gif')}/>
                                     }
-                                    <Text style={styles.link}>
+                                    <Text style={styles7.link}>
                                         Constancia Medica
                                     </Text>
                                 </View>
@@ -100,7 +100,7 @@ const ErrorScreen = (props) => {
 export default ErrorScreen;
 
 
-const styles = StyleSheet.create({
+const styles7 = StyleSheet.create({
     link:{
         color:'#0a65b5',
         margin:5,

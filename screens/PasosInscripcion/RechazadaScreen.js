@@ -21,16 +21,13 @@ const RevisionScreen = (props) => {
             <View style={{justifyContent:'center',alignItems:'center'}}>
                 <View style={{justifyContent:'center',alignItems:'center'}}>
                     <View style={{justifyContent:'center',alignItems:'center'}}>
-                        <Image style={styles3.logoTec2} source={require('../../assets/itsaLogoSplash.png')} />
+                        <Image style={styles3.logoTec2} source={require('../../assets/alertaOnda.gif')} />
                         <Text style={{color:"#000",fontSize:18,marginBottom:10,fontWeight:'bold'}}>
-                            EN REVISIÓN
+                            {props.user.estadoInsc.toUpperCase()}
                         </Text>
                         <Text style={styles3.texto1} >
-                            {(props.user.observaciones === 'No aplica')  ? 
-                            'El personal del instituto está validando las fotos de los depositos bancarios correspondientes a la ficha de admisión y aportación institucional' :
-                             props.user.observaciones}
+                            {props.user.observaciones}
                         </Text>
-                        <Image style={styles3.logoTec3} source={require('../../assets/CargandoColores.gif')} />
                     </View>
                 </View>
                 
@@ -121,16 +118,10 @@ const styles3 = StyleSheet.create({
         
     },
     logoTec2:{
-        width:200,
-        height:200,
+        width:150,
+        height:150,
         resizeMode:'contain',
         margin:10
-    },
-    logoTec3:{
-        width:50,
-        height:50,
-        resizeMode:'contain',
-        margin:0
     },
     logosLink:{
         width:20,

@@ -24,8 +24,7 @@ const DepositosScreen = ({navigation}) => {
             const listaPagos = await api.getDepositoBancarioAlumno();
             if(!listaPagos)
                 return;
-            let lp = listaPagos.data.data;
-            setListaPagos(lp);
+            setListaPagos(listaPagos);
         })();
     }, []);
 
