@@ -230,11 +230,9 @@ const putFichaAportacionDepositoBancario = async (form) => {
 
 const getUserDescargas = async () => {
     try{
-        const sesion = await crudToken.ObtenerInfoPersonalInscripcion();
-        const { _id }= sesion[0];
         const data = await axios({
             method: 'GET',
-            url: `${config.BACKENDURL}/${config.DESCARGAS}/${_id}`,
+            url: `${config.BACKENDURL}/${config.DESCARGAS}`,
             headers: { 'content-type': 'application/json' },
         })
         return data;
