@@ -1,6 +1,6 @@
 import React,{useState, useEffect} from 'react';
 import {View, SafeAreaView, StyleSheet,ScrollView,TouchableOpacity,Linking,FlatList,StatusBar} from 'react-native';
-import {Avatar,Title,Caption,Text,DataTable,Divider,RadioButton } from 'react-native-paper';
+import {Avatar,Title,Caption,Text,DataTable,Divider,RadioButton, Button } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as api from '../../../auth/request';
 import * as Permissions from 'expo-permissions';
@@ -36,6 +36,30 @@ const DescargasScreen = ({navigation}) => {
             }
         })();
     }, []);
+    
+    const reloadDescargas = async() => {
+        try{
+            const data = await api.getUserDescargas();
+            if(!data){
+                setListaDocumentos([]);
+                return;
+            }
+                
+            const desc = data.data.data.map((doc) => {
+                return {
+                    id: doc._id,
+                    nombre: doc.nombre,
+                    descripcion: doc.descripcion,
+                    fileName: doc.archivo.filename, //este se usa para buscar en el servidor el archivo
+                    originalName: doc.archivo.originalname,
+                }
+            });
+            setListaDocumentos(desc);
+        }
+        catch(e){
+            console.log(e);
+        }
+    }
 
     const funcionDescargarArchivo = async (id)=>{
         const perm = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
@@ -99,6 +123,9 @@ const DescargasScreen = ({navigation}) => {
     return (
         <SafeAreaView style={styles.container}>
             <Text style={{fontSize:20,margin:10,fontWeight:'bold'}}>Descarga de documentos</Text>
+            <Button color="#7c7bad" style={{width:140,height:40,margin:10}} mode="outlined" onPress={reloadDescargas}>
+                Actualizar
+            </Button>
             <ScrollView>                
                 <View style={{flexDirection: 'row',marginTop:10}}>
                     <ScrollView  horizontal={true} showsHorizontalScrollIndicator={false} pagingEnabled={false} >

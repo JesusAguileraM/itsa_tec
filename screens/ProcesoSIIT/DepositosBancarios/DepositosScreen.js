@@ -28,6 +28,13 @@ const DepositosScreen = ({navigation}) => {
         })();
     }, []);
 
+    const reloadDescargas = async () => {
+        const listaPagos = await api.getDepositoBancarioAlumno();
+        if(!listaPagos)
+            return;
+        setListaPagos(listaPagos);
+    }
+
     const reloadDepositosBancarios = async () => {
         const listaPagos = await api.getDepositoBancarioAlumno();
         let lp = listaPagos.data.data;
@@ -91,11 +98,7 @@ const DepositosScreen = ({navigation}) => {
         <SafeAreaView style={styles.container}>
             <Text style={{fontSize:20,margin:10,fontWeight:'bold'}}>Depositos Bancarios</Text>
             <View style={{flexDirection: 'row',alignItems:'center'}}>
-                <Button color="#d74c4c" style={{width:100,height:40,margin:10}}   mode="contained" onPress={() => navigation.navigate('CrearPagoScreen')} >
-                    Crear
-                </Button>
-                <Text>o</Text>
-                <Button color="#7c7bad" style={{width:120,height:40,margin:10}} mode="outlined" onPress={reloadDepositosBancarios}>
+                <Button color="#7c7bad" style={{width:120,height:40,margin:10}} mode="outlined" onPress={reloadDescargas}>
                     Actualizar
                 </Button>
             </View>
